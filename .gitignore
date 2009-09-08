@@ -1,3 +1,4 @@
+*~
 debug/
 release/
 qtc-gdbmacros/
@@ -6,3 +7,4 @@ Makefile*
 SNAssistant
 *.swp
 *.orig
+ui
