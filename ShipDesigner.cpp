@@ -3,7 +3,7 @@
 #include "data/SNItem.h"
 #include "data/ShipDesign.h"
 #include "data/Order.h"
-#include "ui_ShipDesigner.h"
+#include "ui/ui_ShipDesigner.h"
 #include "models/ComponentsModel.h"
 #include "models/ItemModel.h"
 #include "models/MaterialsModel.h"
@@ -219,8 +219,8 @@ void ShipDesigner::on_saveButton_clicked()
     m_currentDesign = design;
     for ( int i = 0; i < m_ui->designsCombo->count(); i++ )
     {
-        int id = m_designs.at( i ).id();
-        if ( m_currentDesign.id() == id )
+        QString name ( m_designs.at( i ).name() );
+        if ( m_currentDesign.name() == name )
         {
             m_ui->designsCombo->setCurrentIndex( i );
             break;

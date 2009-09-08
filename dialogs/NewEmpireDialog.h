@@ -21,6 +21,7 @@ private:
     Ui::NewEmpireDialog *m_ui;
 
     bool setupNewDatabase( const QString &name, const QString &id );
+    QStringList loadSchema( const QString &filename );
 
 private slots:
     void on_acceptButton_clicked();

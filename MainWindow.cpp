@@ -1,5 +1,5 @@
 #include "MainWindow.h"
-#include "ui_MainWindow.h"
+#include "ui/ui_MainWindow.h"
 #include "ShipDesigner.h"
 #include "dialogs/NewEmpireDialog.h"
 #include "dialogs/ChangeEmpireDialog.h"
@@ -112,7 +112,8 @@ void MainWindow::on_actionSelect_Empire_triggered()
     int res = diag.exec();
 }
 
-void MainWindow::currEmpireChangedSlot( const Empire & )
+void MainWindow::currEmpireChangedSlot( const Empire & emp )
 {
-
+    m_currEmpire = emp;
+    ui->empireName->setText( emp.name() );
 }

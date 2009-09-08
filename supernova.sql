@@ -1,9 +1,8 @@
 drop table if exists warppoints;
 drop table if exists systembodies;
 drop table if exists system;
- -- drop index geoidx;
 drop table if exists geodata;
-drop table if exists PDATA;
+drop table if exists pdata;
 drop table if exists items;
 drop table if exists itemcomp;
 drop table if exists designcomp;
@@ -21,14 +20,14 @@ drop table if exists csvdata;
 drop table if exists research;
 drop table if exists inst;
 drop table if exists instcomp;
-
+DROP TRIGGER if exists fku_designcomp_dname_designs_dname;
+DROP TRIGGER if exists fkdc_designcomp_dname_designs_dname;
+DROP TRIGGER if exists fki_designcomp_dname_designs_dname;
 
 create table system (
-        sysname character(30) not null,
-        sysscan character,
+        sysname character(30) not null primary key,
+        sysscan character
 );
-
-alter table system add primary key (sysname);
 
 create table systembodies (
         pname           character(20) not null primary key,
@@ -66,14 +65,14 @@ create unique index GeoIdx on geodata (
         resource asc
 );
 
-create table PDATA (
+create table pdata (
         pname           character(20) not null references systembodies on delete cascade,
         item            character(30) not null,
         id              integer not null,
         value           varchar(1024) not null
 );
 
-create unique index PIdx on PDATA (
+create unique index PIdx on pdata (
         pname asc,
         item asc,
         id asc
@@ -98,31 +97,48 @@ create table research (
 );
 
 create unique index RIdx on research (
-        iname asc,
+        iname asc
 );
 
-
 create table designs (
-        dname           character(80) not null,
+        dname           character(80) not null primary key,
         type            character(80) not null,
-        size            integer not null,
-        text            varchar(3500) not null
+        class           character(1) not null
 );
 
 create table designcomp (
-        dname           character(80) not null,
-        anz             integer not null,
-        item            character(80) not null 
+        dname           character(80) not null
+        CONSTRAINT dname REFERENCES designs(dname) ON DELETE CASCADE,
+        quantity             integer not null,
+        item            character(80) not null
 );
 
-alter table designs add primary key (dname);
+-- Foreign Key Preventing insert
+CREATE TRIGGER fki_designcomp_dname_designs_dname
+BEFORE INSERT ON [designcomp]
+FOR EACH ROW BEGIN
+  SELECT RAISE(ROLLBACK, 'insert on table "designcomp" violates foreign key constraint "fki_designcomp_dname_designs_dname"')
+  WHERE (SELECT dname FROM designs WHERE dname = NEW.dname) IS NULL;
+END;
 
-alter table designcomp add foreign key (dname) references designs(dname) on delete cascade;
+-- Foreign key preventing update
+CREATE TRIGGER fku_designcomp_dname_designs_dname
+BEFORE UPDATE ON [designcomp]
+FOR EACH ROW BEGIN
+    SELECT RAISE(ROLLBACK, 'update on table "designcomp" violates foreign key constraint "fku_designcomp_dname_designs_dname"')
+      WHERE (SELECT dname FROM designs WHERE dname = NEW.dname) IS NULL;
+END;
+
+-- Cascading Delete
+CREATE TRIGGER fkdc_designcomp_dname_designs_dname
+BEFORE DELETE ON designs
+FOR EACH ROW BEGIN
+    DELETE FROM designcomp WHERE designcomp.dname = OLD.dname;
+END;
 
 create table expl (
         fleet           integer not null,
         type            character(1) not null,
- -- (T)ech, (W)arppoint, (I)tem, (N)one
         item            character(200), 
         amount          integer,
 	find            varchar(3700) not null
@@ -146,7 +162,7 @@ create table csvdata (
 
 
 create table fleets (
-        fid             integer not null,
+        fid             integer not null primary key,
         fname           character(80) not null,
 	location        character(80) not null,
 	mass            integer not null,
@@ -155,8 +171,6 @@ create table fleets (
         ap              integer not null,
         text            varchar(3500) not null
 );
-
-alter table fleets add primary key (fid);
 
 create table stockpiles (
         popid           integer not null,

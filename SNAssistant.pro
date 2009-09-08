@@ -3,6 +3,8 @@
 # -------------------------------------------------
 TARGET = SNAssistant
 TEMPLATE = app
+INCLUDEPATH += dialogs
+DEPENDPATH += dialogs
 FORMS += MainWindow.ui \
     ShipDesigner.ui \
     dialogs/NewEmpireDialog.ui \
@@ -38,5 +40,5 @@ QT += gui \
     xml \
     sql
 RESOURCES += application.qrc
-INCLUDEPATH += /usr/include
 LIBS += -lodbc"
+UI_DIR = ui

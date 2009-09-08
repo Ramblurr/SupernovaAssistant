@@ -1,10 +1,12 @@
 #include "NewEmpireDialog.h"
-#include "ui_NewEmpireDialog.h"
+#include "ui/ui_NewEmpireDialog.h"
 #include "data/Empire.h"
 
 #include <QDesktopServices>
 #include <QtSql>
+#include <QFile>
 #include <QSettings>
+
 NewEmpireDialog::NewEmpireDialog( QWidget *parent ) :
         QDialog( parent ),
         m_ui( new Ui::NewEmpireDialog )
@@ -74,7 +76,43 @@ void NewEmpireDialog::on_empireIDEdit_textEdited( QString text )
         }
     }
 }
-
+QStringList NewEmpireDialog::loadSchema( const QString &filename )
+{
+    QStringList queries;
+    QFile file( filename );
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QString query;
+        bool trigger = false;
+        while (!file.atEnd())
+        {
+            QString tmp = file.readLine().replace("\n", " ");
+            if( tmp.startsWith("-- ") )
+                continue;
+            if( tmp.startsWith("CREATE TRIGGER", Qt::CaseInsensitive) )
+                trigger = true;
+            if( !trigger && tmp.trimmed().right(1) == ";"  )
+            {
+                query.append(tmp);
+                queries << query;
+//                qDebug() << "added: " << query;
+                query = "";
+            }
+            else if( trigger && tmp.trimmed().endsWith("END;", Qt::CaseInsensitive ) )
+            {
+                trigger = false;
+                query.append(tmp);
+                queries << query;
+//                qDebug() << "added: " << query;
+                query = "";
+            } else {
+                query.append(tmp);
+            }
+        }
+    }
+    file.close();
+    return queries;
+}
 bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
 {
     QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
@@ -85,12 +123,20 @@ bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
     db.setDatabaseName( dbPath );
     if ( db.open() )
     {
-        QString sql = "CREATE TABLE shipdesigns( design_id INTEGER PRIMARY KEY, name VARCHAR, type VARCHAR, class VARCHAR )";
-        db.exec( sql );
-        sql = "CREATE TABLE shipdesigns_lines( line_id INTEGER PRIMARY KEY, design_id INTEGER, item VARCHAR, quantity INTEGER )";
-        db.exec( sql );
+
+        QStringList queries( loadSchema( "supernova.sql" ) );
+        db.transaction();
+        foreach(QString statement, queries)
+        {
+            QSqlQuery query( db );
+            query.prepare( statement );
+            if( !query.exec() )
+                qDebug() << query.executedQuery() << "\nerror: " << query.lastError();
+        }
+        db.commit();
         db.close();
         return true;
     }
+    db.close();
     return false;
 }

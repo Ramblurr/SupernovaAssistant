@@ -3,5 +3,6 @@
         <file>items.xml</file>
         <file>item_desc_format.html</file>
         <file>icons/arrow-left.png</file>
+        <file>supernova.sql</file>
     </qresource>
 </RCC>

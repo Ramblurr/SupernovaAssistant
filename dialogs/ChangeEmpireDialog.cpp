@@ -1,5 +1,5 @@
 #include "ChangeEmpireDialog.h"
-#include "ui_ChangeEmpireDialog.h"
+#include "ui/ui_ChangeEmpireDialog.h"
 
 #include "models/EmpiresModel.h"
 #include "data/Empire.h"

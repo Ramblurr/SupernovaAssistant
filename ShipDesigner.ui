@@ -300,6 +300,9 @@ p, li { white-space: pre-wrap; }
       <height>25</height>
      </rect>
     </property>
+    <property name="maxLength">
+     <number>79</number>
+    </property>
    </widget>
    <widget class="QLabel" name="designName_3">
     <property name="geometry">
@@ -492,6 +495,20 @@ p, li { white-space: pre-wrap; }
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::ExpandingFieldsGrow</enum>
       </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string># Items</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="countLabel">
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -529,20 +546,6 @@ p, li { white-space: pre-wrap; }
       </item>
       <item row="3" column="1">
        <widget class="QLabel" name="label_14">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string># Items</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="countLabel">
         <property name="text">
          <string>0</string>
         </property>
