@@ -1,0 +1,8 @@
+debug/
+release/
+qtc-gdbmacros/
+Makefile*
+*.pro.user
+SNAssistant
+*.swp
+*.orig

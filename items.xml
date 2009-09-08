@@ -1,0 +1,1520 @@
+<?xml version="1.0"?>
+<items>
+	<item>
+		<name>10cm Autocannon</name>
+		<desc><![CDATA[The 10cm Autocannon is a relatively slow-firing weapon that ejects a large explosive projectile every few seconds. It is roughly the size of a modern 4" gun and can inflict severe damage when properly trained upon small targets.]]></desc>
+		<weight>100</weight>
+                <category>Ship Component</category>
+		<components>
+			<component quantity="400">Steel</component>
+			<component quantity="100">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>1st Generation Civil Engineering</name>
+		<desc><![CDATA[Civil Engineering technology relates to the construction of large-scale engineering projects. A high degree of understanding in this field will be required to build the most advanced projects.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Computer Systems</name>
+		<desc><![CDATA[Computer Systems technology forms the base for many other technologies. Advances in many areas require parallel advancement in this important field of study.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation ESP</name>
+		<desc><![CDATA[Extra-sensory perception is the ability to perceive sometimes distant events in an other-worldly fashion. Advancement in this field of study requires at least a minimal biological background in ESP.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Industrial Science</name>
+		<desc><![CDATA[Industrial Science relates to the ability to construct ever-advancing construction facilities, typically introducing robotics to replace manual factory labor.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Life Science</name>
+		<desc><![CDATA[Life Science grants understanding of more advanced physiological functions and the general workings of all manner of living beings. Advancement in Life Science technology forms the basis for a number of other technologies.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Medical Science</name>
+		<desc><![CDATA[Medical Science grants understanding of advanced healing functions and the general physiological and genetic makeup of all manner of living beings. Advancement in Medical Science technology forms the basis for a number of other technologies.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Planetary Science</name>
+		<desc><![CDATA[Advancement in Planetary Science grants comprehension of the basic workings of the physical nature of planetary bodies. This proves quite useful when developing related large-scale technological constructs such as terraforming stations or weather control facilities. Understanding of this field of study might someday allow for development of certain types of weapons of mass destruction.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Social Science</name>
+		<desc><![CDATA[Understanding of Social Science combined with similar fields of study allows for development of technologies relating to comprehension of alien languages and large-scale social engineering projects.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Space Science</name>
+		<desc><![CDATA[The Space Sciences are a prerequisite for development of any technology that relates to high energy physics, matter transportation and comprehension of complex celestial objects. For a spacefaring race, proper understanding of this field of study can be very important.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Telekinetics</name>
+		<desc><![CDATA[Telekinetics is the ability to move objects by channeling the power of the mind alone. Advancement in this field of study requires at least a minimal biological basis in Telekinetics.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>1st Generation Telepathics</name>
+		<desc><![CDATA[Telepathy is the ability to comprehend the thoughts of alien creatures in an other-worldly fashion. Advancement in this field of study requires at least a minimal biological background in Telepathy.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Ablative Armor</name>
+		<desc><![CDATA[Ablative Armor is a ground combat technology, improving the defensive capabilities of your troopers. It absorbs enemy hits by losing chunks of itself as it is struck, and can therefore be worn away with sufficient firepower.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Anti-Aircraft Artillery</name>
+		<desc><![CDATA[Anti-Aircraft Artillery units fire a series of explosive projectiles into the air in an attempt to riddle enemy aircraft with shrapnel. Direct hits are uncommon but can provide some very exicting moments for the aircrews involved. Even if hits are not scored, Anti-Aircraft Artillery batteries can rattle the pilots or bombardiers of enemy aircraft, throwing off their aim.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Armored Car</name>
+		<desc><![CDATA[Armored Cars are primitive tanks that are most often used for light armored personnel transport. They are lightly armored and have minimal firepower, but even a weak tank is better than nothing at all.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Barbed Wire</name>
+		<desc><![CDATA[Long strands of uncoiled wire affixed with sharp metal objects can provide an excellent deterrent defense against marauding alien animals. It is also useful in ground battle situations where a perimeter defense is required to meet security or other combat needs.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Battleaxe</name>
+		<desc><![CDATA[A crude but effective melee weapon, comprised of a sharpened blade affixed to a stick. It is used to slash apart one's opponents in hand-to-hand combat. This is a ground combat technology item and cannot be produced directly; instead, possessing this technology affects the capabilities of your existing ground forces.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Black Market Goods</name>
+		<desc><![CDATA[Illegal goods created on worlds with an agricultural background. Simple drugs made from grasses, weeds and other plants are the most commonly found forms of this item, though drugs that require advanced pharmaceutical laboratories, many of which are addicting or even deadly, are other more illicit Black Market Goods. Certain radioactive elements are considered to be Black Market Goods as well, and on occasion a miner will unearth a previously undiscovered type of mineral that has some bizarre and probably dangerous industrial or pharmacological use.]]></desc>
+		<weight>1</weight>
+                <category>Composite Material</category>
+		<components>
+			<component quantity="2">Pharmaceuticals</component>
+			<component quantity="1">Rare Herbs &amp; Spices</component>
+		</components>
+	</item>
+	<item>
+		<name>Caldaran Crystals</name>
+		<desc><![CDATA[These are translucent crystals with a blue-white tinge. They are found in underground caverns in small, naturally-formed deposits. The perfectly shaped crystals are crucial for the production of a number of advanced pieces of technology. Unfortunately, they are quite rare and the slightest crack will ruin the crystal and render it valueless.]]></desc>
+		<weight>1</weight>
+                <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Carbine</name>
+		<desc><![CDATA[A Carbine is a small firearm that is braced against the shoulder when it is discharged. It is essentially a rifle modified for military use. Carbines provide small arms fire to individual troopers in the field.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Cargo Barge</name>
+		<desc><![CDATA[Cargo Barges are used to shuttle items to and from worlds where landing a starship would be inadvisable. Such locations represent extremely rare occurrences and Cargo Barges should therefore only be constructed on special vessels designed for rare or unusually hazardous situations. They are not necessary for standard cargo-hauling duties.]]></desc>
+                <category>Ship Component</category>
+		<weight>600</weight>
+		<components>
+			<component quantity="2400">Steel</component>
+			<component quantity="600">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Cargo Bay</name>
+		<desc><![CDATA[The standard 1-ton, self-contained cargo bay used for the transport of standard bulk cargo]]></desc>
+		<weight>1</weight>
+                <category>Ship Component</category>
+		<components>
+			<component quantity="5">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Chainsaw</name>
+		<desc><![CDATA[Normally used to chop down trees in a civilian setting, the Chainsaw has been modified with a longer blade and attached to a trooper with a shoulder-and-hip strap arrangement (assuming, of course, that the trooper has shoulders or hips). This allows for rapid swinging of the weapon. Needless to say, this is a close combat weapon with almost no range but outstanding damage output. Soldiers using this device are screened to make sure they are not squeamish, for the results of using the Chainsaw under combat conditions can be quite messy.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Club</name>
+		<desc><![CDATA[A crude but effective melee weapon, often little more than a stick with a large knobby end, used to bash in the skulls of one's opponents in hand-to-hand combat. Sure, it sounds lousy, but if you've ever been cornered by a pack of tentacled aliens who are trying to invade your home planet, a knobby stick sure beats having no weapon at all…. This is a ground combat technology item and cannot be produced directly; instead, possessing this technology affects the capabilities of your existing ground forces.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Coal</name>
+		<desc><![CDATA[Coal is a resource that is most often used by primitive societies as a power source. The poor efficiency of coal compared to more advanced resources generally discourages its use once power production facilities such as Fission or Fusion power plants can be constructed.]]></desc>
+		<weight>1</weight>
+                <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Colonial Berthing</name>
+		<desc><![CDATA[Colonial Berthings include sleeping quarters, kitchens, meeting halls and general residential quarters for a single unit of Population to make possible a shipboard voyage to another planet.]]></desc>
+		<weight>10000</weight>
+                <category>Ship Component</category>
+		<components>
+			<component quantity="50000">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Colonial Settler</name>
+		<desc><![CDATA[The Colonial Settler is a colonial unit of individual personnel. Colonial Settlers are trained and equipped to colonize new worlds. Colonial Settlers have some military training and weapons and can fight with limited effectiveness in any ground combat situation. The capabilities of a Colonial Settler are, of course, dependent on your lifeform's design and the equipment with which you equip the unit.]]></desc>
+		<weight>50000</weight>
+                <category>Misc</category>
+		<components>
+			<component quantity="1">Colonists</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+			<component quantity="50000">Textiles</component>
+		</components>
+	</item>
+	<item>
+		<name>Colonists</name>
+		<desc><![CDATA[Individuals suited for the settling of new worlds are formed into Colonist units. They suffer significantly fewer casualties than normal Population units when dropped onto newly-colonized planets. Colonists are not "constructed" like other items, but instead are created by using the Colonist Training (CTRN) order.]]></desc>
+		<weight>1</weight>
+                <category>Misc</category>
+		<components>
+		</components>
+	</item>
+	<item>
+		<name>Colony Beacon</name>
+		<desc><![CDATA[Colony Beacons are used to mark and establish a new Population Group. They transmit a homing signal to colonists coming to their new homes and can also be used to form beachheads as part of a planetary ground assault.]]></desc>
+		<weight>1000</weight>
+                <category>Misc</category>
+		<components>
+			<component quantity="2000">Steel</component>
+			<component quantity="3000">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Combat Engineer</name>
+		<desc><![CDATA[Combat Engineers are front-line, combat-capable engineering personnel who can fight alongside their compatriots. They are prized for their ability to dig trenches and fortify positions in short order. Combat Engineers claim to be able to build anything, anywhere, any time.]]></desc>
+		<weight>50000</weight>
+                <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Construction Materials</name>
+		<desc><![CDATA[Construction Materials includes such things as bricks, cement, ferroconcrete, steel, asphalt, plaster, granite, refined lumber and a variety of advanced construction alloys. It is an absolutely critical item since Construction Materials are used directly to produce Installations.]]></desc>
+		<weight>1</weight>
+                <category>Composite Material</category>
+		<components>
+			<component quantity="2">Timber</component>
+			<component quantity="1">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Consumer Goods</name>
+		<desc><![CDATA[Consumer Goods represents a plethora of items used by the average citizen in day-to-day life. This item includes dishwashers, clothes dryers, irons, pots, frying pans, home electronics, entertainment devices and much more.]]></desc>
+		<weight>1</weight>
+                <category>Composite Material</category>
+		<components>
+			<component quantity="2">Light Metals</component>
+			<component quantity="1">Petroleum</component>
+		</components>
+	</item>
+	<item>
+		<name>Crystals</name>
+		<desc><![CDATA[Natural crystalline growths or quasiperiodic solids valued primarily for their industrial applications but also used in the production of luxury goods. Quartz, glass, amethyst and cryptocrystalline substances such as chert and chalcedony are excellent examples of Crystals.]]></desc>
+		<weight>1</weight>
+                <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Dagger</name>
+		<desc><![CDATA[A crude but effective melee weapon, generally made by affixing a sharpened piece of metal to a small stick. It is used to poke at one's opponents in hand-to-hand combat. It is not very effective, but it is better than nothing, and something can be said for a quick, sharp weapon in the absence of anything else. This is a ground combat technology item and cannot be produced directly; instead, possessing this technology affects the capabilities of your existing ground forces.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Dartgun</name>
+		<desc><![CDATA[A Dartgun is a simple limited-range weapon that ejects projectiles tipped with a mild poison. It is favored by security personnel and is used almost exclusively to stun or knock out opponents.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Drone Rack</name>
+		<desc><![CDATA[A 10,000-ton, self-contained storage and launch systems used to maintain all drone variations. The rack provides the necessary launch &amp; recovery, maintenance and support facilities to handle up to 10,000 tons of drones. Crew berthing &amp; support space is also included as part of the rack.]]></desc>
+		<weight>10000</weight>
+                <category>Ship Component</category>
+		<components>
+			<component quantity="50000">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>ECK</name>
+		<desc><![CDATA[ECK (Environmental Control Kit) outfits are issued to ground units expected to be operating in hostile environmental conditions. The ECK package includes survival equipment and the provision for heating &amp; cooling equipment, both as add-ons to vehicles and as separate pieces of equipment.]]></desc>
+                <category>Technology</category>
+	</item>
+	<item>
+		<name>Electronics</name>
+		<desc><![CDATA[Computers, integrated circuit boards, radios, semiconductors, transistors, navigation systems, microprocessors, transformers, photoelectric cells and telecommunication device are all examples of Electronics components. Electronics are used to construct other, more complex items.]]></desc>
+		<weight>1</weight>
+        <category>Composite Material</category>
+		<components>
+			<component quantity="2">Refined Crystals</component>
+			<component quantity="1">Synthetic Materials</component>
+		</components>
+	</item>
+	<item>
+		<name>EW</name>
+		<desc><![CDATA[Electronics Warfare units specialize in electronic warfare, jamming enemy communications and protecting friendly radio channels from eavesdropping.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Electronics</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Fibers</name>
+		<desc><![CDATA[Fibers are obtained from a plant or an animal. The majority of these fibers are used in weaving textiles, although the coarser plant fibers are also used for rope and twine. Plant fibers come from the seed hairs, leaves, stems or husks of the plant. Animal fibers are provided, generally, by animal hair and, in the case of silk, by the secretion of the silkworm. Cotton is an extremely common plant fiber, while wool is a typical animal fiber. Fibers are used as a material in the manufacture of more complex items.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Fighter Bay</name>
+		<desc><![CDATA[A 10,000-ton, self-contained fighter bay used to operate all fighter variations. The bay provides the necessary launch &amp; recovery, maintenance and support facilities to handle up to 10,000 tons of fighters. Crew berthing &amp; support space is also included as part of the bay.]]></desc>
+		<weight>10000</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="50000">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Flak Jacket</name>
+		<desc><![CDATA[Flak Jackets represent low technology body armor that provide protection against low velocity projectile weapons and shrapnel.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Food Concentrates</name>
+		<desc><![CDATA[Condensed, refined or purified foodstuffs that are generally easier to store and ship. Most lifeforms consider Food Concentrates dull and tasteless, especially compared to fine cuisine.]]></desc>
+		<weight>1</weight>
+        <category>Composite Material</category>
+		<components>
+			<component quantity="1">Foodstuffs</component>
+		</components>
+	</item>
+	<item>
+		<name>Foodstuffs</name>
+		<desc><![CDATA[Foodstuffs are considered a combination of plant and animal byproducts, depending on the needs of the individual consuming them. Animal foodstuffs are processed meats and refined dairy products edible by animal lifeforms, while plant foodstuffs are animal feeds, milled grains, bread products, edible plants and foods digestible by animal lifeforms.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="1">Fruits &amp; Vegetables</component>
+			<component quantity="1">Grains</component>
+			<component quantity="1">Meat</component>
+			<component quantity="1">Water</component>
+		</components>
+	</item>
+	<item>
+		<name>Fortress</name>
+		<desc><![CDATA[Fortress units include heavily armored field bunkers, trenches, gun emplacements, tank traps, barricades and minefields along with full-fledged fortifications bristling with antipersonnel and antitank weaponry. The best way to deal with a Fortress unit is to avoid it.]]></desc>
+		<weight>500000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="500000">Food Concentrates</component>
+			<component quantity="500000">Steel</component>
+			<component quantity="500000">Weapons</component>
+			<component quantity="500000">Heavy Machinery</component>
+		</components>
+	</item>
+	<item>
+		<name>Fruits &amp; Vegetables</name>
+		<desc><![CDATA[Fruits &amp; Vegetables combine many common foodstuffs such as oranges, apples, bananas, berries, peas, corn, tomatoes, beans and various tubers. They can be considered an important source of vitamins and minerals for most lifeforms.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Fuel</name>
+		<desc><![CDATA[Refined hydrogen is most often used as a fuel source by jump drives. Raw hydrogen, often skimmed from the upper atmosphere of a gas giant, can also be used but manufactured Fuel is preferred as it removes any impurities from the gaseous mixture. Fuel can be dangerous to store, and is most often held in special Fuel Tankage aboard spacegoing vessels.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Gaseous Elements</component>
+		</components>
+	</item>
+	<item>
+		<name>Fuel Shuttle</name>
+		<desc><![CDATA[Fuel Shuttles can operate on EVA missions to extract hydrogen fuel from nearby celestial objects. Gas Giants are the most commonly-used resource for fuel skimming. Magnetic and physical scoops gather the hydrogen fuel into onboard tanks, after which the Fuel Shuttle returns to its mother ship to offload the fuel and begin another run.]]></desc>
+		<weight>600</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="2400">Steel</component>
+			<component quantity="600">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Fuel Tankage</name>
+		<desc><![CDATA[Fuel Tankage is composed of a series of containment tanks designed to hold hydrogen fuel. Safety backups, flame resistant materials, computer controlled vacuum pumps and failsafe hatches make for a very secure environment for the highly volatile hydrogen mixtures.]]></desc>
+		<weight>1</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="5">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Garoxx Jewels</name>
+		<desc><![CDATA[Garoxx Jewels are tiny green crystalline rocks in rough form, becoming a translucent light green crystal of incredible beauty once refined and polished. The base crystal is usually found in underground caverns in small, naturally-formed deposits. The perfect jewels are required as a focusing device in the production of a variety of advanced pieces of technology having to do with ESP. The slightest trace of impurities will ruin the jewel's use as a focusing lens, rendering it useless. Garoxx Jewel deposits are incredibly rare, but as it happens, 1 ton can be created by purifying 10 tons of Raw Resources.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Gaseous Elements</name>
+		<desc><![CDATA[Helium, neon, argon, hydrogen compounds, ammonia, fluorine, methane, phosphine, xenon, chlorine, carbon dioxide and a variety of methane and nitrogen compounds fall into the Gaseous Elements category. All are valued for industrial applications and as energy sources.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Gemstones</name>
+		<desc><![CDATA[Gemstones include precious gems prized for their beauty or industrial applications, such as diamonds, emeralds, rubies and sapphires. They are used as an intermediate resource in the manufacture of more complex items.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Ghuran Demonblood</name>
+		<desc><![CDATA[This is a vile, oily blue-black liquid that is found most often in pure form in underground ice caverns where it collects in small pools. Ghuran Demonblood remains a liquid even at temperatures that come close to absolute zero. The liquid is highly corrosive and can be safely handled only when it is kept extremely cold. As the liquid warms it becomes unstable and a deadly vapor is produced. Synthetic production of the stuff is exceedingly dangerous. The liquid is collected and used in units of approximately one quart at a time, is extremely rare, and is used only for special applications.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Grains</name>
+		<desc><![CDATA[The principal Grain crops are wheat, corn, rice, barley, oats, rye, sorghum, and millet. Sometimes seeds other than grasses, such as buckwheat, wild rice and soybeans, are characterized as Grains. Some grain crops can be grown under a wide variety of environmental conditions.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Guerrilla</name>
+		<desc><![CDATA[Guerrilla units specialize in using the local terrain to their advantage, and are able to fight under even the most extreme of environmental conditions. They don't often have heavy weapons at their disposal, but make for an excellent addition to any force when all-terrain capabilities are warranted.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Harpoon Gun</name>
+		<desc><![CDATA[A harpoon is a weapon used for hunting large fish and aquatic animals such as whales, seals, and walrus. The primitive, hand-thrown harpoon had a head made of bone or metal, which was barbed and fastened loosely to a stick. Harpoon Guns are gas-powered military-grade weapons that launch steel-tipped harpoons at one's enemies. They are excellent weapons when used in the right terrain, and it can be a frightening experience to face a host of Harpoon Gun-wielding enemies. Harpoon Guns, however, take a while to be rearmed, for they are one-shot weapons by their very nature.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Heavy Fanatics</name>
+		<desc><![CDATA[Heavy Fanatics are similar to Heavy Infantry Divisions but they are generally equipped with heavier antitank and antiaircraft weaponry. Heavy Fanatics carry extremely powerful antipersonnel weapons as well, preferring to mow down their enemies with massive firepower. They represent the ultimate shock troops, breaking through enemy lines with sheer determination and holy zeal. They derive power from their deity, focusing and channeling divine wrath as part of their combat capability on the battlefield.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Fanatical Population</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Heavy Machinery</name>
+		<desc><![CDATA[Heavy Machinery includes everything from jackhammers to bulldozers, snowplows, tractors, tow trucks, automobiles, swamp buggies and a huge variety of industrial equipment.]]></desc>
+		<weight>1</weight>
+        <category>Composite Material</category>
+		<components>
+			<component quantity="3">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Helicopter</name>
+		<desc><![CDATA[The helicopter is a type of aircraft that obtains lift and propulsion from one or more powered rotors, which are propellers that rotate in a horizontal plane. The helicopter is capable of remaining motionless in hovering flight because the powered rotors produce lift even at zero forward speed. Horizontal flight is achieved by tilting the rotor forward with respect to the flight path to produce a propulsive force in that direction. Helicopters are not capable of rapid or high altitude flight, but can take off and land almost anywhere. Troopers love friendly helicopters and take extreme measures to shoot down enemy aircraft, for an enemy capable of appearing out of nowhere and hovering overhead is not good for one's health.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>High Explosive Demolition Charge</name>
+		<desc><![CDATA[High Explosive Demolition Charges are extremely useful when you want to blow something up. Favored by Combat Engineers, HE Demo Charges are often based on trinitrotoluene, produced by reacting toluene with nitric acid in the presence of sulfuric acid, or on plastic compounds that react explosively when triggered by an electrically-controlled fuse.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Imperial Army Air Force</name>
+		<desc><![CDATA[Air Force units are specialized units that utilize atmospheric-capable fighter craft as their primary combat unit. This particular unit is designed, primarily, to engage enemy units in the air (enemy Atmospheric Fighter &amp; Bomber units). It is not capable of engaging orbital targets. This unit is used in a very limited role for front line ground support.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Armor</name>
+		<desc><![CDATA[Armor units are equipped primarily with armored fighting vehicles although they usually possess an infantry component as well. Armored cars and other mechanized vehicles supplement the light and medium tanks that make up the bulk of this unit's firepower.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="150000">Steel</component>
+			<component quantity="50000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Artillery</name>
+		<desc><![CDATA[Artillery divisions are specialized units designed to provide heavy indirect fire support to your forces in battle. They have better mobility than Heavy Artillery units, but can still deliver excellent volume of fire upon selected targets.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Heavy Air Defense</name>
+		<desc><![CDATA[Air Defense units include all manner of surface-to-air missile batteries along with conventional slugthrowing flak units. Advanced air defense units include laser or plasma cannon antiaircraft batteries to supplement the other defensive systems. This unit also has some capability against enemy orbital bombardment missions.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Heavy Armor</name>
+		<desc><![CDATA[Heavy Armor units are specialized units designed primarily to handle enemy "hard" targets (enemy Armor &amp; Heavy Armor units). They are similar to regular Armor units, but the heaviest possible armored units replace light and mobile tanks to gain firepower in place of speed.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="200000">Steel</component>
+			<component quantity="50000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Heavy Artillery</name>
+		<desc><![CDATA[Heavy Artillery divisions are specialized units designed to provide heavy indirect fire support to your forces in battle. They have extremely poor mobility compared to most of the other ground forces available, but can deliver awesome volume of fire upon a selected target.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Heavy Infantry</name>
+		<desc><![CDATA[Heavy Infantry Divisions are similar to Infantry units but they are generally equipped with heavier weapons to better handle enemy air &amp; hard targets.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Infantry</name>
+		<desc><![CDATA[Infantry Divisions are full-fledged military units, trained and equipped for combat. Individual soldiers, outfitted with all manner of small arms and heavy personal weapons, make up the bulk of these forces.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Mechanized Infantry</name>
+		<desc><![CDATA[Mechanized mobility is achieved by augmenting wheeled transport &amp; combat vehicles with tracked vehicles. Improving cross-country performance and overall mobility is the result. Mechanized Infantry units gain mobility and firepower against armored targets at the cost of less capability under adverse terrain conditions.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Soldiers</name>
+		<desc><![CDATA[Imperial Army Soldiers are personnel trained and readied for duty in the Imperial Army.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Special Forces</name>
+		<desc><![CDATA[Special Forces units are small forces designed primarily for special operations. They are fully capable of fighting alongside regular military units but their true value is found when used to exploit enemy weaknesses.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Army Strategic Bomber</name>
+		<desc><![CDATA[Strategic Bomber units are specialized units that utilize atmospheric-capable craft as their primary combat unit. This particular unit is designed, primarily, to engage enemy units on the ground. Advanced bombers use energy cluster bombs and high yield air-to-surface missiles to eliminate their targets with extreme prejudice. Imperial Army Strategic Bombers include tactical support bombers as well as heavy bombers, providing this unit with capability as an Infantry or Armor support as well as heavy aerial bombardment.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Flag</name>
+		<desc><![CDATA[An Imperial Flag is planted on a world after a Colonial Beacon has been used to establish a new Population Group. It flies the colors of your Imperial Emblem and lets all and sundry know that you have claimed the planet for yourself.]]></desc>
+		<weight>1</weight>
+        <category>Misc</category>
+		<components>
+			<component quantity="5">Textiles</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Air Force</name>
+		<desc><![CDATA[Air Force units are specialized units that utilize atmospheric-capable fighter craft as their primary combat unit. This particular unit is designed, primarily, to engage enemy units in the air (enemy Atmospheric Fighter &amp; Bomber units). It is not capable of engaging orbital targets. Imperial Guards Air Force fighters give up some of their air-to-air capabilities to grant them a more capable ground support role.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Armor</name>
+		<desc><![CDATA[Armor units are equipped primarily with armored fighting vehicles although they usually possess an infantry component as well. Armored cars and other mechanized vehicles supplement the light and medium tanks that make up the bulk of this unit's firepower. Imperial Guards Armor replaces some of the lighter, faster armored units with more heavily armored tanks.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="150000">Steel</component>
+			<component quantity="50000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Artillery</name>
+		<desc><![CDATA[Artillery divisions are specialized units designed to provide heavy indirect fire support to your forces in battle. They have better mobility than Heavy Artillery units, but can still deliver excellent volume of fire upon selected targets. Imperial Guards Artillery generally includes heavier versions of artillery tubes than their Imperial Army counterparts, at the cost of mobility and maneuverability under certain terrain conditions.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Heavy Air Defense</name>
+		<desc><![CDATA[Air Defense units include all manner of surface-to-air missile batteries along with conventional slugthrowing flak units. Advanced air defense units include laser or plasma cannon antiaircraft batteries to supplement the other defensive systems. Imperial Guards Heavy Air Defense Divisions specialize in the antiaircraft role, but does retain a limited capability against enemy orbital bombardment.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Heavy Armor</name>
+		<desc><![CDATA[Heavy Armor units are specialized units designed primarily to handle enemy "hard" targets (enemy Armor &amp; Heavy Armor units). They are similar to regular Armor units, but the heaviest possible armored units replace light and mobile tanks to gain firepower in place of speed. Imperial Guards Heavy Armor units take only the heaviest tanks available to the Empire. If you want to sell your company's tank to the Imperial Guards Heavy Armor, give it amazingly thick armor and toss on a gigantic gun. Mobility, as they say in the IGHA, is nothing compared to an extra few inches of steel.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="200000">Steel</component>
+			<component quantity="50000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Heavy Artillery</name>
+		<desc><![CDATA[Heavy Artillery divisions are specialized units designed to provide heavy indirect fire support to your forces in battle. They have extremely poor mobility compared to most of the other ground forces available, but can deliver awesome volume of fire upon a selected target. Imperial Guards Heavy Artillery units include only the largest and most massive artillery tubes. They are more interested in flattening an enemy with sheer weight of explosive shells than they are in dancing about on the battlefield.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Heavy Infantry</name>
+		<desc><![CDATA[Heavy Infantry Divisions are similar to Infantry Divisions but they are generally equipped with heavier weapons to handle enemy air &amp; hard targets better. Imperial Guards Heavy Infantry carry extremely heavy weapons, preferring to mow down their enemies with massive firepower. These guys are often used as shock troops, breaking through enemy lines with sheer determination.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Infantry</name>
+		<desc><![CDATA[Infantry Divisions are full-fledged military units, trained and equipped for combat. Individual soldiers, outfitted with all manner of small arms and heavy personal weapons, make up the bulk of these forces. Imperial Guards Infantry are equipped with the heaviest possible of weapons instead of lighter antipersonnel weapons.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Security</name>
+		<desc><![CDATA[Security Divisions are trained and equipped to handle civilian unrest (stability problems) and to provide overall security to population groups. Security units have military training and equipment and can fight with limited effectiveness in a ground combat. They provide for an excellent police response force in security breach situations. Imperial Guards Security troops are highly trained and are considered ruthless when dealing with enemy penetrators.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Soldiers</name>
+		<desc><![CDATA[Imperial Guards Soldiers are personnel trained and readied for duty in the Imperial Guards.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Special Forces</name>
+		<desc><![CDATA[Special Forces Brigades are small units designed, primarily, for special operations. They are fully capable of fighting alongside regular military units but their true value is found when used to exploit enemy weaknesses. Imperial Guards Special Forces troopers replace some of their small arms with heavy weapons, to deal with hard targets.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Guards Strategic Bomber</name>
+		<desc><![CDATA[Strategic Bomber units are specialized units that utilize atmospheric-capable craft as their primary combat unit. This particular unit is designed, primarily, to engage enemy units on the ground. Advanced bombers use energy cluster bombs and high yield air-to-surface missiles to eliminate their targets with extreme prejudice. Imperial Guards Strategic Bombers include only the heaviest of bombers, replacing capability in a tactical support role with heavy aerial bombardment.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Air Force</name>
+		<desc><![CDATA[Air Force units are specialized units that utilize atmospheric-capable fighter craft as their primary combat unit. This particular unit is designed, primarily, to engage enemy units in the air (enemy Atmospheric Fighter &amp; Bomber units). It is not capable of engaging orbital targets. Imperial Marines Air Force pilots prefer fighter-bombers to pure interceptors, and excel at providing close air support to friendly troops on the ground.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="100000">Steel</component>
+			<component quantity="100000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Armor</name>
+		<desc><![CDATA[Armor units are equipped primarily with armored fighting vehicles although they usually possess an infantry component as well. Armored cars and other mechanized vehicles supplement the light and medium tanks that make up the bulk of this unit's firepower. Imperial Marines Armor units often replace the heavier tanks with armor that is more mobile and capable under adverse terrain conditions.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="150000">Steel</component>
+			<component quantity="50000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Heavy Infantry</name>
+		<desc><![CDATA[Heavy Infantry Divisions are similar to Infantry Divisions but they are generally equipped with heavier weapons to handle enemy air &amp; hard targets better. Imperial Marines Heavy Infantry are often used to spearhead landings and establish beachheads.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Infantry</name>
+		<desc><![CDATA[Infantry Divisions are full-fledged military units, trained and equipped for combat. Individual soldiers, outfitted with all manner of small arms and heavy personal weapons, make up the bulk of these forces. Imperial Marines specialize in fighting under adverse terrain conditions.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Raiders</name>
+		<desc><![CDATA[Imperial Marines Raiders are heavy Marine Infantry troopers given the finest possible training and equipped with all manner of special gear. They specialize in assaults on heavily defended enemy targets, and though they can use stealth to achieve their objectives, massive firepower delivered in a highly coordinated attack is more their style.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Soldiers</name>
+		<desc><![CDATA[Imperial Marines Soldiers are personnel trained and readied for duty in the Imperial Marines.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+		</components>
+	</item>
+	<item>
+		<name>Imperial Marines Special Forces</name>
+		<desc><![CDATA[Special Forces are small units designed, primarily, for special operations. They are fully capable of fighting alongside regular military units but their true value is found when used to exploit enemy weaknesses, conducting special operations and going on deep penetration missions. Marine Special Forces troopers excel at operations in difficult terrain and are considered the elite of the Marines.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Industrial Chemicals</name>
+		<desc><![CDATA[Any of a variety of chemicals, compounds and byproducts used to increase industrial productivity. Industrial Chemicals are often refined and used as an intermediate resource for the production of more complex items.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Intelligence</name>
+		<desc><![CDATA[Intelligence units specialize in intelligence gathering, codebreaking, and ferreting out enemy troop movements.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Electronics</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Interceptor</name>
+		<desc><![CDATA[Interceptors are low technology space fighters that are designed primarily to engage enemy fighters and some types of ordnance. Their primary weapons include short ranged missiles and an onboard laser. It is not particularly effective as an anti-ship platform.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="100">Steel</component>
+			<component quantity="200">Electronics</component>
+			<component quantity="100">Processed Radioactives</component>
+			<component quantity="100">Fuel</component>
+		</components>
+	</item>
+	<item>
+		<name>Iron</name>
+		<desc><![CDATA[Iron is a generic term that includes all common ferrous metal ores valued for their industrial applications. Iron, nickel, tungsten and molybdenum are typical components of this fantastically important resource. Iron is most often refined into Steel, which is used in a plethora of complex items. Maintaining a steady supply of Iron is of paramount importance for your Empire's well-being.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Irritant Agents Chemical Munitions</name>
+		<desc><![CDATA[Chemical munitions are used in ground combat to suffocate enemy troops or cause them direct physical harm on contact. Soldiers with no defense against such weapons can be greatly injured if exposed to their effects under combat conditions.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Jinn Crystals</name>
+		<desc><![CDATA[Jinn Crystals are dull blue crystalline rocks in rough form, becoming a translucent bluish crystal of incredible beauty once refined and polished. The crystal is usually found in underground caverns in small, naturally-formed deposits. The perfect crystals are required as a focusing device in the production of a variety of advanced pieces of technology of Telepathic nature. The slightest trace of impurities will ruin the crystal's use as a focusing lens, rendering it useless. Jinn Crystal deposits are incredibly rare, but fortunately 1 ton can be created by purifying 10 tons of Raw Resources.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Light Beam Laser</name>
+		<desc><![CDATA[The Light Beam Laser is a first generation directed-energy weapon. It is a self-contained 200-ton unit that includes not only the weapon mount itself but all support equipment for the system and all standard facilities for the weapon crew.]]></desc>
+		<weight>200</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="200">Gemstones</component>
+			<component quantity="200">Gaseous Elements</component>
+			<component quantity="200">Refined Crystals</component>
+			<component quantity="200">Steel</component>
+			<component quantity="200">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Light Fanatics</name>
+		<desc><![CDATA[Light Fanatics are religious zealots who derive power from their deity, focusing and channeling divine wrath as a weapon on the battlefield. Light Fanatics are an Infantry-class Division, carrying antipersonnel weapons along with other equipment designed to augment their role as light shock troops.]]></desc>
+		<weight>50000</weight>
+        <category>Misc</category>
+		<components>
+			<component quantity="1">Fanatical Population</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Light Magnetic Grapple</name>
+		<desc><![CDATA[Magnetic Grapples are short-ranged "hooks" created ethereally by a magnetic field. The idea is to attach the grapple to something with a ferrous composition and depending on the field polarity, push or pull the object. This effect can be useful as an effective weapon as accuracy is extremely high, and occasionally has other uses in general space exploration.]]></desc>
+		<weight>200</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="400">Electronics</component>
+			<component quantity="200">Rare Elements</component>
+			<component quantity="200">Steel</component>
+			<component quantity="200">Synthetic Materials</component>
+		</components>
+	</item>
+	<item>
+		<name>Light Metals</name>
+		<desc><![CDATA[Light Metals is a generic term that encompasses common non-ferrous metal ores valued for their industrial applications. Light Metals includes such metals as copper, tin, lead, mercury and zinc.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Light Stun Beam</name>
+		<desc><![CDATA[Stun Beams create a sonic wave that can shatter armor and smash enemy equipment with severe vibrations. In vacuum, the sonic waves are cleverly encased in a short-duration magnetic shell that stretches to reach an enemy ship. The end of the beam that strikes the target is opened, allowing all of the sonic energy to be dispersed against its outer hull. In atmosphere and the usual planetary magnetic field, the containment field is relaxed somewhat to increase accuracy. One interesting facet of this weapon is its effect on lifeforms, often stunning them into a short catatonia.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="200">Steel</component>
+			<component quantity="300">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Light Thermal Lance</name>
+		<desc><![CDATA[Thermal Lance technology involves the discharging of a thin beam of plasma encased in a tight magnetic field. Effective range is poor but since the plasma lance focuses its output on a small target area, burn-throughs on hits can be scored much more easily than with most other weapons. One second everything is fine, and then a superheated stream of plasma burns a neat hole straight through the outer skin of the targeted ship, which can can be most disconcerting for the enemy crewmembers stationed nearby….]]></desc>
+		<weight>200</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="200">Shenn Stones</component>
+			<component quantity="600">Steel</component>
+			<component quantity="200">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Longbow</name>
+		<desc><![CDATA[A primitive short-range artillery weapon comprised of a flexible stick pulled tight with a string. Projectiles receive propellent by pulling back on the string and releasing. Occasionally, an enemy can be skewered by the arrows that spring forth from this weapon. This is a ground combat technology item and cannot be produced directly; instead, possessing this technology affects the capabilities of your existing ground forces.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Lumber</name>
+		<desc><![CDATA[Raw wood and other forest products in an unfinished form. Lumber is refined into Timber for use in the manufacture of more complex items.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Luxury Goods</name>
+		<desc><![CDATA[Luxury Goods includes ornaments such as necklaces, bracelets or rings, often made from precious metals set with rare gems, along with perfumes and various works of art. Exceedingly rare jewelry, artwork and other luxuries, usually created by artists who are masters in their fields, represent the more desirable forms of Luxury Goods.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="2">Precious Metals</component>
+			<component quantity="1">Gemstones</component>
+		</components>
+	</item>
+	<item>
+		<name>M75 High Explosive Grenade</name>
+		<desc><![CDATA[The M75 is a small explosive device often thrown by hand into enemy positions. It has minimal range but can pack quite a punch. This can be quite handy in the right terrain and under conditions when individual troopers need to call upon some extra firepower to supplement their own small-arms weaponry. Essentially, if you don't want to poke an eyestalk up to check out where an enemy soldier is hiding, chuck a bomb at him and then take a peek.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>M82 Mortar</name>
+		<desc><![CDATA[A mortar is a short-barreled weapon used to fire relatively slow-moving projectiles in high-angle trajectories. An explosive shell is dropped into the tube's muzzle, and a firing pin mounted in the tube's base ignited the shell's rocket propellant. Lightweight and simple to operate, their portability and low cost have made them a favored weapon in guerrilla warfare.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Meat</name>
+		<desc><![CDATA[Meat is a generic term that includes animal meats, animal fats, dairy products such as milks and cheeses, eggs, furs and leather.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Medical</name>
+		<desc><![CDATA[Medical units include field medics and physicians operating out of mobile army hospitals to tend to the wounded under combat conditions.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Pharmaceuticals</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Militia</name>
+		<desc><![CDATA[Militia units are derived from the local populace and are most often comprised of police and other paramilitary personnel. Though they do not receive the training needed to fight effectively in wide-open battlefields against hardened veterans, they know their terrain very well and can be quite fierce if pressed. This unit is strongest when placed in familiar terrain and given ample opportunity to defend against enemy attacks.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Colonists</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Mineral Fertilizers</name>
+		<desc><![CDATA[Phosphates, nitrates, pyrites and potash make up Mineral Fertilizers, which are valued for some industrial applications but are most often used in agriculture.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Mk I Computer System</name>
+		<desc><![CDATA[Computers are required for a wide variety of tasks on a starship, and increase a vessel's capabilities in many ways. They are generally associated with command-and-control tasks along with battle comp duties. All important circuits are heavily shielded against electromagnetic interference and have triple redundancy. The computer maintains a huge ships' library and is used for navigation, data analysis and routine systems monitoring. In combat, it is used for a multitude of tasks including weapons targeting, target tracking, evasive maneuvers, ECM, ECCM, IFF and weapons fire control. Manual backup systems and overrides are provided for use in emergency situations and the main computer is enclosed in a heavily armored compartment to provide additional protection and security. It is pointless to install large number of computers on a ship that has little else, but it is a good idea to give your warships at least one high quality Computer System so that it can function at maximum efficiency. Though the Computer Systems sounds like a tremendously important piece of equipment on your warships, it is more of a modifier than a base--you still need to have high quality components such as weapons, sensors, shields, armor and so forth to make your warship worth anything in battle. The Computer System simply helps the other items achieve their maximum potential under stressful situations.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="500">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Mk I Jump Survey Sensor</name>
+		<desc><![CDATA[Jump Survey Sensors are used to probe the depths of Warp Points and determine the safest route through a warp tunnel for ships to traverse. It is not possible to enter a Warp Point without having successfully surveyed it first, making Jump Survey Sensors a critical piece of technology. More complex Warp Points are more difficult to survey; to overcome this problem, more Jump Survey Sensors can be installed on a ship, or (preferably) more advanced Jump Survey Sensors should be installed. Some Warp Points are so difficult to survey that many high tech Jump Survey Sensors along with highly skilled individuals experienced in exploration work may be required.]]></desc>
+		<weight>5000</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="20000">Electronics</component>
+			<component quantity="5000">Synthetic Materials</component>
+		</components>
+	</item>
+	<item>
+		<name>Mk I Nuclear Engine</name>
+		<desc><![CDATA[The Mk I Nuclear Engine is a first generation, nuclear-powered maneuver drive. It is a self-contained 100-ton unit, is self-sustaining and requires no external power source. To achieve superior maneuverability, simply add more engines to your design. Maneuverability aids in the ability of your ships to avoid certain types of enemy weapons, and provides additional Action Points for your ships to use during civilian operations.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="200">Steel</component>
+			<component quantity="100">Electronics</component>
+			<component quantity="100">Synthetic Materials</component>
+			<component quantity="100">Processed Radioactives</component>
+		</components>
+	</item>
+	<item>
+		<name>Mk I Nuclear Jump Drive</name>
+		<desc><![CDATA[The Mk I Nuclear Jump Drive is a first generation, nuclear-powered jump drive. It is a self-contained 100-ton unit, is self-sustaining and requires no external power source. To achieve superior jump drive output, simply add more jump drives to your design. Higher jump drive output levels in relation to their tonnage allows your ships to generate tighter warp bubbles when executing a warp movement. This allows more ships to materialize in enemy space during a warp point assault or any warp point maneuver that requires large numbers of ships to appear simultaneously.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="100">Steel</component>
+			<component quantity="100">Electronics</component>
+			<component quantity="100">Synthetic Materials</component>
+			<component quantity="100">Rare Elements</component>
+		</components>
+	</item>
+	<item>
+		<name>Mk I Short Range Sensor</name>
+		<desc><![CDATA[The Mk I Short Range Sensor is a first generation naval sensor system. It is a self-contained, multi-purpose unit capable of handling all routine navigational duties as well as serving as the primary target acquisition and fire control sensor system during combat. Accordingly, the system has a 360 ° field of vision and is equipped with the latest in sensor technology.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="100">Transaluminum</component>
+			<component quantity="400">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Naval</name>
+		<desc><![CDATA[Oceangoing naval vessels,. Both surface and subsea capable, can provide for a very effective means of interdicting enemy movements. Transport of friendly forces over large waterways is provided, along with heavy naval bombardment against selected targets.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Marines Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>NBC</name>
+		<desc><![CDATA[NBC Divisions are used to deploy tactical nuclear, biological and chemical weapons on the battlefield. Nuclear weapons designed for use in tactical situations are made available to your forces. Tactical nukes are developed for deployment from large artillery pieces and short range surface-to-surface and air-to-surface missiles. The use of tactical nuclear weapons can affect your own troops and might result in severe collateral damage to the world and any population groups present during the fighting. Early chemical agents are crude, caustic gases designed to be deployed in aerosol form or by crude chemical warheads. Advances in chemical weapon technology improve the effectiveness and safety of such devices. Chemical weapons can sometimes serve to hinder your own troops in certain combat situations so they should be used with great care. Biological weapons are similar to their chemical counterparts but are tailored for use against specific enemy genetic types. Chemical agents and tactical nuclear warheads (by their very nature) are broad spectrum, while biological weapons are more specific in their use.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Army Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="50000">Textiles</component>
+			<component quantity="100000">Pharmaceuticals</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Nuclear Bomb</name>
+		<desc><![CDATA[Nuclear Bombs are small atomic warheads powered by a small chunk of fissionable material. Uranium is the most commonly-used element, though most any Radioactive Element could be used with varying degrees of efficiency. Nuclear Bombs give off a tremendous amount of heat, radiation and pressure when detonated, but their area of effect is fairly small compared to superior Mass Destruction Devices.]]></desc>
+		<weight>10</weight>
+        <category>Misc</category>
+		<components>
+			<component quantity="10">Steel</component>
+			<component quantity="20">Electronics</component>
+			<component quantity="20">Processed Radioactives</component>
+		</components>
+	</item>
+	<item>
+		<name>Petrochemicals</name>
+		<desc><![CDATA[Petrochemicals include fuel sources such as butane, derived from petroleum or natural gas. Petrochemicals are valued in many industrial uses.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Petroleum</name>
+		<desc><![CDATA[Though normally the term Petroleum is a more raw source of energy than Petrochemicals, here it is used to represent basic Petrochemicals into a more refined form. Petroleum is used as an intermediate product for the production of other, more complex, items.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Petrochemicals</component>
+		</components>
+	</item>
+	<item>
+		<name>Pharmaceuticals</name>
+		<desc><![CDATA[Pharmaceuticals includes drugs such as narcotics, medications and vaccines used to treat medical conditions.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Rare Herbs &amp; Spices</component>
+		</components>
+	</item>
+	<item>
+		<name>Plantfoods</name>
+		<desc><![CDATA[Plantfoods include various composts, manure, mulches, fish and bone meal, humus and other materials used to fertilize soils for the purpose of feeding advanced plant lifeforms.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Mineral Fertilizers</component>
+		</components>
+	</item>
+	<item>
+		<name>Population</name>
+		<desc><![CDATA[Population represents the citizens present in a Population Group. They are most often incorporated into the day-to-day operations of the Empire by being employed at an Installation. The exact nature of each Population unit depends on the Empire it is from; for instance, a basic Human citizen possesses vastly different characteristics than an 8-foot tall Winged Reptile.]]></desc>
+		<weight>50000</weight>
+        <category>Misc</category>
+		<components>
+		</components>
+	</item>
+	<item>
+		<name>Power</name>
+		<desc><![CDATA[Power is used to supply the energy needs of various Installations. Power is generated by various Power Plant Installations that consume resources during operation. Coal Fired Power Plants are crude, polluting Installations that consume Coal to generate Power. More advanced Power Plants are more efficient in their operation.]]></desc>
+		<weight>1</weight>
+        <category>Misc</category>
+		<components>
+		</components>
+	</item>
+	<item>
+		<name>Precious Metals</name>
+		<desc><![CDATA[Rare metals prized for their industrial applications or used for coinage. Gold, silver and platinum are the most commonly sought-after Precious Metals.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Primitive Artwork</name>
+		<desc><![CDATA[Cave drawings, simple sculptures, crude painting, handmade jewelry and other basic art forms are examples of Primitive Artwork. They can be quite rare and beautiful if preserved properly, and are often just as valuable as more modern luxury goods.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Gaseous Elements</component>
+		</components>
+	</item>
+	<item>
+		<name>Processed Radioactives</name>
+		<desc><![CDATA[Unstable elements with atomic numbers greater than 103, such as hahnium, meitnerium and hassium, along with refined or otherwise unstable forms of uranium and plutonium are considered Processed Radioactives.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Radioactive Elements</component>
+		</components>
+	</item>
+	<item>
+		<name>Radioactive Elements</name>
+		<desc><![CDATA[The entire series of group IIIb elements (the actinide series), including actinium, thorium, protactinium, uranium, neptunium, plutonium, americium, curium, berkelium, californium, einsteinium, fermium, mendelevium, nobelium and lawrencium. Uranium through lawrencium are grouped together to form the transuranium elements. Radioactives are valued for all manner of industrial applications and as the basis for some energy sources.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Rare Elements</name>
+		<desc><![CDATA[Unusual minerals such as bastnasite, cerite, euxenite, gadolinite, and all elements of the lanthanide series (Lanthanum, Cerium, Praseodymium and so forth through Lutium). Often used in such applications as the making of ceramic glazes, glassmaking, glass-polishing abrasives, catalysts for petroleum refining, projection-tube phosphors and laser construction among other things.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Rare Herbs &amp; Spices</name>
+		<desc><![CDATA[Uncommon herbs, spices, pungent or aromatic plant substances and poisonous plants. Valued for medicinal and recreational purposes.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Raw Resources</name>
+		<desc><![CDATA[Raw Resources is a generic term that encompasses a bit of numerous other resources available to your Empire. Raw Resources can be extracted from any planet and then converted, at exceedingly poor efficiency, into other more useful resources. Raw Resources exist as a countermeasure to safeguard your Empire from running completely dry of a particular resource type, and should not be relied upon once you have the capability to directly mine the useful resources. It is possible to survive entirely upon Raw Resources converted into other base resource types, but it is inefficient.]]></desc>
+		<weight>1</weight>
+        <category>Misc</category>
+		<components>
+		</components>
+	</item>
+	<item>
+		<name>Recoilless Rifle</name>
+		<desc><![CDATA[A Recoilless Rifle is a lightweight portable gun with a rifled barrel. Such weapons do not have the sophisticated recoil system of conventional artillery, but offset recoil by allowing some of the propellant gases to escape through a nozzle at the back of the gun. Recoilless Rifles are used primarily for short-range antitank defense when the barrel can be pointed directly at the target. This limits the exposure of the Recoilless Rifle crew and minimizes detection of the exhaust gases that escape from the tail end of the weapon.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Refined Crystals</name>
+		<desc><![CDATA[Natural Crystals converted into more advanced forms which are generally more useful in industrial applications or weapons development than when in their more primitive raw state.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Crystals</component>
+		</components>
+	</item>
+	<item>
+		<name>Reflective Armor Coating</name>
+		<desc><![CDATA[Reflective Armor Coating is applied to naval units as a defensive measure against Coherent Beam class weapons. Reflective Armor Coating does not require that the unit have armor installed, as it can be layered over standard bulkheads, girders, armor or whatever else comprises the exterior of a ship.]]></desc>
+		<weight>1</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="5">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Security</name>
+		<desc><![CDATA[Security Brigades are trained and equipped to handle civilian unrest (stability problems) and to provide overall security to population groups. Security units have military training and equipment and can fight with limited effectiveness in a ground combat. They provide for an excellent police response force in security breach situations.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Semiautomatic Pistol</name>
+		<desc><![CDATA[Semiautomatic Pistols are crude slugthrowers that can eject several low velocity projectiles in rapid order. They have a small magazine but make good personal weapons in close quarters.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Shenn Stones</name>
+		<desc><![CDATA[Shenn Stones are dull red crystalline rocks in rough form, becoming a translucent reddish crystal of incredible beauty once refined and polished. The crystal is usually found in underground caverns in small, naturally-formed deposits. The perfect crystals are required as a focusing device in the production of a variety of advanced pieces of technology. The slightest trace of impurities will ruin the crystal's use as a focusing lens, rendering it useless.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Shotgun</name>
+		<desc><![CDATA[A Shotgun is a smooth-bore firearm that fires a charge of small, round pellets known as shot. Early models have barrels either side by side or over-and-under, and are termed double-barreled shotguns. Shotguns can only fire twice before requiring the replacement of their explosive shells. They are also short-ranged and inaccurate, but are extremely easy to use and can blow a large hole in any alien invader who happens to get too close. Shotguns are popular among troopers for their area-effect firepower at close range.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Smoke Projector</name>
+		<desc><![CDATA[Smoke Projectors are used to eject canisters that explode and give off a tremendous amount of smoke a few seconds after being discharged. The smoke is often laced with tiny metallic elements to counter enemy sensor systems. Smoke Projectors can be affixed to mobile units such as Armored Cars, or carried and activated by hand. Laying smoke in battle can be a very effective way to obscure friendly troop movements.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Sneak Suit</name>
+		<desc><![CDATA[Sneak Suits are used by infiltrators to increase their camouflage capabilities and increase their chances of slipping past enemy sentries. This is a good way to counter enemy security personnel and make raids behind the front lines.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Space Defense</name>
+		<desc><![CDATA[Space Defense units are equipped with long range antiballistic missile systems which are used to pick off ordnance fired by enemy units in orbit. Shields and other unconventional systems are used to provide for a protective umbrella against nonballistic weaponry. This unit also retains a reasonable capability against enemy atmospheric fighters and bombers.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="150000">Weapons</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Spear</name>
+		<desc><![CDATA[A crude but effective melee weapon, often little more than a long stick with a fire-sharpened end, used to skewer one's opponents in hand-to-hand combat. Spears can be thrown by hand (or tentacle, or whatever other appendage you might have handy), but with insufficient range to consider them as artillery weapons. This is a ground combat technology item and cannot be produced directly; instead, possessing this technology affects the capabilities of your existing ground forces.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Special Religious</name>
+		<desc><![CDATA[Special Religious Divisions are composed of unique personnel dedicated solely to enforcing the will of their chosen deity. These units cannot be constructed, but instead are granted as a result of certain missions, exploration results or other means. They are very powerful but extremely rare. Soldiers in these divisions directly channel the wrath of their deity into holy energy on the battlefield.]]></desc>
+		<weight>50000</weight>
+        <category>Misc</category>
+		<components>
+		</components>
+	</item>
+	<item>
+		<name>Special Talent</name>
+		<desc><![CDATA[Special Talents are individuals who display unusual mental powers that can be harnessed for use under battle conditions. This is a very small Division, consisting of the Special Talents themselves along with an attached security force assigned solely to protect the Talents. Having Special Talents along generally provides for an increase in intelligence-gathering capabilities.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Imperial Guards Soldiers</component>
+			<component quantity="50000">Steel</component>
+			<component quantity="100000">Black Market Goods</component>
+			<component quantity="50000">Luxury Goods</component>
+		</components>
+	</item>
+	<item>
+		<name>Standard Hull Plate</name>
+		<desc><![CDATA[Standard Hull Plate armor is applied to naval units by the ton to achieve varying levels of armor protection. The amount of armor protection achieved by a given unit will vary depend on the amount of armor in the ship design and the tonnage of the ship in question. Armor makes a ship more difficult to destroy, adding more damage-absorbing capability than the armor tonnage would otherwise represent. Armor tonnage is the best way to make your ships more sturdy in battle, should enemy weapons breach the shields and other defensive systems present on the ship in question.]]></desc>
+		<weight>1</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="5">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Steel</name>
+		<desc><![CDATA[Iron refined into a more pure form. Steel is much more useful for advanced industrial needs than raw Iron, and is used in the construction of a bewildering array of items crucial to the survival of your Empire. The reason that you cannot have enough Iron is that you really cannot have enough Steel….]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Iron</component>
+		</components>
+	</item>
+	<item>
+		<name>Survey Lander</name>
+		<desc><![CDATA[Survey Landers allow exploration teams to flit from point to point on an alien world while providing advanced scientific instrumentation to best facilitate their work.]]></desc>
+		<weight>600</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="2400">Steel</component>
+			<component quantity="600">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Sword</name>
+		<desc><![CDATA[A crude but effective melee weapon, constructed by sharpening a long piece of metal and attaching a handle. Swords are made in a variety of ways, with some being wielded two-handed (or two-tentacled, or whatever) and others being curved or serrated to suit the style of the soldier in question. Though poking at one's enemies can be accomplished with this weapon, it is best suited when utilized in a slashing manner. This is a ground combat technology item and cannot be produced directly; instead, possessing this technology affects the capabilities of your existing ground forces.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Synthetic Materials</name>
+		<desc><![CDATA[Artificially produced isotopes, often radioactive, and synthetic fibers and materials such as thermoplastic materials, polyurethane, epoxy resins and various types of plastics. The uses for such materials are nearly endless, as they are generally strong, light and durable.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="1">Gaseous Elements</component>
+			<component quantity="1">Petrochemicals</component>
+			<component quantity="1">Industrial Chemicals</component>
+		</components>
+	</item>
+	<item>
+		<name>System Beacon</name>
+		<desc><![CDATA[System Beacons are used to claim star systems in the name of your Emperor. If you have no Emperor, one of your highest-ranking leaders will claim imperial leadership in the interim. System Beacons decay over the period of twenty turns as a result of cosmic radiation, micrometeorite hits and general system failure and cease to function after that time. Some system anomalies such as solar flare zones could speed up this process. The activation date of the Beacon is broadcast along with the Beacon message. Replacing one of your own Beacons will leave the original activation date intact while restarting the decay timer. Other empires can place their own Beacons anywhere they like, even in star systems you have already claimed. You cannot destroy your own system beacons, but alien ones can be destroyed by moving any fleet into their location with Rules of Engagement settings of X-Ray, Yankee or Zulu.]]></desc>
+		<weight>100</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="400">Electronics</component>
+			<component quantity="100">Transaluminum</component>
+		</components>
+	</item>
+	<item>
+		<name>Textiles</name>
+		<desc><![CDATA[Fabrics made by weaving or knitting together natural fibers as a material base. Cloth, linen, silk, embroidered tapestries and woolen textiles are included as Textiles. Fabrics created by weaving or knitting together synthetic fibers as a material base are considered polytextiles and are included here along with artificially created fabrics such as polyester, microfiber and polyacrylonitrile fibers.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Fibers</component>
+		</components>
+	</item>
+	<item>
+		<name>Timber</name>
+		<desc><![CDATA[Raw timber refined into final forms such as cut and dressed timber, or wood processed with various chemicals to be moisture or heat resistant. Timber is an important component in the manufacture of Construction Materials.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Lumber</component>
+		</components>
+	</item>
+	<item>
+		<name>Transaluminum</name>
+		<desc><![CDATA[Aluminum, like most other elements, was formed during the birth of most solar systems through successive collisions of hydrogen atoms under conditions of high temperatures and pressure, and is an extremely common metal. Because of its affinity to oxygen, aluminum is found most often in the form of its compounds, such as alumina. Transaluminum is a technologically advanced form of aluminum that is both stronger and more flexible than its raw counterpart. It is used as a key ingredient in several other important items.]]></desc>
+		<weight>1</weight>
+        <category>Complex Material</category>
+		<components>
+			<component quantity="3">Light Metals</component>
+		</components>
+	</item>
+	<item>
+		<name>Transport</name>
+		<desc><![CDATA[Surface, air and naval transport of supplies plays an important role in any battle, as poor logistics can spell doom for even the finest of ground forces. All manner of trucks, cargo ships and transport aircraft are used to move food, supplies and ammunition to needed areas on the battlefield.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Troopers</component>
+			<component quantity="150000">Steel</component>
+			<component quantity="50000">Fuel</component>
+			<component quantity="50000">Food Concentrates</component>
+		</components>
+	</item>
+	<item>
+		<name>Tritantalum</name>
+		<desc><![CDATA[Tritantalum is a dull grey rock that otherwise does not appear to have much value. However, when smashed and combined with certain exceedingly powerful acids, a potent powder is produced that greatly enhances an individual's telekinetic abilities. When properly refined, this powder is often used in the construction of telekinetically-based mass destruction devices. Though Tritantalum deposits are exceedingly rare, 1 ton of Tritantalum can be obtained by refining 10 tons of Raw Resources.]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Troop Berthing</name>
+		<desc><![CDATA[Troop Berthings include sleeping quarters, kitchens, meeting halls, weapon racks, armories and general residential quarters for a single Division to make possible a shipboard voyage to another planet.]]></desc>
+		<weight>10000</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="50000">Steel</component>
+		</components>
+	</item>
+	<item>
+		<name>Troop Shuttle</name>
+		<desc><![CDATA[Troop Shuttles are used to transport ground forces onto worlds where landing a starship would be inadvisable. Such locations represent extremely rare occurrences and Troop Shuttles should therefore only be constructed on special vessels designed for rare or unusually hazardous situations. They are not necessary for standard troop delivery duties. Troop Shuttles are heavily armored and can make high-G landings under fire, but transporting ground forces to a planetary inside a starship, in Troop Berthings, is a far safer way to go (not to mention being much more comfortable for the soldiers involved).]]></desc>
+		<weight>600</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="2400">Steel</component>
+			<component quantity="600">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Troopers</name>
+		<desc><![CDATA[Troopers are trained personnel being prepared for military duty. They are created from Population and are an intermediate step in the production of Imperial Army Infantry Soldiers, Imperial Guards Soldiers or Imperial Marines Soldiers. They can also be used as a direct component of other ground forces such as Security, Intelligence or ECK units.]]></desc>
+		<weight>50000</weight>
+        <category>Army Unit</category>
+		<components>
+			<component quantity="1">Colonists</component>
+		</components>
+	</item>
+	<item>
+		<name>Truck</name>
+		<desc><![CDATA[Trucks provide basic wheeled transport utility to a ground force. They are not particularly well suited for travel in difficult terrain, but are quite useful when logistical transport needs are otherwise unmet.]]></desc>
+        <category>Technology</category>
+	</item>
+	<item>
+		<name>Type A Defense Screen</name>
+		<desc><![CDATA[The Type A Defense Screen is a first-generation screen. It is a self-contained 1,000-ton unit that generates a screening field that reduces the damage potential of weapons that rely upon sonic vibrations to inflict damage. A screen cannot be "knocked down" and will remain in operation as long as it is receiving power, though ship damage will, of course, affect screen effectiveness. To increase screening power, install more Defense Screens.]]></desc>
+		<weight>1000</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="1000">Transaluminum</component>
+			<component quantity="2000">Electronics</component>
+			<component quantity="1000">Synthetic Materials</component>
+			<component quantity="1000">Rare Elements</component>
+		</components>
+	</item>
+	<item>
+		<name>Type A Science Lab</name>
+		<desc><![CDATA[Science Laboratories give ships advanced onboard scientific instrumentation, useful for studying stars and planetary bodies in detail. They are used in conjunction with landing teams or on their own. Astronomical gear such as high powered telescopes, telemetry and other measuring devices along with a wide array of biological, earth science, space science and other gear are also included in the package.]]></desc>
+		<weight>1000</weight>
+        <category>Ship Component</category>
+		<components>
+			<component quantity="1000">Transaluminum</component>
+			<component quantity="4000">Electronics</component>
+		</components>
+	</item>
+	<item>
+		<name>Water</name>
+		<desc><![CDATA[Water as an item includes primarily H2-0, but it also includes many other gases in liquid or solid form. It is most often valued for industrial and agricultural applications, and is typically transported in solid form (ice).]]></desc>
+		<weight>1</weight>
+        <category>Refined Resource</category>
+		<components>
+			<component quantity="10">Raw Resources</component>
+		</components>
+	</item>
+	<item>
+		<name>Weapons</name>
+		<desc><![CDATA[Weapons includes all manner of small arms, grenades, mortars, heavy artillery, battle armor, missile launchers and high explosives. Such items are generally considered contraband on most worlds, though some political systems might not think anything of having large quantities of laser rifles or even mobile tactical guided missile launchers shipped through their port facilities.]]></desc>
+		<weight>1</weight>
+        <category>Misc</category>
+		<components>
+			<component quantity="2">Iron</component>
+			<component quantity="1">Light Metals</component>
+		</components>
+	</item>
+</items>
