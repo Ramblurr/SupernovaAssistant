@@ -25,12 +25,11 @@ public:
     void setMissionClass( const QString &missionClass) { m_class = missionClass; }
     void addComponent(const QString &item, quint64 quantity);
 
-    bool saveDesign( const QString &empireId );
-    bool deleteDesign( const QString &empireId );
+    bool saveDesign();
+    bool deleteDesign();
 
-    static QList<ShipDesign> getDesigns(  const QString &empireId  );
-    static QSqlDatabase getDb( const QString &empireId );
-    static bool designExists( const QString &name, const QString &empireId  );
+    static QList<ShipDesign> getDesigns();
+    static bool designExists( const QString &name );
 
 private:
     QString m_name;

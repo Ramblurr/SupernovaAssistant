@@ -211,7 +211,7 @@ void ShipDesigner::on_saveButton_clicked()
         QMessageBox::warning( 0, "Save Error", "Design name cannot be blank." );
         return;
     }
-    if( ShipDesign::designExists( name , m_empireId )  )
+    if( ShipDesign::designExists( name )  )
     {
         QMessageBox::warning( 0, "Save Error", "Design already exists. The name must be unique." );
         return;
@@ -230,7 +230,7 @@ void ShipDesigner::on_saveButton_clicked()
             design.addComponent( p.first.name(), p.second );
     }
 
-    bool ok = design.saveDesign( m_empireId );
+    bool ok = design.saveDesign();
     setupDesignsModel();
 
     m_currentDesign = design;
@@ -249,7 +249,7 @@ void ShipDesigner::setupDesignsModel()
 {
 //    if( m_designsModel )
 //        delete m_designsModel;
-    m_designs = ShipDesign::getDesigns( m_empireId );
+    m_designs = ShipDesign::getDesigns();
     m_designsModel = new ShipDesignsModel( m_designs, this );
     m_ui->designsCombo->setModel( m_designsModel );
     if ( m_designs.size() > 0 )
@@ -308,7 +308,7 @@ void ShipDesigner::on_deleteButton_clicked()
     if ( curr < 0 )
         return;
     ShipDesign des = m_ui->designsCombo->itemData( curr, ShipDesignsModel::ShipDesignRole ).value<ShipDesign>();
-    des.deleteDesign( m_empireId );
+    des.deleteDesign();
     setupDesignsModel();
 }
 

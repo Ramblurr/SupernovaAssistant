@@ -24,6 +24,8 @@ MainWindow::MainWindow( QWidget *parent )
 
 MainWindow::~MainWindow()
 {
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    db.close();
     delete ui;
 }
 void MainWindow::setupEmpiresModel()
@@ -102,8 +104,7 @@ void MainWindow::on_empireCombo_currentIndexChanged( int id )
     Empire emp = m_empiresModel->data( m_empiresModel->index( id, 0, QModelIndex() ), EmpiresModel::EmpireRole ).value<Empire>();
     if ( emp.name() == "" )
         return;
-    m_currEmpire = emp;
-    ui->empireName->setText( emp.name() );
+    emit ( currEmpireChangedSlot( emp ) );
 }
 
 void MainWindow::on_actionSelect_Empire_triggered()
@@ -116,4 +117,13 @@ void MainWindow::currEmpireChangedSlot( const Empire & emp )
 {
     m_currEmpire = emp;
     ui->empireName->setText( emp.name() );
+    QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
+    QDir dataLoc( dataDir );
+    dataLoc.cd( "SNAssistant" );
+    QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "CurrEmpire" );
+    QString dbPath = dataLoc.absolutePath() + QDir::separator() + "empire_" + m_currEmpire.id() + ".sql";
+    db.setDatabaseName( dbPath );
+    bool ok = db.open();
+    if( !ok );
+        qDebug() << "Failed opening DB at " << dbPath;
 }

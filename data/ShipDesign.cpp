@@ -28,21 +28,10 @@ void ShipDesign::addComponent( const QString &item, quint64 quantity )
     m_components.insert( item, quantity );
 }
 
-QSqlDatabase ShipDesign::getDb( const QString &empireId )
+bool ShipDesign::saveDesign()
 {
-    QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
-    QDir dataLoc( dataDir );
-    dataLoc.cd( "SNAssistant" );
-    QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE" );
-    QString dbPath = dataLoc.absolutePath() + QDir::separator() + "empire_" + empireId + ".sql";
-    db.setDatabaseName( dbPath );
-    return db;
-}
-
-bool ShipDesign::saveDesign( const QString &empireId )
-{
-    QSqlDatabase db = ShipDesign::getDb( empireId );
-    if ( db.open() )
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
     {
         QSqlQuery query( db );
         query.prepare( "INSERT INTO designs( dname, type, class )"
@@ -67,32 +56,30 @@ bool ShipDesign::saveDesign( const QString &empireId )
             if ( !query2.exec() )
                 qDebug() << query2.executedQuery()<< "\n error: " << query2.lastError();
         }
-        db.close();
     }
     else
         QMessageBox::critical( 0, "Database error", "Could not open the database" );
 
 }
 
-bool ShipDesign::deleteDesign( const QString &empireId )
+bool ShipDesign::deleteDesign()
 {
-    QSqlDatabase db = ShipDesign::getDb( empireId );
-    if ( db.open() )
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
     {
         QSqlQuery query( db );
         query.prepare( "DELETE FROM designs WHERE dname = :dname" );
         query.bindValue( ":dname", m_name );
         query.exec();
-        db.close();
     }
 
 }
 
-QList<ShipDesign> ShipDesign::getDesigns( const QString &empireId )
+QList<ShipDesign> ShipDesign::getDesigns()
 {
     QList<ShipDesign> list;
-    QSqlDatabase db = ShipDesign::getDb( empireId );
-    if ( db.open() )
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
     {
         QSqlQuery query( db );
         query.exec("SELECT * FROM designs");
@@ -120,15 +107,14 @@ QList<ShipDesign> ShipDesign::getDesigns( const QString &empireId )
             }
             list << des;
         }
-        db.close();
     }
     return list;
 }
 
-bool ShipDesign::designExists( const QString &name, const QString &empireId  )
+bool ShipDesign::designExists( const QString &name )
 {
-    QSqlDatabase db = ShipDesign::getDb( empireId );
-    if ( db.open() )
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
     {
         QSqlQuery query( db );
         query.exec("SELECT name FROM designs");
@@ -137,13 +123,9 @@ bool ShipDesign::designExists( const QString &name, const QString &empireId  )
         {
             QString stored_name = query.value( idxName ).toString();
             if( stored_name == name )
-            {
-                db.close();
                 return true;
-            }
         }
     }
-    db.close();
     return false;
 }
 
