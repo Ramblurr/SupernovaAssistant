@@ -125,6 +125,28 @@ QList<ShipDesign> ShipDesign::getDesigns( const QString &empireId )
     return list;
 }
 
+bool ShipDesign::designExists( const QString &name, const QString &empireId  )
+{
+    QSqlDatabase db = ShipDesign::getDb( empireId );
+    if ( db.open() )
+    {
+        QSqlQuery query( db );
+        query.exec("SELECT name FROM designs");
+        int idxName = query.record().indexOf( "dname" );
+        while ( query.next() )
+        {
+            QString stored_name = query.value( idxName ).toString();
+            if( stored_name == name )
+            {
+                db.close();
+                return true;
+            }
+        }
+    }
+    db.close();
+    return false;
+}
+
 ShipDesign& ShipDesign::operator=( const ShipDesign & other )
 {
     if ( this != &other )

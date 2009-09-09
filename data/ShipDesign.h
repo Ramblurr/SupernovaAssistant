@@ -29,7 +29,8 @@ public:
     bool deleteDesign( const QString &empireId );
 
     static QList<ShipDesign> getDesigns(  const QString &empireId  );
-    static QSqlDatabase getDb(   const QString &empireId );
+    static QSqlDatabase getDb( const QString &empireId );
+    static bool designExists( const QString &name, const QString &empireId  );
 
 private:
     QString m_name;
