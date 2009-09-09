@@ -15,6 +15,7 @@
 #include <QtCore/QList>
 #include <QEvent>
 #include <QKeyEvent>
+#include <QMessageBox>
 
 QList<SNItem>  ShipDesigner::m_components;// = new QList<SNItem>();
 
@@ -55,6 +56,13 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     connect( m_itemModel, SIGNAL( statsChanged( int, quint64 ) ), this, SLOT( statsChangedSlot( int, quint64 ) ) );
 
     setupDesignsModel();
+
+    /* you cannot adjust the stretch factor of layouts in
+     * a splitter. So we set proportional sizes here*/
+    QList<int> sizes;
+    sizes.push_back(800);
+    sizes.push_back(200);
+    m_ui->splitter->setSizes(sizes);
 }
 
 ShipDesigner::~ShipDesigner()
@@ -196,9 +204,18 @@ bool ShipDesigner::loadItems()
 
 void ShipDesigner::on_saveButton_clicked()
 {
+    // TODO UPDATE design on save
     QString name = m_ui->designNameEdit->text().trimmed();
-    if ( name.length() == 0 )
+    if ( name.length() == 0)
+    {
+        QMessageBox::warning( 0, "Save Error", "Design name cannot be blank." );
         return;
+    }
+    if( ShipDesign::designExists( name , m_empireId )  )
+    {
+        QMessageBox::warning( 0, "Save Error", "Design already exists. The name must be unique." );
+        return;
+    }
     QString type = m_ui->typeCombo->currentText();
     QString mclass = m_ui->missionCombo->currentText().left( 1 );
     ShipDesign design( name, type, mclass );
