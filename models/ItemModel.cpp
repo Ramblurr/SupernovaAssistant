@@ -1,5 +1,6 @@
 #include "ItemModel.h"
 #include <QDebug>
+#include <QList>
 ItemModel::ItemModel( QObject *parent )
         : QAbstractTableModel( parent )
 {
@@ -14,7 +15,7 @@ int ItemModel::rowCount( const QModelIndex &parent ) const
 int ItemModel::columnCount( const QModelIndex &parent ) const
 {
     Q_UNUSED( parent );
-    return 2;
+    return 3;
 }
 
 QVariant ItemModel::data( const QModelIndex &index, int role ) const
@@ -32,6 +33,13 @@ QVariant ItemModel::data( const QModelIndex &index, int role ) const
             return  m_data[row].first.name();
         else if ( index.column() == 1 )
             return  QVariant::fromValue ( m_data[row].second );
+        else if ( index.column() == 2 ) {
+            QPair<int, int> p = totalItemsTonnage();
+            double tot_tons = p.second;
+            double item_tons = m_data[row].second*m_data[row].first.weight(); // Quantity * Tons
+            double percent = (item_tons/tot_tons)*100; // item_tonnage / total tonnage = percent tonnage
+            return QString::number(percent, 'f', 1) + "%";
+        }
     }
 
     if( role == ComponentRole )
@@ -58,8 +66,9 @@ QVariant ItemModel::headerData( int section, Qt::Orientation orientation, int ro
             return tr( "Item" );
 
         case 1:
-            return tr( "Quantity" );
-
+            return tr( "Amt" );
+        case 2:
+            return tr( "Percentage");
         default:
             return QVariant();
         }
@@ -132,7 +141,7 @@ Qt::ItemFlags ItemModel::flags( const QModelIndex &index ) const
     if ( !index.isValid() )
         return Qt::ItemIsEnabled;
 
-    if ( index.column() == 0 )
+    if ( index.column() == 0 || index.column() == 2 )
         return  Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     return  QAbstractItemModel::flags( index ) | Qt::ItemIsEditable;
 
@@ -194,4 +203,16 @@ void ItemModel::clear()
     m_hash.clear();
     m_data.clear();
     endRemoveRows();
+}
+
+QPair<int, int> ItemModel::totalItemsTonnage() const
+{
+    int tonnage = 0;
+    int total = 0;
+    for( int i = 0; i < m_data.size(); i++ )
+    {
+       total += m_data.at(i).second;
+       tonnage += m_data.at(i).first.weight()*m_data.at(i).second;
+    }
+    return QPair<int, int>(total, tonnage);
 }

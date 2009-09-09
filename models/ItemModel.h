@@ -28,11 +28,13 @@ class ItemModel : public QAbstractTableModel
 
      QList< QPair<SNItem, quint64> > getItems() const;
 
+     //! Returns a QPair<#items, tonnage> of the design represented in the model
+     QPair<int, int> totalItemsTonnage() const;
 signals:
     void componentsChanged( const SNItem &, quint64 diff );
     void statsChanged( int, quint64 );
 
- protected:
+ private:
     QMap< SNItem, quint64 > m_hash;
     QList< QPair<SNItem, quint64> > m_data;
 };
