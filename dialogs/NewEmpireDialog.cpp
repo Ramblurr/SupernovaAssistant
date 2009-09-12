@@ -12,6 +12,7 @@ NewEmpireDialog::NewEmpireDialog( QWidget *parent ) :
         m_ui( new Ui::NewEmpireDialog )
 {
     m_ui->setupUi( this );
+    m_ui->acceptButton->setEnabled( false );
 }
 
 NewEmpireDialog::~NewEmpireDialog()
@@ -33,6 +34,7 @@ void NewEmpireDialog::changeEvent( QEvent *e )
 
 void NewEmpireDialog::on_acceptButton_clicked()
 {
+
     QString id = m_ui->empireIDEdit->text().trimmed();
     QString name = m_ui->empireNameEdit->text().trimmed();
     QSettings settings( "SN", "SNAssistant" );
@@ -55,26 +57,7 @@ void NewEmpireDialog::on_acceptButton_clicked()
 
 void NewEmpireDialog::on_empireIDEdit_textEdited( QString text )
 {
-    QSettings settings( "SN", "SNAssistant" );
-    int empireCount = settings.value( "empireCount", -1 ).toInt();
-    for ( int i = 0; i <= empireCount; i++ )
-    {
-        Empire blank_emp();
-        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
-        if ( emp.name() == "" )
-            continue;
-        if ( emp.id() == text.trimmed() )
-        {
-            m_ui->errorLabel->setText( "Empire ID already exists" );
-            m_ui->acceptButton->setEnabled( false );
-            return;
-        }
-        else
-        {
-            m_ui->errorLabel->setText( "" );
-            m_ui->acceptButton->setEnabled( true );
-        }
-    }
+    m_ui->acceptButton->setEnabled( fieldsValidated() );
 }
 QStringList NewEmpireDialog::loadSchema( const QString &filename )
 {
@@ -139,4 +122,37 @@ bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
     }
     db.close();
     return false;
+}
+
+void NewEmpireDialog::on_empireNameEdit_textEdited(QString )
+{
+    m_ui->acceptButton->setEnabled( fieldsValidated() );
+}
+
+bool NewEmpireDialog::fieldsValidated()
+{
+    bool ok = true;
+    if( m_ui->empireNameEdit->text().trimmed().length() == 0 )
+        ok = false;
+    if( m_ui->empireIDEdit->text().trimmed().length() == 0 )
+        ok = false;
+
+    QSettings settings( "SN", "SNAssistant" );
+    int empireCount = settings.value( "empireCount", -1 ).toInt();
+    for ( int i = 0; i <= empireCount; i++ )
+    {
+        Empire blank_emp();
+        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
+        if ( emp.name() == "" )
+            continue;
+        if ( emp.id() == m_ui->empireIDEdit->text().trimmed() )
+        {
+            m_ui->errorLabel->setText( "Empire ID already exists" );
+            ok = false;
+        }
+        else
+            m_ui->errorLabel->setText( "" );
+    }
+
+    return ok;
 }

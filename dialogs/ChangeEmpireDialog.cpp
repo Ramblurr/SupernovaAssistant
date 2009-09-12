@@ -22,9 +22,8 @@ ChangeEmpireDialog::ChangeEmpireDialog(QWidget *parent) :
         if ( emp.name() == "" )
             continue;
         items << emp;
+        m_ui->empireCombo_3->addItem( emp.name(), emp );
     }
-    m_empiresModel = new EmpiresModel( items, this );
-    m_ui->empireCombo_3->setModel( m_empiresModel );
     
     connect(this, SIGNAL( currEmpireChanged( const Empire& ) ), parent, SLOT( currEmpireChangedSlot( const Empire & ) ) );
 }
@@ -48,7 +47,7 @@ void ChangeEmpireDialog::changeEvent(QEvent *e)
 void ChangeEmpireDialog::on_buttonBox_accepted()
 {
     int id = m_ui->empireCombo_3->currentIndex();
-    Empire emp = m_empiresModel->data( m_empiresModel->index( id, 0, QModelIndex() ), EmpiresModel::EmpireRole ).value<Empire>();
+    Empire emp = m_ui->empireCombo_3->itemData( id ).value<Empire>();
     if ( emp.name() == "" )
         return;
     emit( currEmpireChanged( emp ) );

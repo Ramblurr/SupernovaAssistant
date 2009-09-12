@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<supernova>
+    <categories>
+        <category name="Technology" />
+        <category name="Composite Material" />
+        <category name="Complex Material" />
+        <category name="Refined Material" />
+        <category name="Army Unit" />
+        <category name="Ship Component">
+            <category name="Armor" />
+            <category name="Shields" />
+            <category name="Weapon Systems" />
+            <category name="Engines" />
+            <category name="Transwarp Capable Drives" />
+            <category name="Jump Capable Drives" />
+            <category name="Bridge Systems" />
+            <category name="Defensive Systems" />
+            <category name="Jump Survey Sensors" />
+            <category name="Fuel" />
+        </category>
+    </categories>
+</supernova>

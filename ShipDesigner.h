@@ -21,9 +21,8 @@ class ShipDesigner : public QDialog {
 public:
     explicit ShipDesigner( QString empId, QWidget *parent = 0);
     virtual ~ShipDesigner();
-    static QList<SNItem> m_components;
 
-    static SNItem getItem( const QString &name );
+    SNItem getItem( const QString &name );
 
     QString empireId() const { return m_empireId; }
 
@@ -44,8 +43,8 @@ private:
     MaterialsModel *m_detailedModel;
     ComponentsModel *m_componentsModel;
     QMap<SNItem, quint64> m_materials;
+    QList<SNItem> m_components;
 
-    static bool loadItems();
     void setupDesignsModel();
 
 public slots:

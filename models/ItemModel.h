@@ -2,6 +2,7 @@
 #define ITEMMODEL_H
 #include "data/SNItem.h"
 #include <QAbstractTableModel>
+#include <QStringList>
 class ItemModel : public QAbstractTableModel
 {
      Q_OBJECT
@@ -18,7 +19,9 @@ class ItemModel : public QAbstractTableModel
      bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole);
      bool insertRows(int position, int rows, const QModelIndex &index=QModelIndex());
      bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
-
+     QStringList mimeTypes() const;
+     bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
+     Qt::DropActions supportedDropActions () const;
      bool appendData( const SNItem &name, quint64 quantity );
      bool appendOrAlterData( const SNItem &name, quint64 quantity );
 

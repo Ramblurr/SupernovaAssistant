@@ -3,8 +3,8 @@
 #include "ShipDesigner.h"
 #include "dialogs/NewEmpireDialog.h"
 #include "dialogs/ChangeEmpireDialog.h"
+#include "dialogs/ItemBrowser.h"
 #include "data/Empire.h"
-#include "models/EmpiresModel.h"
 
 #include <QDebug>
 #include <QDesktopServices>
@@ -14,7 +14,7 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow( QWidget *parent )
-        : QMainWindow( parent ), ui( new Ui::MainWindowClass ), m_empiresModel( 0 ), m_shipDesigner( 0 )
+        : QMainWindow( parent ), ui( new Ui::MainWindowClass ), m_shipDesigner( 0 ), m_itemBrowser(0)
 {
     ui->setupUi( this );
     setWindowTitle( tr( "Supernova Assistant" ) );
@@ -30,6 +30,7 @@ MainWindow::~MainWindow()
 }
 void MainWindow::setupEmpiresModel()
 {
+    ui->empireCombo->clear();
     QList<Empire> items;
     QSettings settings( "SN", "SNAssistant" );
     int empireCount = settings.value( "empireCount", -1 ).toInt();
@@ -40,16 +41,13 @@ void MainWindow::setupEmpiresModel()
         if ( emp.name() == "" )
             continue;
         items << emp;
+        ui->empireCombo->addItem( emp.name(), emp);
     }
-    if ( m_empiresModel )
-        delete m_empiresModel;
-    m_empiresModel = new EmpiresModel( items, this );
     if ( items.count() > 0 )
     {
         m_currEmpire = items.at( 0 );
         ui->empireName->setText( m_currEmpire.name() );
     }
-    ui->empireCombo->setModel( m_empiresModel );
 }
 
 bool MainWindow::checkDataPath()
@@ -68,9 +66,54 @@ void MainWindow::setupDatabase()
 {
 //    QSqlDatabase db = QSqlDatabase::addDatabase();
 }
-void MainWindow::on_shipDesignerButton_clicked()
+
+void MainWindow::on_actionCreate_an_Empire_triggered()
 {
-    qDebug() << "curr emp" << m_currEmpire.name();
+    if ( !checkDataPath() )
+        return;
+    NewEmpireDialog diag( this );
+    int res = diag.exec();
+    if ( res == QDialog::Accepted )
+        setupEmpiresModel();
+
+}
+void MainWindow::on_empireCombo_currentIndexChanged( int id )
+{
+    Empire emp = ui->empireCombo->itemData( id ).value<Empire>();
+    if ( emp.name() == "" )
+        return;
+    emit ( currEmpireChangedSlot( emp ) );
+}
+
+void MainWindow::on_actionSelect_Empire_triggered()
+{
+    ChangeEmpireDialog diag( this );
+    int res = diag.exec();
+}
+
+void MainWindow::currEmpireChangedSlot( const Empire & emp )
+{
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        db.close();
+    }
+    QSqlDatabase::removeDatabase("CurrEmpire");
+    m_currEmpire = emp;
+    ui->empireName->setText( emp.name() );
+    QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
+    QDir dataLoc( dataDir );
+    dataLoc.cd( "SNAssistant" );
+    db = QSqlDatabase::addDatabase( "QSQLITE", "CurrEmpire" );
+    QString dbPath = dataLoc.absolutePath() + QDir::separator() + "empire_" + m_currEmpire.id() + ".sql";
+    db.setDatabaseName( dbPath );
+    bool ok = db.open();
+    if( !ok )
+        qDebug() << "Failed opening DB at " << dbPath << db.lastError();
+}
+
+void MainWindow::on_actionShip_Designer_triggered()
+{
     if ( m_currEmpire.name() == "" )
     {
         QMessageBox::warning( 0, "No Empire Selected", "Please select an empire." );
@@ -89,41 +132,18 @@ void MainWindow::on_shipDesignerButton_clicked()
 
 }
 
-void MainWindow::on_actionCreate_an_Empire_triggered()
+void MainWindow::on_actionItem_Editor_triggered()
 {
-    if ( !checkDataPath() )
+    if ( m_currEmpire.name() == "" )
+    {
+        QMessageBox::warning( 0, "No Empire Selected", "Please select an empire." );
         return;
-    NewEmpireDialog diag( this );
-    int res = diag.exec();
-    if ( res == QDialog::Accepted )
-        setupEmpiresModel();
+    }
+    if( !m_itemBrowser )
+        m_itemBrowser = new ItemBrowser( this );
 
-}
-void MainWindow::on_empireCombo_currentIndexChanged( int id )
-{
-    Empire emp = m_empiresModel->data( m_empiresModel->index( id, 0, QModelIndex() ), EmpiresModel::EmpireRole ).value<Empire>();
-    if ( emp.name() == "" )
-        return;
-    emit ( currEmpireChangedSlot( emp ) );
-}
+    m_itemBrowser->show();
+    m_itemBrowser->raise();
+    m_itemBrowser->activateWindow();
 
-void MainWindow::on_actionSelect_Empire_triggered()
-{
-    ChangeEmpireDialog diag( this );
-    int res = diag.exec();
-}
-
-void MainWindow::currEmpireChangedSlot( const Empire & emp )
-{
-    m_currEmpire = emp;
-    ui->empireName->setText( emp.name() );
-    QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
-    QDir dataLoc( dataDir );
-    dataLoc.cd( "SNAssistant" );
-    QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE", "CurrEmpire" );
-    QString dbPath = dataLoc.absolutePath() + QDir::separator() + "empire_" + m_currEmpire.id() + ".sql";
-    db.setDatabaseName( dbPath );
-    bool ok = db.open();
-    if( !ok );
-        qDebug() << "Failed opening DB at " << dbPath;
 }

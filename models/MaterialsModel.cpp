@@ -25,7 +25,8 @@ void MaterialsModel::item_changed( const SNItem &item, quint64 diff )
     {
         it.next();
         quint64 comp_quantity = it.value() * diff;
-        SNItem material = ShipDesigner::getItem( it.key() );
+
+        SNItem material = SNItem::getItem( it.key() );
         if( m_hash.contains( material ) )
         {
             int row = m_hash[material];

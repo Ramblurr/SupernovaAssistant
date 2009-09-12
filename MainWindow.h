@@ -6,7 +6,7 @@
 #include <QtGui/QMainWindow>
 
 class ShipDesigner;
-class EmpiresModel;
+class ItemBrowser;
 
 namespace Ui
 {
@@ -25,9 +25,9 @@ public slots:
     void currEmpireChangedSlot( const Empire & );
 private:
     Ui::MainWindowClass *ui;
-    EmpiresModel *m_empiresModel;
     Empire m_currEmpire;
     ShipDesigner *m_shipDesigner;
+    ItemBrowser *m_itemBrowser;
 
     bool checkDataPath();
     void setupDatabase();
@@ -35,10 +35,11 @@ private:
 
 
 private slots:
+    void on_actionItem_Editor_triggered();
     void on_actionSelect_Empire_triggered();
     void on_empireCombo_currentIndexChanged( int );
     void on_actionCreate_an_Empire_triggered();
-    void on_shipDesignerButton_clicked();
+    void on_actionShip_Designer_triggered();
 };
 
 #endif // MAINWINDOW_H

@@ -1,6 +1,8 @@
 #include "ItemModel.h"
 #include <QDebug>
 #include <QList>
+#include <QMimeData>
+
 ItemModel::ItemModel( QObject *parent )
         : QAbstractTableModel( parent )
 {
@@ -139,12 +141,66 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
 Qt::ItemFlags ItemModel::flags( const QModelIndex &index ) const
 {
     if ( !index.isValid() )
-        return Qt::ItemIsEnabled;
+        return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
 
     if ( index.column() == 0 || index.column() == 2 )
-        return  Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    return  QAbstractItemModel::flags( index ) | Qt::ItemIsEditable;
+        return  Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDropEnabled;
+    return  QAbstractItemModel::flags( index ) | Qt::ItemIsEditable | Qt::ItemIsDropEnabled;
 
+}
+
+QStringList ItemModel::mimeTypes() const
+{
+    QStringList types;
+    types << "application/vnd.sn.item.list";
+    return types;
+}
+
+bool ItemModel::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent)
+{
+     if (action == Qt::IgnoreAction)
+         return true;
+
+     if (!data->hasFormat("application/vnd.sn.item.list"))
+         return false;
+
+     if (column > 0)
+         return false;
+
+     int beginRow;
+
+     if (row != -1)
+         beginRow = row;
+     else if (parent.isValid())
+         beginRow = parent.row();
+     else
+         beginRow = rowCount(QModelIndex());
+
+     QByteArray encodedData = data->data("application/vnd.sn.item.list");
+     QDataStream stream(&encodedData, QIODevice::ReadOnly);
+     QList<SNItem> items;
+     int rows = 0;
+     while (!stream.atEnd()) {
+         SNItem item;
+         stream >> item;
+         items << item;
+         ++rows;
+     }
+
+//     insertRows(beginRow, rows, QModelIndex());
+     foreach (SNItem item, items) {
+         appendData( item, 0 );
+//         QModelIndex idx = index(beginRow, 0, QModelIndex());
+//         setData(idx, text);
+//         beginRow++;
+     }
+
+     return true;
+}
+
+Qt::DropActions ItemModel::supportedDropActions() const
+{
+    return Qt::CopyAction | Qt::MoveAction;
 }
 
 QList< QPair<SNItem, quint64> > ItemModel::getItems() const

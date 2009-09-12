@@ -79,15 +79,26 @@ create unique index PIdx on pdata (
 );
 
 create table items (
-        iname           character(80) not null primary key,
-        size            integer not null,
-        text            varchar(16384) not null
+        iname            character(80) not null primary key,
+        category         character(80) not null,
+        subcategory      character(80),
+        size             integer not null,
+        desc             varchar(16384) not null,
+        structure        integer
 );
 
 create table itemcomp (
         iname           character(80) not null references items on delete cascade,
-        anz             integer not null,
+        quantity        integer not null,
         resource        character(80)
+);
+
+create table itemeffects (
+        iname           character(80) not null references items on delete cascade,
+        effect          character(80) not null,
+        value           integer not null,
+        prettyvalue     character(80) not null,
+        counter         character(80)
 );
 
 create table research (

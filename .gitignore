@@ -8,3 +8,4 @@ SNAssistant
 *.swp
 *.orig
 ui
+*.directory

@@ -4,5 +4,9 @@
         <file>item_desc_format.html</file>
         <file>icons/arrow-left.png</file>
         <file>supernova.sql</file>
+        <file>icons/plus.png</file>
+        <file>icons/reset.png</file>
+        <file>icons/minus.png</file>
+        <file>categories.xml</file>
     </qresource>
 </RCC>

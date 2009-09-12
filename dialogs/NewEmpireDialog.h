@@ -20,10 +20,12 @@ protected:
 private:
     Ui::NewEmpireDialog *m_ui;
 
+    bool fieldsValidated();
     bool setupNewDatabase( const QString &name, const QString &id );
     QStringList loadSchema( const QString &filename );
 
 private slots:
+    void on_empireNameEdit_textEdited(QString );
     void on_acceptButton_clicked();
     void on_empireIDEdit_textEdited(QString );
 };

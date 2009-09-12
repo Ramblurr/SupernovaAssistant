@@ -14,19 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="shipDesignerButton">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>290</y>
-      <width>139</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Ship Designer</string>
-    </property>
-   </widget>
    <widget class="QFrame" name="welcomeFrame">
     <property name="geometry">
      <rect>
@@ -143,8 +130,16 @@
     <addaction name="actionCreate_an_Empire"/>
     <addaction name="actionSelect_Empire"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionShip_Designer"/>
+    <addaction name="actionItem_Editor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEmpire"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -174,6 +169,16 @@
   <action name="actionSelect_Empire">
    <property name="text">
     <string>Change Empire</string>
+   </property>
+  </action>
+  <action name="actionShip_Designer">
+   <property name="text">
+    <string>Ship Designer</string>
+   </property>
+  </action>
+  <action name="actionItem_Editor">
+   <property name="text">
+    <string>Item Editor</string>
    </property>
   </action>
  </widget>

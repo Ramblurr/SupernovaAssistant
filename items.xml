@@ -5,6 +5,8 @@
 		<desc><![CDATA[The 10cm Autocannon is a relatively slow-firing weapon that ejects a large explosive projectile every few seconds. It is roughly the size of a modern 4" gun and can inflict severe damage when properly trained upon small targets.]]></desc>
 		<weight>100</weight>
                 <category>Ship Component</category>
+                <subcategory>Weapon Systems</subcategory>
+                <structure>1</structure>
 		<components>
 			<component quantity="400">Steel</component>
 			<component quantity="100">Electronics</component>

@@ -7,17 +7,17 @@
 #include "models/ComponentsModel.h"
 #include "models/ItemModel.h"
 #include "models/MaterialsModel.h"
-
-#include <QtXml/QDomDocument>
-#include <QtCore/QFile>
+#include "delegates/GenericDelegate.h"
+#include "delegates/IntegerColumnDelegate.h"
+#include "delegates/ItemDelegate.h"
 #include <QDebug>
+#include <QFile>
 #include <QtCore/QLocale>
 #include <QtCore/QList>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QMessageBox>
 
-QList<SNItem>  ShipDesigner::m_components;// = new QList<SNItem>();
 
 ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
         QDialog( parent ),
@@ -29,19 +29,27 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     m_itemModel = new ItemModel( this );
     m_ui->itemList->setModel( m_itemModel );
     m_ui->itemList->installEventFilter( this );
+        GenericDelegate *generic = new GenericDelegate( this );
+    IntegerColumnDelegate *delegate = new IntegerColumnDelegate(0, INT_MAX);
+    generic->insertColumnDelegate(1, delegate );
+    m_ui->itemList->setItemDelegate( generic );
 
     m_detailedModel = new MaterialsModel( this );
     m_ui->detailedTable->setModel( m_detailedModel );
 
-    ShipDesigner::loadItems();
+    m_components = SNItem::getItemsFromDatabase();
 
     QList<SNItem> items;
 
     for( int i=0; i<ShipDesigner::m_components.size(); i++)
         if( ShipDesigner::m_components.at(i).category() == "Ship Component" )
             items << ShipDesigner::m_components.at(i);
+    qDebug() << "items cnt: " << items.size();
     m_componentsModel = new ComponentsModel( items );
     m_ui->componentList->setModel( m_componentsModel );
+    ItemDelegate* idelegate = new ItemDelegate( this );
+    m_ui->componentList->setItemDelegate( idelegate );
+    m_ui->componentList->setHeaderHidden( true );
 
     QFile file( "item_desc_format.html" );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
@@ -103,7 +111,7 @@ void ShipDesigner::on_componentList_clicked( QModelIndex index )
     if ( m_descHtmlTemplate == "" )
         return;
     ComponentsModel *model = dynamic_cast<ComponentsModel*>( m_ui->componentList->model() );
-    QVariant data = model->data( index, ComponentsModel::ComponentRole );
+    QVariant data = model->data( index, SN::ComponentRole );
     if ( data.canConvert<SNItem>() )
     {
         SNItem item = data.value<SNItem>();
@@ -124,82 +132,13 @@ void ShipDesigner::on_componentList_clicked( QModelIndex index )
         materials.chop( 2 );
         format.replace( "{MATS}", materials );
         m_ui->componentDesc->setHtml( format );
+    } else {
+        if( m_ui->componentList->isExpanded( index ) )
+            m_ui->componentList->collapse( index );
+        else
+            m_ui->componentList->expand( index );
+        return;
     }
-
-}
-
-bool ShipDesigner::loadItems()
-{
-    qDebug() << "loading items";
-    QFile file( "items.xml" );
-    if ( !file.open( QIODevice::ReadOnly ) )
-    {
-        qDebug() << "file open failed";
-        return false;
-    }
-    QDomDocument doc( "items" );
-    QString msg;
-    int line;
-    if ( !doc.setContent( &file, false, &msg, &line ) )
-    {
-        qDebug() << "setting doc failed";
-        qDebug() << msg;
-        qDebug() << line;
-        file.close();
-        return false;
-    }
-    QDomElement root = doc.documentElement();
-    if ( root.tagName() != "items" )
-        return false;
-
-    QDomNode n = root.firstChild();
-    while ( !n.isNull() )
-    {
-        QDomElement e = n.toElement();
-        if ( !e.isNull() && e.tagName() == "item" )
-        {
-            QString name = n.firstChildElement( "name" ).text();
-            QString desc = n.firstChildElement( "desc" ).text();
-            QString weight = n.firstChildElement( "weight" ).text();
-            QString category = n.firstChildElement( "category" ).text();
-            if( weight == "" )
-            {
-                n = n.nextSibling();
-                continue;
-            }
-            bool ok;
-            SNItem item = SNItem( name, desc, category, weight.toInt( &ok ) );
-            if ( !ok )
-            {
-                n = n.nextSibling();
-                continue;
-            }
-
-            QDomNode n_comps = n.firstChildElement( "components" ).firstChild();
-            while ( !n_comps.isNull() )
-            {
-                QDomElement e = n_comps.toElement();
-                if ( !e.isNull() && e.tagName() == "component" )
-                {
-                    QString compname = e.text();
-                    int quantity = e.attribute( "quantity", "0" ).toInt( &ok );
-                    if ( ok )
-                    {
-
-                        item.addComponent( compname, quantity );
-                    }
-                    else
-                        qWarning() << "Error parsing component '" << quantity << "' for item '" << name << "'";
-                }
-                n_comps = n_comps.nextSibling();
-            }
-
-            if ( ok )
-                ShipDesigner::m_components.append( item );
-        }
-        n = n.nextSibling();
-    }
-    return true;
 }
 
 void ShipDesigner::on_saveButton_clicked()
@@ -296,7 +235,7 @@ void ShipDesigner::on_designsCombo_currentIndexChanged( int index )
     while( it.hasNext() )
     {
         it.next();
-        SNItem item = ShipDesigner::getItem( it.key() );
+        SNItem item = getItem( it.key() );
         if( item.name() != "" )
             m_itemModel->appendData(item, it.value());
     }
@@ -321,7 +260,7 @@ void ShipDesigner::on_addButton_clicked()
     for ( int i = 0; i < idxs.size(); i++ )
     {
         QModelIndex idx = idxs.at( i );
-        SNItem item = idx.data( ComponentsModel::ComponentRole ).value<SNItem>();
+        SNItem item = idx.data( SN::ComponentRole ).value<SNItem>();
         m_itemModel->appendData(item, 0);
     }
 }
@@ -338,10 +277,10 @@ void ShipDesigner::statsChangedSlot(int numitems, quint64 tons )
 
 SNItem ShipDesigner::getItem( const QString &name )
 {
-    for (int i = 0; i < ShipDesigner::m_components.size(); ++i)
+    for (int i = 0; i < m_components.size(); ++i)
     {
-        if (ShipDesigner::m_components.at(i).name() == name)
-            return ShipDesigner::m_components.at(i);
+        if (m_components.at(i).name() == name)
+            return m_components.at(i);
     }
     return SNItem();
 }

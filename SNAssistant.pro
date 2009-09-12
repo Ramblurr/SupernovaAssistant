@@ -8,7 +8,8 @@ DEPENDPATH += dialogs
 FORMS += MainWindow.ui \
     ShipDesigner.ui \
     dialogs/NewEmpireDialog.ui \
-    dialogs/ChangeEmpireDialog.ui
+    dialogs/ChangeEmpireDialog.ui \
+    dialogs/ItemBrowser.ui
 SOURCES += main.cpp \
     MainWindow.cpp \
     ShipDesigner.cpp \
@@ -18,11 +19,16 @@ SOURCES += main.cpp \
     dialogs/NewEmpireDialog.cpp \
     data/Empire.cpp \
     models/ShipDesignsModel.cpp \
-    models/EmpiresModel.cpp \
     models/ItemModel.cpp \
     models/MaterialsModel.cpp \
     data/Order.cpp \
-    dialogs/ChangeEmpireDialog.cpp
+    dialogs/ChangeEmpireDialog.cpp \
+    dialogs/ItemBrowser.cpp \
+    data/ItemEffect.cpp \
+    delegates/GenericDelegate.cpp \
+    delegates/IntegerColumnDelegate.cpp \
+    delegates/ItemDelegate.cpp \
+    MaterialsWidget.cpp
 HEADERS += MainWindow.h \
     models/ComponentsModel.h \
     ShipDesigner.h \
@@ -31,11 +37,16 @@ HEADERS += MainWindow.h \
     dialogs/NewEmpireDialog.h \
     data/Empire.h \
     models/ShipDesignsModel.h \
-    models/EmpiresModel.h \
     models/ItemModel.h \
     models/MaterialsModel.h \
     data/Order.h \
-    dialogs/ChangeEmpireDialog.h
+    dialogs/ChangeEmpireDialog.h \
+    dialogs/ItemBrowser.h \
+    data/ItemEffect.h \
+    delegates/GenericDelegate.h \
+    delegates/IntegerColumnDelegate.h \
+    delegates/ItemDelegate.h \
+    MaterialsWidget.h
 QT += gui \
     xml \
     sql

@@ -7,7 +7,6 @@ namespace Ui {
     class ChangeEmpireDialog;
 }
 
-class EmpiresModel;
 class Empire;
 class ChangeEmpireDialog : public QDialog {
     Q_OBJECT
@@ -24,7 +23,6 @@ protected:
 
 private:
     Ui::ChangeEmpireDialog *m_ui;
-    EmpiresModel *m_empiresModel;
 
 private slots:
     void on_buttonBox_accepted();
