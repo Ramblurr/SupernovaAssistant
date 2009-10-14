@@ -8,5 +8,10 @@
         <file>icons/reset.png</file>
         <file>icons/minus.png</file>
         <file>categories.xml</file>
+        <file>icons/supernova-48x48.png</file>
+        <file>icons/supernova-16x16.png</file>
+        <file>icons/supernova-24x24.png</file>
+        <file>icons/supernova-32x32.png</file>
+        <file>icons/supernova.ico</file>
     </qresource>
 </RCC>
