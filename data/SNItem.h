@@ -31,11 +31,17 @@ public:
     int weight() const { return m_tons; }
     int structure() const { return m_structure; }
 
+    bool saveItem() const;
+    bool deleteItem() const;
+
     bool operator==(const SNItem &other) const;
 
     static QList<SNItem> getItemsFromDatabase();
     static QList<SNItem> getItemsFromXml( const QString &filename);
     static SNItem getItem( const QString &name );
+
+    //Warning clears existing items table
+    static void writeToDatabase( const QList<SNItem> &list);
 
     static bool createXML( const QList<SNItem> & items, const QString &filename );
 
@@ -62,10 +68,11 @@ private:
     QString m_desc;
     QString m_category;
     QString m_subcategory;
+    QMap<QString, int> m_components;
     int m_tons;
     int m_structure;
     QList<ItemEffect> m_effects;
-    QMap<QString, int> m_components;
+
 };
 Q_DECLARE_METATYPE( SNItem )
 

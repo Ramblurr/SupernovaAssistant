@@ -9,7 +9,7 @@
 #include <QtCore/QFile>
 #include <QXmlStreamWriter>
 
-SNItem::SNItem()
+SNItem::SNItem() : m_components(), m_tons( 0 ), m_structure( 0 )
 {
 }
 
@@ -87,6 +87,84 @@ bool SNItem::operator==(const SNItem &other) const
     return ( m_name == other.name() );
 }
 
+bool SNItem::saveItem() const
+{
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        if( !db.transaction() )
+            return false;
+        QSqlQuery query( db );
+        query.prepare( "INSERT INTO items( iname, category, subcategory, size, desc, structure )"
+                       "VALUES(:iname, :category, :subcategory, :size, :desc, :structure)" );
+        query.bindValue( ":iname", m_name );
+        query.bindValue( ":category", m_category);
+        query.bindValue( ":subcategory", m_subcategory);
+        query.bindValue( ":size", m_tons );
+        query.bindValue( ":desc", m_desc );
+        query.bindValue( ":structure", m_structure );
+
+        if ( !query.exec() )
+            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        QMapIterator<QString, int> it( m_components );
+        while( it.hasNext() )
+        {
+            it.next();
+            query.prepare( "INSERT INTO itemcomp( iname, quantity, resource )"
+                       "VALUES(:iname, :quantity, :resource)" );
+            query.bindValue( ":iname", m_name );
+            query.bindValue( ":quantity", it.value() );
+            query.bindValue( ":resource", it.key() );
+
+            if ( !query.exec() )
+                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+        }
+
+        foreach( ItemEffect effect, m_effects )
+        {
+            it.next();
+            query.prepare( "INSERT INTO itemeffects( iname, effect, value, prettyvalue, counter )"
+                       "VALUES(:iname, :effect, :value, :prettyvalue, :counter)" );
+            query.bindValue( ":iname", m_name );
+            query.bindValue( ":effect", effect.name() );
+            query.bindValue( ":value", effect.value() );
+            query.bindValue( ":prettyvalue", effect.prettyValue() );
+            query.bindValue( ":counter", effect.counter() );
+
+            if ( !query.exec() )
+                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        }
+        query.finish();
+        if( !db.commit() )
+            return false;
+
+    }
+    return true;
+}
+
+bool SNItem::deleteItem() const
+{
+    return false;
+}
+
+void SNItem::writeToDatabase( const QList<SNItem> &list)
+{
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        QSqlQuery query( db );
+        query.exec("DELETE * FROM items");
+        foreach(SNItem item, list )
+        {
+            qDebug() << "Added: " << item.name();
+            item.saveItem();
+        }
+        query.finish();
+    }
+}
+
 QList<SNItem> SNItem::getItemsFromDatabase()
 {
     QList<SNItem> list;
@@ -94,7 +172,7 @@ QList<SNItem> SNItem::getItemsFromDatabase()
     if ( db.isOpen() )
     {
         QSqlQuery query( db );
-        query.exec("SELECT * FROM designs");
+        query.exec("SELECT * FROM items");
         int idxName = query.record().indexOf( "iname" );
         int idxCategory = query.record().indexOf( "category" );
         int idxSubCategory = query.record().indexOf( "subcategory" );
@@ -126,6 +204,7 @@ QList<SNItem> SNItem::getItemsFromDatabase()
                 quint64 quant = comp_query.value( idxQuan ).toUInt();
                 item.addComponent( name, quant );
             }
+            comp_query.finish();
 
             // Get Effects
             QSqlQuery effect_query( db );
@@ -146,9 +225,11 @@ QList<SNItem> SNItem::getItemsFromDatabase()
                 ItemEffect effect( name, value, prettyval, counter );
                 item.addEffect( effect );
             }
+            effect_query.finish();
 
             list << item;
         }
+        query.finish();
     }
     return list;
 }

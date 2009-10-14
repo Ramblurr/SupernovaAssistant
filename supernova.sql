@@ -90,14 +90,14 @@ create table items (
 create table itemcomp (
         iname           character(80) not null references items on delete cascade,
         quantity        integer not null,
-        resource        character(80)
+        resource        character(80) not null
 );
 
 create table itemeffects (
         iname           character(80) not null references items on delete cascade,
         effect          character(80) not null,
         value           integer not null,
-        prettyvalue     character(80) not null,
+        prettyvalue     character(80),
         counter         character(80)
 );
 

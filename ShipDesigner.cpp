@@ -100,10 +100,13 @@ bool ShipDesigner::eventFilter( QObject * obj, QEvent * evt )
         QModelIndexList idxs = m_ui->itemList->selectionModel()->selectedIndexes();
         foreach( QModelIndex idx, idxs )
         {
-            if ( idx.isValid() )
+            if ( idx.isValid() ) {
                 m_itemModel->removeRow( idx.row() );
+                return true;
+            }
         }
     }
+    return QObject::eventFilter( obj, evt );
 }
 
 void ShipDesigner::on_componentList_clicked( QModelIndex index )
@@ -169,7 +172,7 @@ void ShipDesigner::on_saveButton_clicked()
             design.addComponent( p.first.name(), p.second );
     }
 
-    bool ok = design.saveDesign();
+    design.saveDesign();
     setupDesignsModel();
 
     m_currentDesign = design;

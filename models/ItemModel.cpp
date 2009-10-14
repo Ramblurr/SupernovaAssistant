@@ -75,6 +75,10 @@ QVariant ItemModel::headerData( int section, Qt::Orientation orientation, int ro
             return QVariant();
         }
     }
+    if ( orientation == Qt::Vertical )
+    {
+        return section + 1; // we don't want it 0 indexed
+    }
     return QVariant();
 }
 

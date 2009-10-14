@@ -3,6 +3,8 @@
 # -------------------------------------------------
 TARGET = SNAssistant
 TEMPLATE = app
+UI_DIR = ui
+OBJECTS_DIR = objs
 INCLUDEPATH += dialogs
 DEPENDPATH += dialogs
 FORMS += MainWindow.ui \
@@ -51,5 +53,5 @@ QT += gui \
     xml \
     sql
 RESOURCES += application.qrc
-LIBS += -lodbc"
-UI_DIR = ui
+RC_FILE = sn.rc
+ICON = icons/supernova.icns

@@ -1,6 +1,6 @@
 #include "ComponentsModel.h"
 
-#include "data/SNItem.h"
+#include "../data/SNItem.h"
 #include <QHash>
 #include <QDebug>
 #include <QMutableListIterator>
@@ -112,6 +112,9 @@ QVariant ComponentsModel::data( const QModelIndex &index, int role ) const
 
 QVariant ComponentsModel::headerData( int section, Qt::Orientation orientation, int role ) const
 {
+    Q_UNUSED( section )
+    Q_UNUSED( orientation )
+    Q_UNUSED( role )
 //    if ( role != Qt::DisplayRole )
         return QVariant();
 
@@ -130,6 +133,7 @@ int ComponentsModel::columnCount ( const QModelIndex &parent ) const
 
 bool ComponentsModel::setData ( const QModelIndex & index, const QVariant & value, int role )
 {
+    Q_UNUSED( role )
     if( !index.isValid() )
         return false;
 
@@ -166,6 +170,9 @@ bool ComponentsModel::setData ( const QModelIndex & index, const QVariant & valu
 
 bool ComponentsModel::insertRows ( int row, int count, const QModelIndex & parent )
 {
+    Q_UNUSED( row )
+    Q_UNUSED( count )
+    Q_UNUSED( parent )
     return false;
 }
 

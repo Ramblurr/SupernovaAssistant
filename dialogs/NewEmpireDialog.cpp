@@ -1,6 +1,6 @@
 #include "NewEmpireDialog.h"
-#include "ui/ui_NewEmpireDialog.h"
-#include "data/Empire.h"
+#include "../ui/ui_NewEmpireDialog.h"
+#include "../data/Empire.h"
 
 #include <QDesktopServices>
 #include <QtSql>
@@ -13,6 +13,7 @@ NewEmpireDialog::NewEmpireDialog( QWidget *parent ) :
 {
     m_ui->setupUi( this );
     m_ui->acceptButton->setEnabled( false );
+    setWindowTitle("Create New Empire");
 }
 
 NewEmpireDialog::~NewEmpireDialog()
@@ -38,16 +39,18 @@ void NewEmpireDialog::on_acceptButton_clicked()
     QString id = m_ui->empireIDEdit->text().trimmed();
     QString name = m_ui->empireNameEdit->text().trimmed();
     QSettings settings( "SN", "SNAssistant" );
-    int empireCount = settings.value( "empireCount", -1 ).toInt();
-    empireCount++;
     Empire emp( name, id );
 
     bool ok = setupNewDatabase( name, id );
+
     if ( ok )
     {
         qDebug() << "Databse created succesfully";
-        settings.setValue( "empireCount", empireCount );
-        settings.setValue( "empires/" + QString::number( empireCount ), emp );
+//        settings.setValue( "empireCount", empireCount );
+//        settings.setValue( "empires/" + QString::number( empireCount ), emp );
+        settings.beginGroup("empires");
+        settings.setValue( emp.id(), emp );
+        settings.endGroup();
     }
     else
         qDebug() << "Error when creating dbase";
@@ -57,6 +60,7 @@ void NewEmpireDialog::on_acceptButton_clicked()
 
 void NewEmpireDialog::on_empireIDEdit_textEdited( QString text )
 {
+    Q_UNUSED( text )
     m_ui->acceptButton->setEnabled( fieldsValidated() );
 }
 QStringList NewEmpireDialog::loadSchema( const QString &filename )
@@ -98,6 +102,8 @@ QStringList NewEmpireDialog::loadSchema( const QString &filename )
 }
 bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
 {
+    Q_UNUSED( name )
+    Q_UNUSED( id )
     QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
     QDir dataLoc( dataDir );
     dataLoc.cd( "SNAssistant" );
@@ -138,14 +144,13 @@ bool NewEmpireDialog::fieldsValidated()
         ok = false;
 
     QSettings settings( "SN", "SNAssistant" );
-    int empireCount = settings.value( "empireCount", -1 ).toInt();
-    for ( int i = 0; i <= empireCount; i++ )
+//    int empireCount = settings.value( "empireCount", -1 ).toInt();
+
+    settings.beginGroup("empires");
+    QStringList list = settings.childKeys();
+    foreach(QString id, list)
     {
-        Empire blank_emp();
-        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
-        if ( emp.name() == "" )
-            continue;
-        if ( emp.id() == m_ui->empireIDEdit->text().trimmed() )
+        if( id == m_ui->empireIDEdit->text().trimmed() )
         {
             m_ui->errorLabel->setText( "Empire ID already exists" );
             ok = false;
@@ -153,6 +158,21 @@ bool NewEmpireDialog::fieldsValidated()
         else
             m_ui->errorLabel->setText( "" );
     }
+    settings.endGroup();
+//    for ( int i = 0; i <= empireCount; i++ )
+//    {
+//        Empire blank_emp();
+//        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
+//        if ( emp.name() == "" )
+//            continue;
+//        if ( emp.id() ==  m_ui->empireIDEdit->text().trimmed())
+//        {
+//            m_ui->errorLabel->setText( "Empire ID already exists" );
+//            ok = false;
+//        }
+//        else
+//            m_ui->errorLabel->setText( "" );
+//    }
 
     return ok;
 }

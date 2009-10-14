@@ -1,12 +1,12 @@
 #include "ItemBrowser.h"
-#include "ui_ItemBrowser.h"
+#include "../ui/ui_ItemBrowser.h"
 
-#include "data/SNItem.h"
-#include "delegates/IntegerColumnDelegate.h"
-#include "delegates/GenericDelegate.h"
-#include "delegates/ItemDelegate.h"
+#include "../data/SNItem.h"
+#include "../delegates/IntegerColumnDelegate.h"
+#include "../delegates/GenericDelegate.h"
+#include "../delegates/ItemDelegate.h"
 
-#include "models/ComponentsModel.h"
+#include "../models/ComponentsModel.h"
 
 #include <QtXml/QDomDocument>
 #include <QFile>
@@ -338,6 +338,7 @@ void ItemBrowser::on_deleteItemBut_clicked()
         return;
     QString name = m_itemModel->data( m_selectedItem, Qt::DisplayRole ).toString();
     QMessageBox msgBox;
+    msgBox.setIcon( QMessageBox::Warning );
     msgBox.setText("Deleting item " + name);
     msgBox.setInformativeText("Are you sure you want to delete " + name + "?");
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -356,7 +357,7 @@ void ItemBrowser::on_addMatBut_clicked()
 
 void ItemBrowser::on_treeView_pressed(QModelIndex index)
 {
-
+    Q_UNUSED(index)
 }
 
 void ItemBrowser::on_importBut_clicked()
@@ -383,5 +384,22 @@ void ItemBrowser::on_exportBut_clicked()
     QString fileName = QFileDialog::getSaveFileName(this, tr("Choose where to save the items"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("XML Files(*.xml)"));
     QList<SNItem> items = m_itemModel->getItems();
     qDebug() << "got " << items.size();
-    bool ok = SNItem::createXML(items, fileName);
+    SNItem::createXML(items, fileName);
+}
+
+void ItemBrowser::on_saveButton_clicked()
+{
+    //Save to the database
+    QMessageBox msgBox;
+    msgBox.setIcon( QMessageBox::Warning );
+    msgBox.setText("Database will be overwritten with your changes");
+    msgBox.setInformativeText("Are you sure you want to save all your changes?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+    if( ret == QMessageBox::No )
+        return;
+    QList<SNItem> items = m_itemModel->getItems();
+    SNItem::writeToDatabase( items );
+    emit( items_changed() );
 }

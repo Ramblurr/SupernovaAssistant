@@ -24,6 +24,10 @@ public:
     ItemBrowser(QWidget *parent = 0);
     ~ItemBrowser();
 
+signals:
+
+    void items_changed();
+
 protected:
     void changeEvent(QEvent *e);
 
@@ -44,6 +48,7 @@ private:
     void loadCategoryAndChildren( const QDomElement & element, const QString & parent = "" );
 
 private slots:
+    void on_saveButton_clicked();
     void on_exportBut_clicked();
     void fieldsChangedSot();
     void on_importBut_clicked();

@@ -1,8 +1,7 @@
 #include "ChangeEmpireDialog.h"
-#include "ui/ui_ChangeEmpireDialog.h"
+#include "../ui/ui_ChangeEmpireDialog.h"
 
-#include "models/EmpiresModel.h"
-#include "data/Empire.h"
+#include "../data/Empire.h"
 
 #include <QSettings>
 #include <QList>
@@ -11,6 +10,7 @@ ChangeEmpireDialog::ChangeEmpireDialog(QWidget *parent) :
     m_ui(new Ui::ChangeEmpireDialog)
 {
     m_ui->setupUi(this);
+    setWindowTitle("Change Empire");
 
     QList<Empire> items;
     QSettings settings( "SN", "SNAssistant" );

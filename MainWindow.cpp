@@ -18,6 +18,7 @@ MainWindow::MainWindow( QWidget *parent )
 {
     ui->setupUi( this );
     setWindowTitle( tr( "Supernova Assistant" ) );
+    setWindowIcon( QIcon("icons/supernova-16x16.png" ) );
     setupEmpiresModel();
 
 }
@@ -30,19 +31,32 @@ MainWindow::~MainWindow()
 }
 void MainWindow::setupEmpiresModel()
 {
+    ui->empireName->setText("No Empire Selected");
     ui->empireCombo->clear();
     QList<Empire> items;
     QSettings settings( "SN", "SNAssistant" );
-    int empireCount = settings.value( "empireCount", -1 ).toInt();
-    for ( int i = 0; i <= empireCount; i++ )
+    settings.beginGroup("empires");
+    QStringList list = settings.childKeys();
+    foreach( QString id, list )
     {
-        Empire blank_emp();
-        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
+        Empire emp = settings.value(id).value<Empire>();
         if ( emp.name() == "" )
             continue;
         items << emp;
         ui->empireCombo->addItem( emp.name(), emp);
+
     }
+    settings.endGroup();
+//    int empireCount = settings.value( "empireCount", -1 ).toInt();
+//    for ( int i = 0; i <= empireCount; i++ )
+//    {
+//        Empire blank_emp();
+//        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
+//        if ( emp.name() == "" )
+//            continue;
+//        items << emp;
+//        ui->empireCombo->addItem( emp.name(), emp);
+//    }
     if ( items.count() > 0 )
     {
         m_currEmpire = items.at( 0 );
@@ -88,7 +102,7 @@ void MainWindow::on_empireCombo_currentIndexChanged( int id )
 void MainWindow::on_actionSelect_Empire_triggered()
 {
     ChangeEmpireDialog diag( this );
-    int res = diag.exec();
+    diag.exec();
 }
 
 void MainWindow::currEmpireChangedSlot( const Empire & emp )
@@ -146,4 +160,33 @@ void MainWindow::on_actionItem_Editor_triggered()
     m_itemBrowser->raise();
     m_itemBrowser->activateWindow();
 
+}
+
+void MainWindow::on_deleteEmpireBut_clicked()
+{
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        db.close();
+    }
+    int idx = ui->empireCombo->currentIndex();
+    Empire emp = ui->empireCombo->itemData( idx ).value<Empire>();
+    QSettings settings( "SN", "SNAssistant" );
+
+    settings.beginGroup("empires");
+    settings.remove(emp.id());
+    settings.endGroup();
+
+    QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
+    QDir dataLoc( dataDir );
+    dataLoc.cd( "SNAssistant" );
+    QString dbPath = dataLoc.absolutePath() + QDir::separator() + "empire_" + emp.id() + ".sql";
+    QFile dbf( dbPath );
+    dbf.remove();
+    setupEmpiresModel();
+}
+
+void MainWindow::on_createEmpireBut_clicked()
+{
+     on_actionCreate_an_Empire_triggered();
 }

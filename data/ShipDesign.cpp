@@ -106,7 +106,9 @@ QList<ShipDesign> ShipDesign::getDesigns()
                 des.addComponent( name, quant );
             }
             list << des;
+            comp_query.finish();
         }
+        query.finish();
     }
     return list;
 }
@@ -125,6 +127,7 @@ bool ShipDesign::designExists( const QString &name )
             if( stored_name == name )
                 return true;
         }
+        query.finish();
     }
     return false;
 }

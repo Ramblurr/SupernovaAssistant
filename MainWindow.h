@@ -1,9 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QMainWindow>
+
 #include "data/Empire.h"
 
-#include <QtGui/QMainWindow>
+
 
 class ShipDesigner;
 class ItemBrowser;
@@ -35,6 +37,8 @@ private:
 
 
 private slots:
+    void on_createEmpireBut_clicked();
+    void on_deleteEmpireBut_clicked();
     void on_actionItem_Editor_triggered();
     void on_actionSelect_Empire_triggered();
     void on_empireCombo_currentIndexChanged( int );

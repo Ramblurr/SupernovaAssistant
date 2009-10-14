@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 
 #include "MainWindow.h"
 #include "data/Empire.h"

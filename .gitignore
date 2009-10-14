@@ -8,4 +8,7 @@ SNAssistant
 *.swp
 *.orig
 ui
+objs
 *.directory
+object_script.SNAssistant.Debug
+object_script.SNAssistant.Release

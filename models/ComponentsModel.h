@@ -1,7 +1,7 @@
 #ifndef COMPONENTSMODEL_H
 #define COMPONENTSMODEL_H
 
-#include "data/SNItem.h"
+#include "../data/SNItem.h"
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QList>
@@ -86,8 +86,8 @@ public:
 private:
     QList<ComponentTreeItem*> childItems;
     SN::Type m_type;
-    ComponentTreeItem *parentItem;
     QVariant itemData;
+    ComponentTreeItem *parentItem;
 
 };
 

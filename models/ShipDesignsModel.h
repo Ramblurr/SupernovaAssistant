@@ -1,7 +1,7 @@
 #ifndef SHIPDESIGNSMODEL_H
 #define SHIPDESIGNSMODEL_H
 
-#include "data/ShipDesign.h"
+#include "../data/ShipDesign.h"
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QList>

@@ -1,6 +1,6 @@
 #ifndef ITEMMODEL_H
 #define ITEMMODEL_H
-#include "data/SNItem.h"
+#include "../data/SNItem.h"
 #include <QAbstractTableModel>
 #include <QStringList>
 class ItemModel : public QAbstractTableModel
