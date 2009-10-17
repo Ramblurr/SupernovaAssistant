@@ -20,7 +20,9 @@ public:
     SNItem& operator=(const SNItem &other);
 
     void addComponent(const QString &item, int quantity);
-    void addEffect( const ItemEffect &effect);
+    void addComponents( QMap<QString, int> comps );
+    void addEffect( const ItemEffect &effect );
+    void addEffects( QList<ItemEffect> );
 
     QMap<QString, int> getComponents() const;
     QList<ItemEffect> getEffects() const;

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDataStream>
+#include <QDebug>
 class ItemEffect
 {
 public:
@@ -37,5 +38,11 @@ private:
     QString m_prettyValue;
     QString m_counter;
 };
+
+//QDebug operator<<(QDebug dbg, const ItemEffect &e)
+//{
+//    dbg.nospace() << "(" << e.name() << ", val: " << e.value() << ", pval: " << e.prettyValue() << ", counters: " << e.counter() << ")";
+//    return dbg.space();
+//}
 
 #endif // ITEMEFFECT_H

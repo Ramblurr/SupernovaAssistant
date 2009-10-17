@@ -67,9 +67,25 @@ void SNItem::addComponent( const QString &item, int quantity )
     m_components.insert( item, quantity );
 }
 
+void SNItem::addComponents( QMap<QString, int> comps )
+{
+    QMapIterator<QString, int> i(comps);
+    while (i.hasNext()) {
+        i.next();
+        m_components.insert(i.key(), i.value());
+    }
+
+}
+
 void SNItem::addEffect( const ItemEffect &effect)
 {
     m_effects.push_back( effect );
+}
+
+void SNItem::addEffects( QList<ItemEffect> effects )
+{
+    foreach(ItemEffect eff, effects)
+        m_effects.push_back( eff );
 }
 
 QMap<QString, int> SNItem::getComponents() const
