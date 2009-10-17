@@ -6,6 +6,9 @@ TEMPLATE = app
 UI_DIR = ui
 OBJECTS_DIR = objs
 INCLUDEPATH += dialogs
+INCLUDEPATH += /usr/include/poppler/qt4
+LIBS += -L/usr/lib \
+    -lpoppler-qt4
 DEPENDPATH += dialogs
 FORMS += MainWindow.ui \
     ShipDesigner.ui \
@@ -30,7 +33,8 @@ SOURCES += main.cpp \
     delegates/GenericDelegate.cpp \
     delegates/IntegerColumnDelegate.cpp \
     delegates/ItemDelegate.cpp \
-    MaterialsWidget.cpp
+    MaterialsWidget.cpp \
+    TurnParser.cpp
 HEADERS += MainWindow.h \
     models/ComponentsModel.h \
     ShipDesigner.h \
@@ -48,10 +52,13 @@ HEADERS += MainWindow.h \
     delegates/GenericDelegate.h \
     delegates/IntegerColumnDelegate.h \
     delegates/ItemDelegate.h \
-    MaterialsWidget.h
+    MaterialsWidget.h \
+    TurnParser.h
 QT += gui \
     xml \
-    sql
+    sql \
+    testlib
+
 RESOURCES += application.qrc
 RC_FILE = sn.rc
 ICON = icons/supernova.icns
