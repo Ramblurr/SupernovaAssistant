@@ -13,6 +13,5 @@
         <file>icons/supernova-24x24.png</file>
         <file>icons/supernova-32x32.png</file>
         <file>icons/supernova.ico</file>
-        <file>tests/anz_test.txt</file>
     </qresource>
 </RCC>
