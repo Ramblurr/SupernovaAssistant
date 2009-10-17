@@ -14,8 +14,6 @@ Classification: Jump Drive    Structural Integrity: 80
 Prerequisite Technologies: Mk II Nuclear Engine
 Maneuverability: Adequate [Thrust Output: 1000]
 Counters: Missiles, Fighters, Drones
-Maneuverability: Adequate [Thrust Output: 1000]
-Counters: Missiles, Fighters, Drones
 Black Sphere Generator Strength: Good [15000]
 Counters: Plasma Torpedoes
 Deflector Angle: Good [15000]
