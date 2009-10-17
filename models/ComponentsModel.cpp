@@ -1,6 +1,6 @@
 #include "ComponentsModel.h"
 
-#include "../data/SNItem.h"
+#include "data/SNItem.h"
 #include <QHash>
 #include <QDebug>
 #include <QMutableListIterator>

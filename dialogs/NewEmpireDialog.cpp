@@ -1,6 +1,6 @@
 #include "NewEmpireDialog.h"
-#include "../ui/ui_NewEmpireDialog.h"
-#include "../data/Empire.h"
+#include "ui_NewEmpireDialog.h"
+#include "data/Empire.h"
 
 #include <QDesktopServices>
 #include <QtSql>
@@ -113,7 +113,7 @@ bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
     if ( db.open() )
     {
 
-        QStringList queries( loadSchema( "supernova.sql" ) );
+        QStringList queries( loadSchema( ":/supernova.sql" ) );
         db.transaction();
         foreach(QString statement, queries)
         {

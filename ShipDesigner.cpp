@@ -3,7 +3,7 @@
 #include "data/SNItem.h"
 #include "data/ShipDesign.h"
 #include "data/Order.h"
-#include "ui/ui_ShipDesigner.h"
+#include "ui_ShipDesigner.h"
 #include "models/ComponentsModel.h"
 #include "models/ItemModel.h"
 #include "models/MaterialsModel.h"
@@ -51,7 +51,7 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     m_ui->componentList->setItemDelegate( idelegate );
     m_ui->componentList->setHeaderHidden( true );
 
-    QFile file( "item_desc_format.html" );
+    QFile file( ":/item_desc_format.html" );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
     {
         qDebug() << "error opening file. Error: " << file.error();

@@ -1,14 +1,14 @@
 #include "ItemBrowser.h"
 
 #include "TurnParser.h"
-#include "../ui/ui_ItemBrowser.h"
+#include "ui_ItemBrowser.h"
 
-#include "../data/SNItem.h"
-#include "../delegates/IntegerColumnDelegate.h"
-#include "../delegates/GenericDelegate.h"
-#include "../delegates/ItemDelegate.h"
+#include "data/SNItem.h"
+#include "delegates/IntegerColumnDelegate.h"
+#include "delegates/GenericDelegate.h"
+#include "delegates/ItemDelegate.h"
 
-#include "../models/ComponentsModel.h"
+#include "models/ComponentsModel.h"
 
 #include <QtXml/QDomDocument>
 #include <QFile>
@@ -277,7 +277,7 @@ SNItem ItemBrowser::itemFromFields() const
 bool ItemBrowser::loadCategories()
 {
     qDebug() << "loading cats";
-    QFile file( "categories.xml" );
+    QFile file( ":/categories.xml" );
     if ( !file.open( QIODevice::ReadOnly ) )
     {
         qDebug() << "file open failed";

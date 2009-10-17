@@ -1,5 +1,5 @@
 #include "ItemDelegate.h"
-#include "../models/ComponentsModel.h"
+#include "models/ComponentsModel.h"
 #include <QPainter>
 #include <QApplication>
 void ItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const

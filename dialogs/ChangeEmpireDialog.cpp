@@ -1,7 +1,7 @@
 #include "ChangeEmpireDialog.h"
-#include "../ui/ui_ChangeEmpireDialog.h"
+#include "ui_ChangeEmpireDialog.h"
 
-#include "../data/Empire.h"
+#include "data/Empire.h"
 
 #include <QSettings>
 #include <QList>

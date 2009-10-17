@@ -1,11 +1,11 @@
 #include "MainWindow.h"
-#include "ui/ui_MainWindow.h"
+#include "ui_MainWindow.h"
 #include "ShipDesigner.h"
 #include "dialogs/NewEmpireDialog.h"
 #include "dialogs/ChangeEmpireDialog.h"
 #include "dialogs/ItemBrowser.h"
 #include "data/Empire.h"
-
+#include "TurnParser.h"
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
@@ -18,8 +18,11 @@ MainWindow::MainWindow( QWidget *parent )
 {
     ui->setupUi( this );
     setWindowTitle( tr( "Supernova Assistant" ) );
-    setWindowIcon( QIcon("icons/supernova-16x16.png" ) );
+    setWindowIcon( QIcon(":/icons/supernova-16x16.png" ) );
     setupEmpiresModel();
+
+    TurnParser tp("../296_2.pdf");
+//    tp.writeOut("296_2.pdf");
 
 }
 
