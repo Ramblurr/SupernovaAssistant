@@ -4,6 +4,7 @@
 
 #include "data/SNItem.h"
 #include <QFile>
+#include <QFileInfo>
 #include <QDebug>
 #include <QList>
 TurnParserTest::TurnParserTest()
@@ -34,13 +35,24 @@ void TurnParserTest::parseANZs()
      QVERIFY( item.category() == "Jump Drive");
      QVERIFY( item.weight() == 100);
 
-     qDebug() << " effects# "  <<item.getEffects().size();
-     foreach(ItemEffect e, item.getEffects() )
-     {
-         qDebug() << "(" << e.name() << ", val: " << e.value() << ", pval: " << e.prettyValue() << ", counters: " << e.counter() << ")";
-     }
+//     qDebug() << " effects# "  <<item.getEffects().size();
+//     foreach(ItemEffect e, item.getEffects() )
+//     {
+//         qDebug() << "(" << e.name() << ", val: " << e.value() << ", pval: " << e.prettyValue() << ", counters: " << e.counter() << ")";
+//     }
      QVERIFY( item.getEffects().size() == 16);
      QVERIFY( item.getComponents().size() == 4);
+
+//     QFile file2(":/tests/296_2.pdf");
+//     if (!file2.open(QIODevice::ReadOnly))
+//         return;
+//
+//     QByteArray array = file2.readAll();
+//     TurnParser tp2(file2.absoluteFilePath());
+////
+////     items = tp2.parseANZs();
+////
+////     QVERIFY( items.size() == 22);
 
 }
 
