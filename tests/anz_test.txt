@@ -1,0 +1,48 @@
+                                            -----ANZ (Analyze Item)-----
+ANZ: Mk I Fusion Engine
+Mk I Fusion Engine:            The Mk I Fusion Engine is a fusion-powered maneuver drive. It is a self-contained
+                               100-ton unit, is self-sustaining and requires no external power source. To achieve
+                               superior maneuverability, simply add more engines to your design. Maneuverability aids
+                               in the ability of your ships to avoid certain types of enemy weapons, and provides
+                               additional Action Points for your ships to use during civilian operations. The fusion
+                               power plant in this series of engines is stable under normal operating conditions but
+                               does not handle combat damage particularly well, with a tendency to detonate in a
+                               spectacular explosion upon suffering grievious damage. (100 tons) 200 Improved Steel -
+                               100 Improved Electronics - 100 Improved Synthetic Materials - 100 Improved Processed
+                               Radioactives
+Classification: Jump Drive    Structural Integrity: 80
+Prerequisite Technologies: Mk II Nuclear Engine
+Maneuverability: Adequate [Thrust Output: 1000]
+Counters: Missiles, Fighters, Drones
+Maneuverability: Adequate [Thrust Output: 1000]
+Counters: Missiles, Fighters, Drones
+Black Sphere Generator Strength: Good [15000]
+Counters: Plasma Torpedoes
+Deflector Angle: Good [15000]
+Counters: Projectile Weapons
+Displacement Blink Speed: Good [15000]
+Counters: Gravitonics
+Electronics Countermeasures Effectiveness: Good [15000]
+Counters: Energy Discharge Weaponry
+Field Stabilization Reaction Time: Good [15000]
+Counters: Energy Disruptors
+Flux Capacitance Storage Max: Good [15000]
+Counters: Plasma Splash
+Meson Web Cohesion: Good [15000]
+Counters: Particle Beams
+Molecular Pattern Stabilization Intensity: Good [15000]
+Counters: Matter Disruptors
+Phase Inversion Timing: Good [15000]
+Counters: Fusion Blasts
+Point Defense Accuracy: Good [15000]
+Counters: Missiles, Fighters, Drones
+Reflective Armor Coating Coverage: Good [15000]
+Counters: Coherent Beam Weapons
+Screen Density: Good [15000]
+Counters: Sonic Waves
+Sensor Strength: Good [15000]
+Counters: Minefields
+Tachyon Grid Spin Rate: Good [15000]
+Counters: Energy Absorbers
+Thermal Regulation Sinks: Good [15000]
+Counters: Frost Bolts
