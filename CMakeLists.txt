@@ -16,7 +16,7 @@ ENABLE_TESTING()
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
-    #${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
     dialogs
     data
     delegates
@@ -81,7 +81,12 @@ set( snass_UIS
 # run uic
 QT4_WRAP_UI(snass_UIS_H ${snass_UIS})
 
-add_library( snassistant_lib SHARED ${snass_SRCS} ${snass_UIS_H} ${moc_outfiles} )
+set( SN_RCS
+    application.qrc )
+
+QT4_ADD_RESOURCES( SN_RC_SRCS ${SN_RCS} )
+
+add_library( snassistant_lib SHARED ${snass_SRCS} ${snass_UIS_H} ${moc_outfiles} ${SN_RC_SRCS} )
 
 target_link_libraries(snassistant_lib
     ${QT_LIBRARIES}
@@ -92,7 +97,7 @@ target_link_libraries(snassistant_lib
     ${POPPLER_LIBRARY}
     )
 
-add_executable(SNAssistant ${snass_SRCS})
+add_executable(SNAssistant ${snass_SRCS} ${SN_RC_SRCS})
 
 target_link_libraries(SNAssistant ${QT_LIBRARIES} snassistant_lib )
 
