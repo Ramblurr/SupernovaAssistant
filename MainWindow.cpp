@@ -21,9 +21,6 @@ MainWindow::MainWindow( QWidget *parent )
     setWindowIcon( QIcon(":/icons/supernova-16x16.png" ) );
     setupEmpiresModel();
 
-    TurnParser tp("../296_2.pdf");
-//    tp.writeOut("296_2.pdf");
-
 }
 
 MainWindow::~MainWindow()
