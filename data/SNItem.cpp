@@ -144,9 +144,97 @@ bool SNItem::saveItem() const
     return true;
 }
 
+bool SNItem::updateItem( const SNItem &item ) const
+{
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        if( !db.transaction() )
+            return false;
+        QSqlQuery query( db );
+        query.prepare( "UPDATE items SET iname=:iname, category=:category, subcategory=:subcategory, size=:size, desc=:desc, structure=:structure "
+                       "WHERE iname = :oldname" );
+        query.bindValue( ":iname", item.name());
+        query.bindValue( ":category", item.category());
+        query.bindValue( ":subcategory", item.subcategory());
+        query.bindValue( ":size", item.weight());
+        query.bindValue( ":desc", item.desc() );
+        query.bindValue( ":structure", item.structure() );
+        query.bindValue( ":oldname", m_name );
+
+        if ( !query.exec() )
+            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        QMapIterator<QString, int> it( item.getComponents() );
+        while( it.hasNext() )
+        {
+            it.next();
+            query.prepare( "UPDATE itemcomp SET iname = :iname, quantity=:quantity, resource=:resource "
+                       "WHERE iname = :oldname" );
+            query.bindValue( ":iname", item.name() );
+            query.bindValue( ":quantity", it.value() );
+            query.bindValue( ":resource", it.key() );
+            query.bindValue( ":oldname", m_name );
+
+            if ( !query.exec() )
+                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+        }
+
+        foreach( ItemEffect effect, item.getEffects() )
+        {
+            it.next();
+            query.prepare( "UPDATE itemeffects SET iname = :iname, effect=:effect, value=:value, prettyvalue=:prettyvalue, counter=:counter "
+                       "WHERE iname = :oldname" );
+            query.bindValue( ":iname", item.name() );
+            query.bindValue( ":effect", effect.name() );
+            query.bindValue( ":value", effect.value() );
+            query.bindValue( ":prettyvalue", effect.prettyValue() );
+            query.bindValue( ":counter", effect.counter() );
+            query.bindValue( ":oldname", m_name );
+
+            if ( !query.exec() )
+                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        }
+        query.finish();
+        if( !db.commit() )
+            return false;
+
+    }
+    return true;
+}
+
 bool SNItem::deleteItem() const
 {
-    return false;
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        if( !db.transaction() )
+            return false;
+        QSqlQuery query( db );
+        query.prepare( "DELETE FROM items WHERE iname = :iname");
+        query.bindValue( ":iname", m_name );
+
+        if ( !query.exec() )
+            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        query.prepare( "DELETE FROM itemcomp WHERE iname = :iname");
+        query.bindValue( ":iname", m_name );
+
+        if ( !query.exec() )
+            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        query.prepare( "DELETE FROM itemeffects WHERE iname = :iname");
+        query.bindValue( ":iname", m_name );
+
+        if ( !query.exec() )
+            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+
+        query.finish();
+        if( !db.commit() )
+            return false;
+    }
+    return true;
 }
 
 void SNItem::writeToDatabase( const QList<SNItem> &list)
@@ -313,11 +401,72 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
 
 SNItem SNItem::getItem( const QString &name )
 {
-    QList<SNItem> items = getItemsFromDatabase();
-    for (int i = 0; i < items.size(); ++i)
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
     {
-        if (items.at(i).name() == name)
-            return items.at(i);
+        QSqlQuery query( db );
+        query.prepare("SELECT * FROM items WHERE iname = :iname");
+        query.bindValue(":iname", name);
+        query.exec();
+        query.next();
+
+        int idxName = query.record().indexOf( "iname" );
+        int idxCategory = query.record().indexOf( "category" );
+        int idxSubCategory = query.record().indexOf( "subcategory" );
+        int idxSize = query.record().indexOf( "size" );
+        int idxDesc = query.record().indexOf( "desc" );
+        int idxStructure = query.record().indexOf( "structure" );
+
+        QString name = query.value( idxName ).toString();
+        QString category = query.value( idxCategory ).toString();
+        QString sub_category = query.value( idxSubCategory ).toString();
+        QString desc = query.value( idxDesc ).toString();
+        int size = query.value( idxSize ).toInt();
+        int structure = query.value( idxStructure ).toInt();
+
+        query.finish();
+
+        SNItem item( name, desc, category, sub_category, size, structure );
+
+        // Get Components
+        QSqlQuery comp_query( db );
+        comp_query.prepare("SELECT * FROM itemcomp WHERE iname = :iname" );
+        comp_query.bindValue(":iname", name );
+        if( !comp_query.exec() )
+            qDebug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
+        int idxItem = comp_query.record().indexOf( "resource" );
+        int idxQuan = comp_query.record().indexOf( "quantity" );
+        while ( comp_query.next() )
+        {
+            QString name = comp_query.value( idxItem ).toString();
+            quint64 quant = comp_query.value( idxQuan ).toUInt();
+            item.addComponent( name, quant );
+        }
+        comp_query.finish();
+
+        // Get Effects
+        QSqlQuery effect_query( db );
+        effect_query.prepare("SELECT * from itemeffects WHERE iname = :iname" );
+        effect_query.bindValue(":iname", name );
+        if( !effect_query.exec() )
+            qDebug() << effect_query.executedQuery()<< "\n error: " << effect_query.lastError();
+        int idxEffect = effect_query.record().indexOf( "effect" );
+        int idxValue = effect_query.record().indexOf( "value" );
+        int idxPrettyValue = effect_query.record().indexOf( "prettyvalue" );
+        int idxCounter = effect_query.record().indexOf( "counter" );
+        while ( effect_query.next() )
+        {
+            QString name = effect_query.value( idxEffect ).toString();
+            int value = effect_query.value( idxValue ).toInt();
+            QString prettyval = effect_query.value( idxPrettyValue ).toString();
+            QString counter = effect_query.value( idxCounter ).toString();
+            ItemEffect effect( name, value, prettyval, counter );
+            item.addEffect( effect );
+        }
+        effect_query.finish();
+
+
+        return item;
     }
     return SNItem();
 }

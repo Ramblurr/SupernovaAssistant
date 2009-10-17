@@ -4,6 +4,14 @@ ItemEffect::ItemEffect()
 {
 }
 
+ItemEffect::ItemEffect( const QString &name, int value, const QString &prettyval )
+        : m_name( name )
+        , m_value( value )
+        , m_prettyValue( prettyval )
+        , m_counter( "" )
+{
+}
+
 ItemEffect::ItemEffect( const QString &name, int value, const QString &prettyval, const QString &counter)
         : m_name( name )
         , m_value( value )

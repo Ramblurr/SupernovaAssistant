@@ -32,6 +32,7 @@ public:
     int structure() const { return m_structure; }
 
     bool saveItem() const;
+    bool updateItem( const SNItem &item ) const;
     bool deleteItem() const;
 
     bool operator==(const SNItem &other) const;

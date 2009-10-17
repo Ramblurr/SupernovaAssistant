@@ -7,6 +7,7 @@ class ItemEffect
 {
 public:
     ItemEffect();
+    ItemEffect( const QString &name, int value, const QString &prettyval );
     ItemEffect( const QString &name, int value, const QString &prettyval, const QString &counter);
     ItemEffect(const ItemEffect &other);
     ItemEffect& operator=(const ItemEffect &other);
@@ -16,6 +17,8 @@ public:
     int value() const { return m_value; }
     QString prettyValue() const { return m_prettyValue; }
     QString counter() const { return m_counter; }
+
+    void setCounter( const QString &counter ) { m_counter = counter; }
 
     friend QDataStream &operator<<(QDataStream &out, const ItemEffect &e)
     {
