@@ -33,6 +33,16 @@ class ItemModel : public QAbstractTableModel
 
      //! Returns a QPair<#items, tonnage> of the design represented in the model
      QPair<int, int> totalItemsTonnage() const;
+
+     int actionPoints() const;
+     int warpBubble() const;
+     int warpRating() const;
+     int thrust() const;
+     int massThrustRatio() const;
+     int firewpower() const;
+     int integrity() const;
+     int firecontrol() const;
+
 signals:
     void componentsChanged( const SNItem &, quint64 diff );
     void statsChanged( int, quint64 );

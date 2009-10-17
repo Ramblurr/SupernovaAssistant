@@ -276,3 +276,34 @@ QPair<int, int> ItemModel::totalItemsTonnage() const
     }
     return QPair<int, int>(total, tonnage);
 }
+
+int ItemModel::thrust() const
+{
+    int thr = 0;
+    for( int i = 0; i < m_data.size(); i++ )
+    {
+       SNItem item = m_data.at(i).first;
+       int quantity = m_data.at(i).second;
+
+       if( item.subcategory() == "Engines" )
+        foreach( ItemEffect effect, item.getEffects() )
+            if( effect.name() == "Maneuverability" )
+            {
+                thr += quantity * effect.value();
+                break;
+            }
+    }
+    return thr;
+}
+
+int ItemModel::actionPoints() const
+{
+    int thr = thrust();
+    qDebug() << "thrust=" << thr;
+
+    int tonnage = totalItemsTonnage().second;
+    qDebug() << "tons=" << tonnage;
+    if( tonnage > 0 )
+        return thr / tonnage;
+    return 0;
+}

@@ -1,4 +1,6 @@
 #include "ItemBrowser.h"
+
+#include "TurnParser.h"
 #include "../ui/ui_ItemBrowser.h"
 
 #include "../data/SNItem.h"
@@ -29,13 +31,13 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
     m_ui->setupUi(this);
     this->setWindowTitle("SN Assistant: Item Editor");
 
-    m_itemModel = new ComponentsModel( SNItem::getItemsFromDatabase(), this  );
-    m_ui->treeView->setModel( m_itemModel );
+    m_itemModel = new ComponentsModel( /*SNItem::getItemsFromDatabase(),*/ this  );
+    m_ui->treeView->setModel( m_itemModel);
     m_ui->treeView->setHeaderHidden( true );
     ItemDelegate* delegate = new ItemDelegate( this );
     m_ui->treeView->setItemDelegate( delegate );
     m_ui->treeView->setDragEnabled( true );
-//    m_ui->treeView->viewport()->setAcceptDrops(true);
+    m_ui->treeView->viewport()->setAcceptDrops(true);
 
     // Setup categories
     loadCategories();
@@ -98,7 +100,15 @@ void ItemBrowser::changeEvent(QEvent *e)
 
 void ItemBrowser::on_addItemBut_clicked()
 {
-    SNItem item("New Item", "Edit me", "");
+    int num = 1;
+    while( true )
+    {
+        SNItem i = SNItem::getItem("New Item " + QString::number(num) );
+        if( i.name() == "" )
+            break;
+        num++;
+    }
+    SNItem item("New Item " + QString::number(num), "Edit me", "Misc");
     m_itemModel->appendItem( item );
 }
 
@@ -200,7 +210,8 @@ void ItemBrowser::populateFields( const SNItem &item )
             idx = m_ui->subcatCombo->findText( item.subcategory() );
             m_ui->subcatCombo->setCurrentIndex( idx );
         }
-    }
+    } else 
+        qDebug() << "CAT not found: '" << item.category() <<"'";
     m_ui->tonsSpin->setValue( item.weight() );
     m_ui->structureSpin->setValue( item.structure() );
 
@@ -231,8 +242,8 @@ SNItem ItemBrowser::itemFromFields() const
 {
     QString name = m_ui->nameEdit->text().trimmed();
     QString desc = m_ui->descEdit->toPlainText();
-    QString category = m_ui->categoryCombo->currentText();
-    QString sub_category = m_ui->subcatCombo->currentText();
+    QString category = m_ui->categoryCombo->currentText().trimmed();
+    QString sub_category = m_ui->subcatCombo->currentText().trimmed();
     int tons = m_ui->tonsSpin->value();
     int struc = m_ui->structureSpin->value();
 
@@ -387,19 +398,12 @@ void ItemBrowser::on_exportBut_clicked()
     SNItem::createXML(items, fileName);
 }
 
-void ItemBrowser::on_saveButton_clicked()
+void ItemBrowser::on_turnSheetBut_clicked()
 {
-    //Save to the database
-    QMessageBox msgBox;
-    msgBox.setIcon( QMessageBox::Warning );
-    msgBox.setText("Database will be overwritten with your changes");
-    msgBox.setInformativeText("Are you sure you want to save all your changes?");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
-    int ret = msgBox.exec();
-    if( ret == QMessageBox::No )
-        return;
-    QList<SNItem> items = m_itemModel->getItems();
-    SNItem::writeToDatabase( items );
-    emit( items_changed() );
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select turn sheet PDF"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("XML Files(*.xml)"));
+    qDebug() << " got file " << fileName;
+
+    TurnParser tp( fileName );
+
+//    tp.text();
 }

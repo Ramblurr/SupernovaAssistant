@@ -13,6 +13,7 @@ namespace SN
     {
         Root = 0,
         Category,
+        SubCategory,
         Component
     };
 
@@ -28,17 +29,20 @@ class ComponentsModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ComponentsModel(const QList<SNItem> &items, QObject *parent = 0);
+    ComponentsModel( QObject *parent = 0, const QString &category_filter = "");
 
     QModelIndex index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
     QModelIndex parent ( const QModelIndex & index ) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
+    bool canFetchMore ( const QModelIndex & parent ) const;
+    void fetchMore ( const QModelIndex & parent );
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     QStringList mimeTypes() const;
     QMimeData* mimeData(const QModelIndexList &indexes) const;
+
 
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
     bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() );
@@ -50,7 +54,6 @@ public:
 
 private:
     void emitRowChanged(int parent, int child = -1);
-    void setupModelData();
     bool prepareSubCat( const SNItem &item, ComponentTreeItem *parent );
     void getItemsRecursive( const ComponentTreeItem *parent, QList<SNItem> &list ) const;
 
@@ -58,6 +61,7 @@ private:
     ComponentTreeItem *m_rootItem;
     QHash<QString, ComponentTreeItem*> m_cats;
     QHash<QString, ComponentTreeItem*> m_subcats;
+    QString m_catfilter;
 };
 
 class ComponentTreeItem
@@ -68,7 +72,10 @@ public:
 
     void appendChild ( ComponentTreeItem *child );
     bool removeChild(  ComponentTreeItem *child );
+    void setChildren( QList<ComponentTreeItem*> children );
     void setData( const QVariant &data );
+    void setQuery( const QString &query );
+    void setLoaded( bool loaded );
 
     ComponentTreeItem *child ( int row );
     QList<ComponentTreeItem*> children() const;
@@ -76,6 +83,7 @@ public:
     int childCount() const;
     int columnCount() const;
     QVariant data () const;
+    bool loaded() const;
     int row() const;
     ComponentTreeItem *parent();
 //    SNItem item() const;
@@ -83,11 +91,15 @@ public:
     {
         return m_type;
     }
+    QString query() const { return m_query; }
 private:
     QList<ComponentTreeItem*> childItems;
     SN::Type m_type;
     QVariant itemData;
     ComponentTreeItem *parentItem;
+
+    QString m_query;
+    bool m_loaded;
 
 };
 

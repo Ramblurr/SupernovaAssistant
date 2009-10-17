@@ -48,9 +48,10 @@ private:
     void setupDesignsModel();
 
 public slots:
-    void statsChangedSlot( int, quint64 );
+    void statsChangedSlot(  int numitems, quint64 tons );
 
 private slots:
+    void on_desiredAPSpin_valueChanged(int );
     void on_generateBI_clicked();
     void on_generateSHIP_clicked();
     void on_addButton_clicked();

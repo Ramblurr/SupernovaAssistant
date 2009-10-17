@@ -48,7 +48,7 @@ private:
     void loadCategoryAndChildren( const QDomElement & element, const QString & parent = "" );
 
 private slots:
-    void on_saveButton_clicked();
+    void on_turnSheetBut_clicked();
     void on_exportBut_clicked();
     void fieldsChangedSot();
     void on_importBut_clicked();

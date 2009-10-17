@@ -4,8 +4,9 @@
         <category name="Technology" />
         <category name="Composite Material" />
         <category name="Complex Material" />
-        <category name="Refined Material" />
+        <category name="Refined Resource" />
         <category name="Army Unit" />
+        <category name="Misc" />
         <category name="Ship Component">
             <category name="Armor" />
             <category name="Shields" />

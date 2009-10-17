@@ -7,6 +7,7 @@ void ItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & opti
     switch ( index.model()->data(index, SN::TypeRole).toInt() )
     {
         case SN::Category:
+        case SN::SubCategory:
         {
             QStyleOptionButton button;
             button.state |= option.state;
@@ -30,6 +31,7 @@ QSize ItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModel
     switch ( index.model()->data(index, SN::TypeRole).toInt() )
     {
         case SN::Category:
+        case SN::SubCategory:
         {
             QString text = index.model()->data(index, Qt::DisplayRole).toString();
             QRect rect = option.fontMetrics.boundingRect(option.rect, Qt::AlignCenter,  text );

@@ -45,7 +45,7 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
         if( ShipDesigner::m_components.at(i).category() == "Ship Component" )
             items << ShipDesigner::m_components.at(i);
     qDebug() << "items cnt: " << items.size();
-    m_componentsModel = new ComponentsModel( items );
+    m_componentsModel = new ComponentsModel( this, "Ship Component");
     m_ui->componentList->setModel( m_componentsModel );
     ItemDelegate* idelegate = new ItemDelegate( this );
     m_ui->componentList->setItemDelegate( idelegate );
@@ -207,7 +207,7 @@ void ShipDesigner::on_designsCombo_currentIndexChanged( int index )
         return;
     m_itemModel->clear();
     m_detailedModel->clear();
-    m_ui->tonnageLabel->setText("0 tons");
+    m_ui->tonnageLabel->setText("0");
     m_ui->countLabel->setText("0");
     m_currentDesign = m_designs.at( index );
     m_ui->designNameEdit->setText( m_currentDesign.name() );
@@ -268,14 +268,20 @@ void ShipDesigner::on_addButton_clicked()
     }
 }
 
-void ShipDesigner::statsChangedSlot(int numitems, quint64 tons )
+void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
 {
+    // Set item count total
     int curr = m_ui->countLabel->text().toInt();
+
+    // set tonnage
     QString tmp = m_ui->tonnageLabel->text();
     tmp.chop(5);
     quint64 tonnage = tmp.toUInt();
-    m_ui->tonnageLabel->setText( QString::number( tonnage + tons ) + " tons" );
+    m_ui->tonnageLabel->setText( QString::number( tonnage + tons ) );
     m_ui->countLabel->setText( QString::number( curr + numitems ) );
+
+    // set AP
+    m_ui->apsLabel->setText( QString::number( m_itemModel->actionPoints() ) );
 }
 
 SNItem ShipDesigner::getItem( const QString &name )
@@ -324,6 +330,11 @@ void ShipDesigner::on_generateSHIP_clicked()
 }
 
 void ShipDesigner::on_generateBI_clicked()
+{
+
+}
+
+void ShipDesigner::on_desiredAPSpin_valueChanged(int desired_ap)
 {
 
 }

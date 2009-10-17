@@ -5,12 +5,13 @@
 #include <QDebug>
 #include <QMutableListIterator>
 #include <QStringList>
-ComponentsModel::ComponentsModel(const QList<SNItem> &items, QObject *parent )
-        : QAbstractItemModel(parent)
-        , m_items(items)
+#include <QtSql>
+ComponentsModel::ComponentsModel(QObject *parent, const QString &category_filter )
+        : QAbstractItemModel(parent), m_catfilter( category_filter )
 {
     m_rootItem = new ComponentTreeItem( SN::Root, "" );
-    setupModelData();
+    m_rootItem->setQuery( "SELECT count(DISTINCT category) FROM items" );
+    fetchMore( QModelIndex() );
 }
 
 QModelIndex ComponentsModel::index ( int row, int column, const QModelIndex & parent ) const
@@ -54,6 +55,7 @@ Qt::ItemFlags ComponentsModel::flags(const QModelIndex &index) const
     switch ( i->type() )
     {
         case SN::Category:
+        case SN::SubCategory:
             break;
         case SN::Component:
             flags |= Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
@@ -75,7 +77,21 @@ int ComponentsModel::rowCount( const QModelIndex &parent ) const
     else
         parentItem = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
 
-    return parentItem->childCount();
+    if( parentItem->type() == SN::Component )
+        return 0;
+
+    if( parentItem->childCount() == 0)
+    {
+        QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+        if ( db.isOpen() )
+        {
+            QSqlQuery query( db );
+            query.exec( parentItem->query() );
+            query.next();
+            return query.value(0).toInt();
+        }
+    } else
+        return parentItem->childCount();
 }
 
 QVariant ComponentsModel::data( const QModelIndex &index, int role ) const
@@ -89,6 +105,7 @@ QVariant ComponentsModel::data( const QModelIndex &index, int role ) const
         switch ( i->type() )
         {
             case SN::Category:
+            case SN::SubCategory:
                 return i->data();
             case SN::Component:
                 return i->data().value<SNItem>().name();
@@ -131,6 +148,113 @@ int ComponentsModel::columnCount ( const QModelIndex &parent ) const
     return 1;
 }
 
+bool ComponentsModel::canFetchMore ( const QModelIndex & parent ) const
+{
+    ComponentTreeItem *i = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
+    if( i != 0 ) {
+        qDebug() << i->data().toString() << i->loaded();
+        return !i->loaded();
+    }
+    return false;
+}
+
+void ComponentsModel::fetchMore ( const QModelIndex & parent )
+{
+    ComponentTreeItem *i = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
+    if( i == 0 )
+        i = m_rootItem;
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+    {
+        QSqlQuery query( db );
+
+        QList<ComponentTreeItem*> newitems;
+
+        switch( i->type() )
+        {
+            case SN::Root:
+            {
+                QString sql = "SELECT DISTINCT category FROM items";
+                if( m_catfilter != "" )
+                    sql += " WHERE category = '" + m_catfilter + "'";
+                query.exec( sql );
+                int idxCategory = query.record().indexOf( "category" );
+                while ( query.next() )
+                {
+                    QString cat = query.value( idxCategory ).toString();
+                    ComponentTreeItem* child = new ComponentTreeItem( SN::Category, cat, i );
+                    m_cats.insert(cat, child);
+                    child->setQuery( "SELECT count(*) FROM items WHERE category = '" + cat + "'");
+                    newitems  << child;
+                }
+                break;
+            }
+        case SN::Category:
+            {
+                query.exec( "SELECT DISTINCT subcategory FROM items WHERE category = '" + i->data().toString() + "'" );
+                int idxSubCategory = query.record().indexOf( "subcategory" );
+                while ( query.next() )
+                {
+                    QString subcat = query.value( idxSubCategory ).toString();
+                    if( subcat.trimmed().length() == 0 )
+                        continue;
+                    ComponentTreeItem* child = new ComponentTreeItem( SN::SubCategory, subcat, i );
+                    m_subcats.insert(subcat, child);
+                    child->setQuery("SELECT count(*) FROM items WHERE subcategory = '" + subcat + "'");
+                    newitems << child;
+                }
+
+                query.exec( "SELECT iname FROM items WHERE category = '" + i->data().toString() + "' AND (subcategory IS NULL OR subcategory = '')" );
+                int idxName = query.record().indexOf( "iname" );
+                qDebug() << query.lastQuery();
+                while ( query.next() )
+                {
+                    QString name = query.value( idxName ).toString();
+                    SNItem item = SNItem::getItem( name );
+                    ComponentTreeItem* child = new ComponentTreeItem( SN::Component, item, i );
+                    newitems << child;
+                }
+                break;
+            }
+        case SN::SubCategory:
+            {
+                query.exec( "SELECT * FROM items WHERE subcategory = '" + i->data().toString() + "'" );
+                int idxName = query.record().indexOf( "iname" );
+                qDebug() << query.lastQuery();
+                while ( query.next() )
+                {
+                    QString name = query.value( idxName ).toString();
+                    SNItem item = SNItem::getItem( name );
+                    ComponentTreeItem* child = new ComponentTreeItem( SN::Component, item, i );
+                    newitems << child;
+                }
+                break;
+            }
+        default:
+            break;
+        }
+
+        QList<ComponentTreeItem*> olditems = i->children();
+
+
+        if( olditems.size() != newitems.size() )
+        {
+//            beginInsertRows( parent, 0, newitems.size() );
+            i->setChildren( newitems );
+//            endInsertRows();
+        }
+        else {
+            i->setChildren( newitems );
+            for(int i = 0; i < olditems.size(); i++ )
+            {
+                if( olditems.at(i)->data() != newitems.at(i)->data() )
+                    emit( dataChanged( parent.child( i,0 ), parent.child( i, 0 ) ) );
+            }
+        }
+        i->setLoaded( true );
+    }
+}
+
 bool ComponentsModel::setData ( const QModelIndex & index, const QVariant & value, int role )
 {
     Q_UNUSED( role )
@@ -147,6 +271,7 @@ bool ComponentsModel::setData ( const QModelIndex & index, const QVariant & valu
 
     SNItem old_item = i->data().value<SNItem>();
     SNItem new_item = value.value<SNItem>();
+    old_item.updateItem( new_item );
 
     //Check to see if we need to change the category
     // and hence change the tree structure.
@@ -215,18 +340,20 @@ bool ComponentsModel::removeItem ( const QModelIndex & index )
     SNItem old_item = i->data().value<SNItem>();
     //Second, remove the old data
     ComponentTreeItem* oldcat = m_cats.value(old_item.category());
+    old_item.deleteItem();
     if( oldcat )
         oldcat->removeChild( i );
     else
         m_rootItem->removeChild( i );
      emit reset();
+
 }
 
 void ComponentsModel::appendItem( const SNItem &item )
 {
     if( item.category() == "")
     {
-        ComponentTreeItem* c = new ComponentTreeItem( SN::Component, QVariant::fromValue(item), m_rootItem );
+        ComponentTreeItem* c = new ComponentTreeItem( SN::Component, item, m_rootItem );
         m_rootItem->appendChild(c);
     }
     else if( !m_cats.contains( item.category() ) ) // category not seen before
@@ -235,7 +362,7 @@ void ComponentsModel::appendItem( const SNItem &item )
         m_rootItem->appendChild( p );
         if( !prepareSubCat( item, p ) )
         {
-            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, QVariant::fromValue(item), p );
+            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, item, p );
             p->appendChild( c );
         }
         m_cats.insert( item.category(), p );
@@ -244,11 +371,12 @@ void ComponentsModel::appendItem( const SNItem &item )
         ComponentTreeItem* p = m_cats.value( item.category(), 0);
         if( !prepareSubCat( item, p ) )
         {
-            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, QVariant::fromValue(item), p );
+            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, item, p );
             p->appendChild( c );
         }
     } else
         qDebug() << "IMPOSSIBLE!";
+    item.saveItem();
     emit( reset() );
 }
 
@@ -272,17 +400,6 @@ void ComponentsModel::getItemsRecursive( const ComponentTreeItem *parent, QList<
         if( idx )
             getItemsRecursive( idx, list );
     }
-}
-
-void ComponentsModel::setupModelData()
-{
-//    m_items = SNItem::getItems();
-
-    foreach(SNItem item, m_items)
-    {
-        appendItem( item );
-    }
-
 }
 
 bool ComponentsModel::prepareSubCat( const SNItem &item, ComponentTreeItem *parent )
@@ -333,6 +450,7 @@ ComponentTreeItem::ComponentTreeItem( const SN::Type &type, const QVariant &data
         : m_type( type )
         , itemData( data )
         , parentItem( parent )
+        , m_loaded( false )
 {}
 
 ComponentTreeItem::~ComponentTreeItem()
@@ -360,10 +478,25 @@ bool ComponentTreeItem::removeChild(  ComponentTreeItem *child )
     return false;
 }
 
+void ComponentTreeItem::setChildren( QList<ComponentTreeItem*> children )
+{
+    childItems = children;
+}
+
 void ComponentTreeItem::setData( const QVariant &data )
 {
     itemData = data;
 }
+
+void ComponentTreeItem::setQuery( const QString &query )
+{
+    m_query = query;
+}
+
+ void ComponentTreeItem::setLoaded( bool loaded )
+ {
+     m_loaded = loaded;
+ }
 
 ComponentTreeItem *ComponentTreeItem::child ( int row )
 {
@@ -388,6 +521,11 @@ int ComponentTreeItem::columnCount() const
 QVariant ComponentTreeItem::data () const
 {
     return itemData;
+}
+
+bool ComponentTreeItem::loaded () const
+{
+    return m_loaded;
 }
 
 ComponentTreeItem *ComponentTreeItem::parent()
