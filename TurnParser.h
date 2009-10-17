@@ -16,8 +16,8 @@ public:
     QString text() const;
     void writeOut( const QString &filename );
 
-    SNItem parseANZs( const QStringList &anzs  ) const;
-    SNItem parseANZs() const;
+    QList<SNItem> parseANZs( const QStringList &anzs  ) const;
+    QList<SNItem> parseANZs() const;
 
 private:
     void parseData();

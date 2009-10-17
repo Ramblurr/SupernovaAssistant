@@ -15,7 +15,7 @@ TurnParser::TurnParser(): m_filename( "" ), m_text( "" ), m_parsed( false ), m_d
 
 TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_text( "" ), m_parsed( false ), m_data()
 {
-    Poppler::Document *doc = Poppler::Document::load(filename);
+    Poppler::Document *doc = Poppler::Document::load( filename );
     int count = doc->numPages();
 
     QTextStream out( &m_text, QIODevice::WriteOnly );
@@ -211,17 +211,18 @@ void TurnParser::writeOut( const QString &filename )
     outfile.close();
 }
 
-SNItem TurnParser::parseANZs() const
+QList<SNItem> TurnParser::parseANZs() const
 {
     QStringList anzs = m_data.values("ANZ");
     return parseANZs(anzs);
 }
-SNItem TurnParser::parseANZs( const QStringList &anzs ) const
+QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
 {
     qDebug() << "anzs: " << anzs.size();
     QRegExp rx;
     rx.setPatternSyntax(QRegExp::RegExp);
 
+    QList<SNItem> items;
     foreach( QString anz, anzs)
     {
         rx.setPattern("ANZ:\\s([^\\n]+)\\n");
@@ -240,13 +241,21 @@ SNItem TurnParser::parseANZs( const QStringList &anzs ) const
             rx.setMinimal( false );
             QString desc = rx.cap( 2 );
 
+            // Is technology?
+
+            bool istech = false;
+            if( anz.contains("This Item cannot be manufactured,") )
+                istech = true;
+
             // Parse Weight
             rx.setPattern("\\((\\d*),?(\\d+),?(\\d*)\\s*\\n*\\s*tons?\\)");
             rx.indexIn( anz );
             QString tons = rx.cap(1) + rx.cap(2) + rx.cap(3);
 
             // Parse classification, range and structure
-            rx.setPattern("(Classification|Range|Structural\\s+Integrity): (\\S+\\s?\\S+)");
+            // note: this regexp assumes the values of classification/range won't
+            // be longer more than three words
+            rx.setPattern("(Classification|Range|Structural\\s+Integrity): (\\S+\\s?\\S+\\s?\\S+|\\d+)");
             QString *classification = new QString();
             QString *range = new QString();
             QString *integrity = new QString();
@@ -267,19 +276,11 @@ SNItem TurnParser::parseANZs( const QStringList &anzs ) const
                         current->append( rx.cap(2) );
                 pos += rx.matchedLength();
             }
-//            qDebug() << "classification" << *classification;
-//            qDebug() << "range" << *range;
-//            qDebug() << "integrity" << *integrity;
+            *integrity = integrity->left(integrity->indexOf("\n")).trimmed();
 
             // Parse Components
 
-//            QString anz_line = anz.replace("\n", " ");
-//            rx.setPattern("[.\\n]*tons?\\)\\s(?:\\d+.*-\\s)+(?:\\d+.*)");
-//            pos=0;
-//            while ((pos = rx.indexIn(anz, pos)) != -1)
-//            {
-//            }
-            rx.setPattern("[.\\n]*tons?\\)\\s((?:\\d+.*-\\s)+(?:\\d+.*))\n(.*:)");
+            rx.setPattern("[.\\n]*tons?\\)\\s+((?:\\d+.*-\\s)+(?:\\d+.*))\n(.*:)");
             rx.setMinimal(true);
             rx.indexIn(anz);
             rx.setMinimal(false);
@@ -289,35 +290,42 @@ SNItem TurnParser::parseANZs( const QStringList &anzs ) const
             entry = entry.replace("\n", "").trimmed();
             QStringList comps  = entry.split(" - ");
 //            qDebug() << "composed of";
+            QMap<QString, int> components;
             foreach( QString comp, comps )
             {
                 comp = comp.trimmed();
                 int div = comp.indexOf(" ");
-                QString amt = comp.left(div).trimmed();
+                QString amt = comp.left(div).trimmed().replace(",","");
                 QString resource = comp.right(comp.length()-div).trimmed();
                 resource.replace(QRegExp(" {2,}"), " ");
 //                qDebug() << amt << resource;
+                bool ok;
+                components.insert( resource, amt.toInt(&ok) );
+                if( !ok && !istech )
+                    qWarning() << "resource amount toInt error while parsing item: " << name << " resource: " << resource << " amt:" << amt;
             }
 
-            // Parse Effects
+            // Parse Effects & counters
 
             rx.setPattern("Prerequisite Technologies:[^\\n]+\\n");
             rx.indexIn(anz);
             int prereqs_end = anz.indexOf(rx) + rx.matchedLength();
 
-            rx.setPattern("([^\\:]+|Counters): (?:(\\S+) \[\\D*(\\d+)\\]|([^\\n]+))");
+            rx.setPattern("([^\\:]+|Counters): (?:(\\S+) \\[\\D*(\\d+)\\]|([^\\n]+))");
             QList<ItemEffect*> effects;
             pos = prereqs_end;
             ItemEffect* effect = 0;
             bool pending = false;
             while ((pos = rx.indexIn(anz, pos)) != -1)
             {
-                if( rx.cap(1) != "Counters" )
+                if( rx.cap(1).trimmed() != "Counters" )
                 {
+
                     if( pending && effect != 0)
                     {
                         // There is no counter for the effect
                         effects << effect;
+                        pending = false;
                     }
                     QString name = rx.cap(1).trimmed();
                     QString val = rx.cap(3).trimmed();
@@ -327,38 +335,68 @@ SNItem TurnParser::parseANZs( const QStringList &anzs ) const
                     //    e.g. Point Defense Accuracy: Fair [50]
                     // If there is no numeric value the pvalue is captured into spot 4
                     //    e.g. Warp Survey Gear: Fair
-                    if( val != "" )
+                    int val_numeric = -1;
+                    if( val != "" ) {
                         pval = rx.cap(2).trimmed();
+                        bool ok;
+                        val_numeric = val.toInt(&ok);
+                        if( !ok )
+                            qWarning() << "converting effect value to int error while parsing item " << name;
+                    }
                     else
                         pval = rx.cap(4).trimmed();
 
-                    effect = new ItemEffect( name, val.toInt(), pval );
+                    effect = new ItemEffect( name, val_numeric, pval );
                     pending = true;
+
                 } else {
                     if( pending  && effect != 0)
                     {
                         //Found the current effect's counter
                         effect->setCounter( rx.cap(4) );
                         effects << effect;
-                    } else {
-                        qDebug() << "Got Counter without Effect";
-                    }
+                        pending = false;
+                    } else
+                        qWarning() << "got Counter without effect while parsing item " << name;
                 }
                 pos += rx.matchedLength();
             }
+            if( pending && effect != 0 )
+                effects << effect;
 
-            rx.setPattern( "([^\\:]+):\\s(\\S+)(?:\\s\\[(?:[^\\:]+:\\s)?(\\d+)\\])?\\s+(?:Counters:\\s(.*)\\n)" );
-            rx.setMinimal(true);
-            rx.indexIn(anz, prereqs_end);
-            rx.setMinimal(false);
-            qDebug() << rx.capturedTexts();
+            // convert list of ptrs
+            QList<ItemEffect> effects_normal;
+            foreach(ItemEffect* eff, effects)
+            {
+                effects_normal << ItemEffect( *eff );
+            }
+
+//            rx.setPattern( "([^\\:]+):\\s(\\S+)(?:\\s\\[(?:[^\\:]+:\\s)?(\\d+)\\])?\\s+(?:Counters:\\s(.*)\\n)" );
+//            rx.setMinimal(true);
+//            rx.indexIn(anz, prereqs_end);
+//            rx.setMinimal(false);
+//            qDebug() << rx.capturedTexts();
 
 //            qDebug() << "Effect: " << rx.cap(1) << rx.cap(2) << rx.cap(3);
 //            qDebug() << "Counters: " << rx.cap(4);
 
+            bool ok;
+            int tons_numeric = tons.toInt(&ok);
+            if( !ok && !istech )
+                qWarning() << "got int conversion error for tonnage while parsing item " << name;
 
-            // Parse Counters
+
+            int struct_numeric = integrity->toInt(&ok);
+            if( !ok && !istech && classification->trimmed() != "Mass Destruction Device")
+                qWarning() << "got int conversion error for integrity while parsing item " << name << " " << *integrity;
+
+//            qDebug() << name << " " << classification->trimmed();
+            SNItem item(name, desc, QString(classification->trimmed()), "", tons_numeric, struct_numeric);
+            item.addComponents( components );
+            item.addEffects( effects_normal );
+
+            items << item;
         }
     }
-    return SNItem();
+    return items;
 }
