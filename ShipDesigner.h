@@ -41,6 +41,7 @@ private:
     ShipDesign m_currentDesign;
     ItemModel *m_itemModel;
     MaterialsModel *m_detailedModel;
+    QMenu* m_detailedTableContextMenu;
     ComponentsModel *m_componentsModel;
     QMap<SNItem, quint64> m_materials;
     QList<SNItem> m_components;
@@ -49,8 +50,10 @@ private:
 
 public slots:
     void statsChangedSlot(  int numitems, quint64 tons );
+    void copyDetailedTableTriggered();
 
 private slots:
+    void on_detailedTable_customContextMenuRequested(QPoint pos);
     void on_desiredAPSpin_valueChanged(int );
     void on_generateBI_clicked();
     void on_generateSHIP_clicked();
