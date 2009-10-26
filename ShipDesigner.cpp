@@ -40,13 +40,21 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     IntegerColumnDelegate *delegate = new IntegerColumnDelegate(0, INT_MAX);
     generic->insertColumnDelegate(1, delegate );
     m_ui->itemList->setItemDelegate( generic );
+    m_itemListContextMenu = new QMenu(this);
+    QAction *act = m_itemListContextMenu ->addAction("Copy");
+    connect(act, SIGNAL(triggered()), this, SLOT(copyItemListTriggered()));
+    act->setShortcut(QKeySequence::Copy);
+    act->setShortcutContext(Qt::WidgetShortcut);
+    m_ui->itemList->setContextMenuPolicy(Qt::CustomContextMenu);
+    m_ui->itemList->addAction(act);
 
     m_detailedModel = new MaterialsModel( this );
     m_ui->detailedTable->setModel( m_detailedModel );
     m_detailedTableContextMenu = new QMenu(this);
-    QAction *act = m_detailedTableContextMenu ->addAction("Copy");
+    act = m_detailedTableContextMenu ->addAction("Copy");
     connect(act, SIGNAL(triggered()), this, SLOT(copyDetailedTableTriggered()));
     act->setShortcut(QKeySequence::Copy);
+    act->setShortcutContext(Qt::WidgetShortcut);
     m_ui->detailedTable->setContextMenuPolicy(Qt::CustomContextMenu);
     m_ui->detailedTable->addAction(act);
 
@@ -296,6 +304,42 @@ void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
     // set AP
     m_ui->apsLabel->setText( QString::number( m_itemModel->actionPoints() ) );
 }
+void ShipDesigner::copyItemListTriggered()
+{
+    QItemSelectionModel * selection = m_ui->itemList->selectionModel();
+    QString selected_text;
+    // Case 1: Full rows seelected
+    QModelIndexList rows = selection->selectedRows();
+    if( rows.size() > 0)
+    {
+        qSort(rows);
+        foreach(QModelIndex row, rows)
+        {
+            QVariant data = m_itemModel->data(m_itemModel->index(row.row(), 0), Qt::DisplayRole);
+            QString text = data.toString();
+            selected_text.append( text );
+            data = m_itemModel->data(m_itemModel->index(row.row(), 1), Qt::DisplayRole);
+            text = data.toString();
+            selected_text.append("\t");
+            selected_text.append(text);
+            selected_text.append("\n");
+
+        }
+    } else { // Case 2: everything else
+        QModelIndexList indxs = selection->selectedIndexes();
+        qSort(indxs);
+        foreach(QModelIndex idx, indxs)
+        {
+            QVariant data = m_itemModel->data(idx, Qt::DisplayRole);
+            QString text = data.toString();
+            selected_text.append( text );
+            selected_text.append("\n");
+        }
+    }
+    //remove the last \n
+    selected_text = selected_text.left( selected_text.length() -1 );
+    QApplication::clipboard()->setText(selected_text);
+}
 
 void ShipDesigner::copyDetailedTableTriggered()
 {
@@ -393,4 +437,9 @@ void ShipDesigner::on_desiredAPSpin_valueChanged(int desired_ap)
 void ShipDesigner::on_detailedTable_customContextMenuRequested(QPoint pos)
 {
     m_detailedTableContextMenu->exec(m_ui->detailedTable->viewport()->mapToGlobal(pos));
+}
+
+void ShipDesigner::on_itemList_customContextMenuRequested(QPoint pos)
+{
+    m_itemListContextMenu->exec(m_ui->itemList->viewport()->mapToGlobal(pos));
 }
