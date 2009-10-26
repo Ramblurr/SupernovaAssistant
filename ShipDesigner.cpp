@@ -7,6 +7,7 @@
 #include "models/ComponentsModel.h"
 #include "models/ItemModel.h"
 #include "models/MaterialsModel.h"
+#include "models/ComponentsProxyModel.h"
 #include "delegates/GenericDelegate.h"
 #include "delegates/IntegerColumnDelegate.h"
 #include "delegates/ItemDelegate.h"
@@ -67,7 +68,11 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
             items << ShipDesigner::m_components.at(i);
     qDebug() << "items cnt: " << items.size();
     m_componentsModel = new ComponentsModel( this, "Ship Component");
-    m_ui->componentList->setModel( m_componentsModel );
+    m_proxy_model = new ComponentsProxyModel(this);
+    m_proxy_model->setFilterCaseSensitivity( Qt::CaseInsensitive );
+    m_proxy_model->setSourceModel( m_componentsModel );
+
+    m_ui->componentList->setModel( m_proxy_model );
     ItemDelegate* idelegate = new ItemDelegate( this );
     m_ui->componentList->setItemDelegate( idelegate );
     m_ui->componentList->setHeaderHidden( true );
@@ -134,8 +139,7 @@ void ShipDesigner::on_componentList_clicked( QModelIndex index )
 {
     if ( m_descHtmlTemplate == "" )
         return;
-    ComponentsModel *model = dynamic_cast<ComponentsModel*>( m_ui->componentList->model() );
-    QVariant data = model->data( index, SN::ComponentRole );
+    QVariant data = m_componentsModel->data( index, SN::ComponentRole );
     if ( data.canConvert<SNItem>() )
     {
         SNItem item = data.value<SNItem>();
@@ -295,7 +299,6 @@ void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
 
     // set tonnage
     QString tmp = m_ui->tonnageLabel->text();
-    tmp.chop(5);
     quint64 tonnage = tmp.toUInt();
     m_ui->tonnageLabel->setText( QString::number( tonnage + tons ) );
     m_ui->countLabel->setText( QString::number( curr + numitems ) );
@@ -441,4 +444,9 @@ void ShipDesigner::on_detailedTable_customContextMenuRequested(QPoint pos)
 void ShipDesigner::on_itemList_customContextMenuRequested(QPoint pos)
 {
     m_itemListContextMenu->exec(m_ui->itemList->viewport()->mapToGlobal(pos));
+}
+
+void ShipDesigner::on_componentFilterEdit_textChanged(QString filter)
+{
+    m_proxy_model->setFilterWildcard( filter );
 }

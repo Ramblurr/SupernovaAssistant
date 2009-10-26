@@ -44,6 +44,7 @@ set( snass_SRCS
     models/ShipDesignsModel.cpp
     models/ItemModel.cpp
     models/MaterialsModel.cpp
+    models/ComponentsProxyModel.cpp
     data/Order.cpp
     dialogs/ChangeEmpireDialog.cpp
     dialogs/ItemBrowser.cpp
@@ -62,6 +63,7 @@ set( snass_TOMOC
     models/ComponentsModel.h
     dialogs/NewEmpireDialog.h
     models/ShipDesignsModel.h
+    models/ComponentsProxyModel.h
     models/ItemModel.h
     models/MaterialsModel.h
     dialogs/ChangeEmpireDialog.h

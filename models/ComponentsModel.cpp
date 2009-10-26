@@ -33,6 +33,14 @@ QModelIndex ComponentsModel::index ( int row, int column, const QModelIndex & pa
         return QModelIndex();
 }
 
+bool ComponentsModel::hasChildren ( const QModelIndex & parent ) const
+{
+    ComponentTreeItem *item = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
+    if( !parent.isValid() )
+        item = m_rootItem;
+    return item->childCount() > 0;
+}
+
 QModelIndex ComponentsModel::parent ( const QModelIndex & index ) const
 {
     if ( !index.isValid() )
@@ -90,8 +98,8 @@ int ComponentsModel::rowCount( const QModelIndex &parent ) const
             query.next();
             return query.value(0).toInt();
         }
-    } else
-        return parentItem->childCount();
+    }
+    return parentItem->childCount();
 }
 
 QVariant ComponentsModel::data( const QModelIndex &index, int role ) const
@@ -291,6 +299,7 @@ bool ComponentsModel::setData ( const QModelIndex & index, const QVariant & valu
     i->setData( value );
 //    emit dataChanged( index, index );
     emit ( reset() );
+    return true;
 }
 
 bool ComponentsModel::insertRows ( int row, int count, const QModelIndex & parent )
@@ -346,7 +355,7 @@ bool ComponentsModel::removeItem ( const QModelIndex & index )
     else
         m_rootItem->removeChild( i );
      emit reset();
-
+    return true;
 }
 
 void ComponentsModel::appendItem( const SNItem &item )

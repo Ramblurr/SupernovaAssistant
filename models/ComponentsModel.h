@@ -31,6 +31,7 @@ class ComponentsModel : public QAbstractItemModel
 public:
     ComponentsModel( QObject *parent = 0, const QString &category_filter = "");
 
+    bool hasChildren ( const QModelIndex & parent = QModelIndex() ) const;
     QModelIndex index ( int row, int column, const QModelIndex & parent = QModelIndex() ) const;
     QModelIndex parent ( const QModelIndex & index ) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;

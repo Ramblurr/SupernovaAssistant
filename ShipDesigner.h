@@ -15,6 +15,7 @@ namespace Ui {
 class ItemModel;
 class ComponentsModel;
 class MaterialsModel;
+class ComponentsProxyModel;
 class ShipDesigner : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(ShipDesigner)
@@ -42,6 +43,7 @@ private:
     ItemModel *m_itemModel;
     MaterialsModel *m_detailedModel;
     ComponentsModel *m_componentsModel;
+    ComponentsProxyModel *m_proxy_model;
 
     QMap<SNItem, quint64> m_materials;
     QList<SNItem> m_components;
@@ -57,6 +59,7 @@ public slots:
     void copyItemListTriggered();
 
 private slots:
+    void on_componentFilterEdit_textChanged(QString );
     void on_itemList_customContextMenuRequested(QPoint pos);
     void on_detailedTable_customContextMenuRequested(QPoint pos);
     void on_desiredAPSpin_valueChanged(int );
