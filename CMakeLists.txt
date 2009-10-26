@@ -7,6 +7,8 @@ find_package(Poppler REQUIRED)
 
 include(${QT_USE_FILE})
 
+set(CMAKE_CXX_FLAGS "-g -Wall")
+
 #add_subdirectory(dialogs)
 # add_subdirectory(delegates)
 # add_subdirectory(models)
