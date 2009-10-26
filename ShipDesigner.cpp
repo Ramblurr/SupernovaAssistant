@@ -218,7 +218,6 @@ void ShipDesigner::setupDesignsModel()
     if ( m_designs.size() > 0 )
     {
         m_currentDesign = m_designs.at( 0 );
-        on_designsCombo_currentIndexChanged( 0 );
     }
 }
 
