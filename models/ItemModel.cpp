@@ -145,7 +145,7 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
 Qt::ItemFlags ItemModel::flags( const QModelIndex &index ) const
 {
     if ( !index.isValid() )
-        return Qt::ItemIsEnabled | Qt::ItemIsDropEnabled;
+        return 0;
 
     if ( index.column() == 0 || index.column() == 2 )
         return  Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDropEnabled;
@@ -259,7 +259,9 @@ bool ItemModel::appendOrAlterData( const SNItem &item, quint64 quantity )
 
 void ItemModel::clear()
 {
-    beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()));
+    if( rowCount( QModelIndex() ) == 0 )
+        return;
+    beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()) - 1);
     m_hash.clear();
     m_data.clear();
     endRemoveRows();
@@ -299,10 +301,10 @@ int ItemModel::thrust() const
 int ItemModel::actionPoints() const
 {
     int thr = thrust();
-    qDebug() << "thrust=" << thr;
+//    qDebug() << "thrust=" << thr;
 
     int tonnage = totalItemsTonnage().second;
-    qDebug() << "tons=" << tonnage;
+//    qDebug() << "tons=" << tonnage;
     if( tonnage > 0 )
         return thr / tonnage;
     return 0;

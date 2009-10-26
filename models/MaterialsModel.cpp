@@ -12,29 +12,40 @@ MaterialsModel::MaterialsModel( QObject *parent )
 Qt::ItemFlags MaterialsModel::flags( const QModelIndex &index ) const
 {
     if ( !index.isValid() )
-        return Qt::ItemIsEnabled;
+        return 0;
 
     return  Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 void MaterialsModel::item_changed( const SNItem &item, quint64 diff )
 {
+    if( diff == 0 )
+        return;
     QMap<QString, int> comps = item.getComponents();
     QMapIterator<QString, int> it( comps );
     while( it.hasNext() )
     {
         it.next();
         quint64 comp_quantity = it.value() * diff;
-
         SNItem material = SNItem::getItem( it.key() );
         if( m_hash.contains( material ) )
         {
             int row = m_hash[material];
-            QPair<SNItem, quint64> s( material, m_data.at( row ).second + comp_quantity );
-            m_data.replace( row, s );
-            QModelIndex index = this->index(row, 1, QModelIndex());
-            emit( dataChanged( index, index ) );
-        } else {
+            int new_value = m_data.at( row ).second + comp_quantity;
+            // if the new value is 0 we want to remove it from the model
+            if( new_value == 0 )
+            {
+                beginRemoveRows(QModelIndex(), row, row);
+                removeItem(material); // decrement alll m_hash items above row
+                m_data.removeAt(row);
+                endRemoveRows();
+            } else { // the item is still around
+                QPair<SNItem, quint64> s( material, new_value );
+                m_data.replace( row, s );
+                QModelIndex index = this->index(row, 1, QModelIndex());
+                emit( dataChanged( index, index ) );
+            }
+        } else { // we need to insert the item into the model
             int row = m_data.count();
             beginInsertRows(QModelIndex(), row, row);
             QPair<SNItem, quint64> a;
@@ -110,20 +121,6 @@ QVariant MaterialsModel::headerData( int section, Qt::Orientation orientation, i
     return QVariant();
 }
 
-bool MaterialsModel::insertRows( int position, int rows, const QModelIndex &index )
-{
-    Q_UNUSED( index );
-    beginInsertRows( QModelIndex(), position, position + rows - 1 );
-
-    for ( int row = 0; row < rows; row++ )
-    {
-//        m_hash.insert( position, pair );
-    }
-
-    endInsertRows();
-    return true;
-}
-
 bool MaterialsModel::removeRows( int position, int rows, const QModelIndex &index )
 {
 
@@ -137,7 +134,7 @@ bool MaterialsModel::removeRows( int position, int rows, const QModelIndex &inde
         quint64 weight = item.weight()*(0 - m_data.at( position ).second);
         emit( statsChanged( diff, weight ) );
         m_data.removeAt( position );
-        m_hash.remove( item );
+        m_hash.remove( item ); // here it is ok to remove straight from the hash because we remove from m_data too
         emit( componentsChanged( item, diff ) );
     }
 
@@ -222,10 +219,27 @@ bool MaterialsModel::appendOrAlterData( const SNItem &item, quint64 quantity )
 
 void MaterialsModel::clear()
 {
-    beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()));
+    beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()) - 1 );
     m_hash.clear();
     m_data.clear();
     endRemoveRows();
 }
 
+void MaterialsModel::removeItem( const SNItem & removeme )
+{
+
+    int row = -1;
+    if( m_hash.contains( removeme) )
+        row = m_hash.value( removeme );
+    if( row == -1 )
+        return;
+    QMapIterator<SNItem, quint64> i(m_hash);
+    while (i.hasNext())
+    {
+        i.next();
+        if( i.value() > row )
+            m_hash.insert( i.key(), i.value() - 1);
+    }
+    m_hash.remove(removeme);
+}
 
