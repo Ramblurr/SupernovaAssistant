@@ -5,6 +5,7 @@ drop table if exists geodata;
 drop table if exists pdata;
 drop table if exists items;
 drop table if exists itemcomp;
+drop table if exists itemeffects;
 drop table if exists designcomp;
 drop table if exists designs;
 drop table if exists expl;
@@ -82,7 +83,7 @@ create table items (
         iname            character(80) not null primary key,
         category         character(80) not null,
         subcategory      character(80),
-        size             integer not null,
+        size             integer,
         desc             varchar(16384) not null,
         structure        integer
 );
