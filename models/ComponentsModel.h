@@ -53,6 +53,11 @@ public:
 
     QList<SNItem> getItems() const;
 
+    /*! ERASES THE DATABASE !!
+        ... as well as the model.
+        */
+    void clear(); //!< ERASES the database!
+
 private:
     void emitRowChanged(int parent, int child = -1);
     bool prepareSubCat( const SNItem &item, ComponentTreeItem *parent );
@@ -71,6 +76,7 @@ public:
     ComponentTreeItem( const SN::Type &type, const QVariant &data,  ComponentTreeItem *parent = 0 );
     ~ComponentTreeItem();
 
+    void clearAllChildren();
     void appendChild ( ComponentTreeItem *child );
     bool removeChild(  ComponentTreeItem *child );
     void setChildren( QList<ComponentTreeItem*> children );

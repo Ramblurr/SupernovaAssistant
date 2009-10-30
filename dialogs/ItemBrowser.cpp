@@ -400,10 +400,34 @@ void ItemBrowser::on_exportBut_clicked()
 
 void ItemBrowser::on_turnSheetBut_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select turn sheet PDF"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("XML Files(*.xml)"));
-    qDebug() << " got file " << fileName;
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select turn sheet PDF"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("PDF Files(*.pdf)"));
+    QDir dir(fileName);
+    qDebug() << dir.dirName();
+//    qDebug() << " got file " << fileName;
 
-    TurnParser tp( fileName );
+    /*TurnParser tp( fileName );
 
+    QList<SNItem> items = tp.parseANZs();
+    qDebug() << "got " << items.size();
+    foreach( SNItem item, items )
+    {
+        m_itemModel->appendItem( item );
+    }*/
 //    tp.text();
+}
+
+void ItemBrowser::on_clearDbaseBut_clicked()
+{
+    QMessageBox msgBox;
+    msgBox.setIcon( QMessageBox::Warning );
+    msgBox.setText("Erasing Database");
+    msgBox.setInformativeText("This will ERASE the item database. Do you want to continue?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+    if( ret == QMessageBox::No )
+        return;
+    m_itemModel->clear();
+
+
 }

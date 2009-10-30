@@ -442,8 +442,12 @@ ComponentsModel::emitRowChanged( int parent_row, int child_row )
 }
 
 
-
-
+void ComponentsModel::clear()
+{
+    SNItem::clearDatabase();
+    m_rootItem->clearAllChildren();
+    reset();
+}
 
 
 
@@ -462,6 +466,12 @@ ComponentTreeItem::ComponentTreeItem( const SN::Type &type, const QVariant &data
 ComponentTreeItem::~ComponentTreeItem()
 {
     qDeleteAll ( childItems );
+}
+
+void ComponentTreeItem::clearAllChildren()
+{
+    qDeleteAll(childItems);
+    childItems.clear();
 }
 
 void ComponentTreeItem::appendChild ( ComponentTreeItem *item )

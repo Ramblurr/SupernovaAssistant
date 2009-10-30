@@ -39,7 +39,6 @@ private:
 
     Ui::ItemBrowser *m_ui;
     ComponentsModel *m_itemModel;
-    ItemModel* m_materialsModel;
     QMultiHash<QString, QString> m_categories;
     QPersistentModelIndex m_selectedItem;
     bool m_fieldsChanged;
@@ -48,6 +47,7 @@ private:
     void loadCategoryAndChildren( const QDomElement & element, const QString & parent = "" );
 
 private slots:
+    void on_clearDbaseBut_clicked();
     void on_turnSheetBut_clicked();
     void on_exportBut_clicked();
     void fieldsChangedSot();

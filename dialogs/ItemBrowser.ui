@@ -15,7 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1000">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0">
+    <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
      <item>
       <widget class="QPushButton" name="addItemBut">
        <property name="text">
@@ -27,6 +27,13 @@
       <widget class="QPushButton" name="deleteItemBut">
        <property name="text">
         <string>Delete Selected</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="clearDbaseBut">
+       <property name="text">
+        <string>Clear Database</string>
        </property>
       </widget>
      </item>
