@@ -35,10 +35,7 @@ QModelIndex ComponentsModel::index ( int row, int column, const QModelIndex & pa
 
 bool ComponentsModel::hasChildren ( const QModelIndex & parent ) const
 {
-    ComponentTreeItem *item = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
-    if( !parent.isValid() )
-        item = m_rootItem;
-    return item->childCount() > 0;
+    return  rowCount(parent) != 0;
 }
 
 QModelIndex ComponentsModel::parent ( const QModelIndex & index ) const
@@ -76,10 +73,10 @@ Qt::ItemFlags ComponentsModel::flags(const QModelIndex &index) const
 
 int ComponentsModel::rowCount( const QModelIndex &parent ) const
 {
-    ComponentTreeItem *parentItem;
     if ( parent.column() > 0 )
         return 0;
 
+    ComponentTreeItem *parentItem;
     if ( !parent.isValid() )
         parentItem = m_rootItem;
     else
