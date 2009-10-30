@@ -42,6 +42,7 @@ public:
     static QList<SNItem> getItemsFromDatabase();
     static QList<SNItem> getItemsFromXml( const QString &filename);
     static SNItem getItem( const QString &name );
+    static void clearDatabase();
 
     //Warning clears existing items table
     static void writeToDatabase( const QList<SNItem> &list);

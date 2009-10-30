@@ -487,6 +487,20 @@ SNItem SNItem::getItem( const QString &name )
     return SNItem();
 }
 
+void SNItem::clearDatabase()
+{
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( !db.isOpen() )
+        return;
+    QSqlQuery query( db );
+    query.prepare("DELETE FROM items");
+    query.exec();
+    query.prepare("DELETE FROM itemcomp");
+    query.exec();
+    query.prepare("DELETE FROM itemeffects");
+    query.exec();
+}
+
 bool SNItem::createXML( const QList<SNItem> & items, const QString &filename )
 {
     QString output;
