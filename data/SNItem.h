@@ -86,4 +86,7 @@ inline bool operator<(const SNItem &i1, const SNItem &i2)
          return i1.name() < i2.name();
      return false;
  }
+QDebug operator<<(QDebug dbg, const SNItem &i);
+
+
 #endif // SNITEM_H

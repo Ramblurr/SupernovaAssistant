@@ -157,7 +157,7 @@ bool ComponentsModel::canFetchMore ( const QModelIndex & parent ) const
 {
     ComponentTreeItem *i = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
     if( i != 0 ) {
-        qDebug() << i->data().toString() << i->loaded();
+//        qDebug() << i->data().toString() << i->loaded();
         return !i->loaded();
     }
     return false;
@@ -211,7 +211,8 @@ void ComponentsModel::fetchMore ( const QModelIndex & parent )
 
                 query.exec( "SELECT iname FROM items WHERE category = '" + i->data().toString() + "' AND (subcategory IS NULL OR subcategory = '')" );
                 int idxName = query.record().indexOf( "iname" );
-                qDebug() << query.lastQuery();
+                if ( !query.exec() )
+                    qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
                 while ( query.next() )
                 {
                     QString name = query.value( idxName ).toString();
@@ -225,7 +226,8 @@ void ComponentsModel::fetchMore ( const QModelIndex & parent )
             {
                 query.exec( "SELECT * FROM items WHERE subcategory = '" + i->data().toString() + "'" );
                 int idxName = query.record().indexOf( "iname" );
-                qDebug() << query.lastQuery();
+                if ( !query.exec() )
+                    qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
                 while ( query.next() )
                 {
                     QString name = query.value( idxName ).toString();
@@ -324,7 +326,6 @@ QMimeData* ComponentsModel::mimeData(const QModelIndexList &indexes) const
     foreach (QModelIndex index, indexes) {
         if (index.isValid()) {
             SNItem item = data(index, SN::ComponentRole).value<SNItem>();
-            qDebug() << "added " << item.name();
             stream << item;
         }
     }
@@ -396,15 +397,19 @@ QList<SNItem> ComponentsModel::getItems() const
 
 void ComponentsModel::getItemsRecursive( const ComponentTreeItem *parent, QList<SNItem> &list ) const
 {
-    if( parent->type() == SN::Component ) {
+    if( parent->type() == SN::Component )
+    {
         SNItem item = parent->data().value<SNItem>();
+        qDebug() << item.name();
         list << item;
     }
-
-    foreach( ComponentTreeItem* idx, parent->children() )
+    else
     {
-        if( idx )
-            getItemsRecursive( idx, list );
+        foreach( ComponentTreeItem* idx, parent->children() )
+        {
+            if( idx != 0 )
+                getItemsRecursive( idx, list );
+        }
     }
 }
 
@@ -446,6 +451,8 @@ void ComponentsModel::clear()
 {
     SNItem::clearDatabase();
     m_rootItem->clearAllChildren();
+    m_cats.clear();
+    m_subcats.clear();
     reset();
 }
 

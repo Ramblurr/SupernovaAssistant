@@ -8,7 +8,8 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QFile>
 #include <QXmlStreamWriter>
-
+//#include <qsql_sqlite.h>
+#include <sqlite3.h>
 SNItem::SNItem() : m_components(), m_tons( 0 ), m_structure( 0 )
 {
 }
@@ -120,8 +121,17 @@ bool SNItem::saveItem() const
         query.bindValue( ":desc", m_desc );
         query.bindValue( ":structure", m_structure );
 
-        if ( !query.exec() )
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+        if ( !query.exec() ) {
+            qDebug() << query.executedQuery()<< "\n error: " << query.lastError().text();
+            QVariant v = query.driver()->handle();
+            if (v.isValid() && qstrcmp(v.typeName(), "sqlite3*")==0) {
+                // v.data() returns a pointer to the handle
+                sqlite3 *handle = *static_cast<sqlite3 **>(v.data());
+                if (handle != 0) {
+                    qDebug("Error: %s", sqlite3_errmsg(handle));
+                }
+            }
+        }
 
         QMapIterator<QString, int> it( m_components );
         while( it.hasNext() )
@@ -362,7 +372,7 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
     QDomElement root = doc.documentElement();
     if ( root.tagName() != "items" )
         return list;
-
+    qDebug() << "Parsing XML. Found" << root.childNodes().size() << "items";
     QDomNode n = root.firstChild();
     while ( !n.isNull() )
     {
@@ -375,20 +385,11 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
             QString category = n.firstChildElement( "category" ).text();
             QString subcategory = n.firstChildElement( "subcategory" ).text();
             QString structure = n.firstChildElement( "structure" ).text();
-            if( weight == "" )
-            {
-                n = n.nextSibling();
-                continue;
-            }
-            bool ok;
-            SNItem item = SNItem( name, desc, category, subcategory, weight.toInt( &ok ), structure.toInt(&ok) );
-            if ( !ok )
-            {
-                n = n.nextSibling();
-                continue;
-            }
+
+            SNItem item = SNItem( name, desc, category, subcategory, weight.toInt(), structure.toInt() );
 
             QDomNode n_comps = n.firstChildElement( "components" ).firstChild();
+            bool ok;
             while ( !n_comps.isNull() )
             {
                 QDomElement e = n_comps.toElement();
@@ -398,7 +399,6 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
                     int quantity = e.attribute( "quantity", "0" ).toInt( &ok );
                     if ( ok )
                     {
-
                         item.addComponent( compname, quantity );
                     }
                     else
@@ -407,11 +407,32 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
                 n_comps = n_comps.nextSibling();
             }
 
+            QDomNode n_effects = n.firstChildElement( "effects" ).firstChild();
+            while ( !n_effects.isNull() )
+            {
+                QDomElement e = n_effects.toElement();
+                if ( !e.isNull() && e.tagName() == "effect" )
+                {
+                    QString ename = e.text();
+                    int value = e.attribute( "value", "0" ).toInt( &ok );
+                    QString pval = e.attribute( "prettyvalue", "");
+                    QString counters = e.attribute( "counters", "");
+                    if ( ok )
+                    {
+                        item.addEffect( ItemEffect( ename, value, pval, counters ) );
+                    }
+                    else
+                        qWarning() << "Error parsing effect '" << ename << "' for item '" << name << "'";
+                }
+                n_effects = n_effects.nextSibling();
+            }
+
             if ( ok )
                 list << item;
         }
         n = n.nextSibling();
     }
+    qDebug() << "But parsed" <<list.size() << "items";
     return list;
 }
 
@@ -582,4 +603,10 @@ bool SNItem::createXML( const QList<SNItem> & items, const QString &filename )
 
     file->close();
     return true;
+}
+
+QDebug operator<<(QDebug dbg, const SNItem &i)
+{
+    dbg.space() << "(" << i.name() << i.category() << i.subcategory() << "tons:" << i.weight() << "struct:" << i.structure() << ")";
+    return dbg.maybeSpace();
 }

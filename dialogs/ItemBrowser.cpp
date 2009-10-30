@@ -13,6 +13,7 @@
 #include <QtXml/QDomDocument>
 #include <QFile>
 #include <QDebug>
+#include <QFileInfo>
 #include <QtAlgorithms>
 #include <QModelIndex>
 #include <QMapIterator>
@@ -22,14 +23,15 @@
 #include <QPainter>
 #include <QFileDialog>
 #include <QDesktopServices>
+#include <QSettings>
 #include <algorithm>
+
 ItemBrowser::ItemBrowser(QWidget *parent) :
         QDialog(parent),
         m_ui(new Ui::ItemBrowser),
         m_fieldsChanged( false )
 {
     m_ui->setupUi(this);
-    this->setWindowTitle("SN Assistant: Item Editor");
 
     m_itemModel = new ComponentsModel( /*SNItem::getItemsFromDatabase(),*/ this  );
     m_ui->treeView->setModel( m_itemModel);
@@ -79,6 +81,8 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
     generic->insertColumnDelegate(1, quantityDelegate );
     m_ui->materialsTable->setItemDelegate( generic );
     m_fieldsChanged = false;
+
+    setWindowTitle("SN Assistant: Item Editor");
 }
 
 ItemBrowser::~ItemBrowser()
@@ -130,7 +134,8 @@ void ItemBrowser::on_treeView_clicked( QModelIndex index )
         else if( ret == QMessageBox::Cancel ) {
             m_ui->treeView->setCurrentIndex( m_selectedItem );
             return;
-        }
+        } else if( ret == QMessageBox::Discard )
+                m_fieldsChanged = false;
     }
     QVariant data = m_itemModel->data( index, SN::ComponentRole );
     if( !data.canConvert<SNItem>() ) {
@@ -159,7 +164,7 @@ void ItemBrowser::addEffect( const ItemEffect &effect )
     int row = m_ui->effectsTable->rowCount();
     m_ui->effectsTable->insertRow( row );
     QTableWidgetItem *item0 = new QTableWidgetItem( effect.name() );
-    QTableWidgetItem *item1 = new QTableWidgetItem( effect.value() );
+    QTableWidgetItem *item1 = new QTableWidgetItem( QString::number( effect.value() ) );
     QTableWidgetItem *item2 = new QTableWidgetItem( effect.prettyValue() );
     QTableWidgetItem *item3 = new QTableWidgetItem( effect.counter() );
     m_ui->effectsTable->setItem( row, 0, item0 );
@@ -217,7 +222,7 @@ void ItemBrowser::populateFields( const SNItem &item )
 
 
     // Reset effects table
-    for( int i=m_ui->effectsTable->rowCount(); i >= 0 ; i--)
+    for( int i=m_ui->effectsTable->rowCount(); i >= 0 ; i-- )
         m_ui->effectsTable->removeRow( i );
 
     foreach(ItemEffect effect, item.getEffects() )
@@ -373,7 +378,19 @@ void ItemBrowser::on_treeView_pressed(QModelIndex index)
 
 void ItemBrowser::on_importBut_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select Item XML File"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("XML Files(*.xml)"));
+    // We want to save the directory the user picks
+    QSettings settings( "SN", "SNAssistant" );
+
+    QVariant loc = settings.value("import-items-location", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select Item XML File"), loc.toString(), tr("XML Files(*.xml)"));
+
+    if( fileName.isEmpty() )
+        return;
+
+    QFileInfo info( fileName );
+    settings.setValue("import-items-location", info.absoluteDir().absolutePath());
+
     qDebug() << " got file " << fileName;
 
     QList<SNItem> list = SNItem::getItemsFromXml( fileName );
@@ -392,7 +409,18 @@ void ItemBrowser::fieldsChangedSot()
 
 void ItemBrowser::on_exportBut_clicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Choose where to save the items"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("XML Files(*.xml)"));
+    // We want to save the directory the user picks
+    QSettings settings( "SN", "SNAssistant" );
+    QVariant loc = settings.value("export-items-location", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Choose where to save the items"), loc.toString(), tr("XML Files(*.xml)"));
+    if( fileName.isEmpty() )
+        return;
+
+    QFileInfo info( fileName );
+
+    settings.setValue("export-items-location", info.absoluteDir().absolutePath());
+
     QList<SNItem> items = m_itemModel->getItems();
     qDebug() << "got " << items.size();
     SNItem::createXML(items, fileName);
@@ -400,20 +428,26 @@ void ItemBrowser::on_exportBut_clicked()
 
 void ItemBrowser::on_turnSheetBut_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select turn sheet PDF"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("PDF Files(*.pdf)"));
-    QDir dir(fileName);
-    qDebug() << dir.dirName();
-//    qDebug() << " got file " << fileName;
+    // We want to save the directory where the user
+    // picks his turn sheets from
+    QSettings settings( "SN", "SNAssistant" );
+    QVariant loc = settings.value("turn-sheet-location", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Select turn sheet PDF"), loc.toString(), tr("PDF Files(*.pdf)"));
+    QFileInfo info( fileName );
+    if(!info.exists())
+        return;
+    settings.setValue("turn-sheet-location", info.absoluteDir().absolutePath());
 
-    /*TurnParser tp( fileName );
+    TurnParser tp( fileName );
+//    tp.writeOut("anztest");
 
     QList<SNItem> items = tp.parseANZs();
     qDebug() << "got " << items.size();
     foreach( SNItem item, items )
     {
         m_itemModel->appendItem( item );
-    }*/
-//    tp.text();
+    }
+
 }
 
 void ItemBrowser::on_clearDbaseBut_clicked()

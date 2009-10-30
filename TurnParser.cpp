@@ -18,20 +18,33 @@ TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_te
     Poppler::Document *doc = Poppler::Document::load( filename );
     int count = doc->numPages();
 
+//    QFile outfile(filename+".txt");
+//    if ( !outfile.open( QIODevice::WriteOnly ) )
+//    {
+//        qDebug() << "file open failed";
+//        return;
+//    }
+//    QTextStream outdebug(&outfile);
+
     QTextStream out( &m_text, QIODevice::WriteOnly );
     for(int i = 0; i < count; i ++)
     {
         QString text = doc->page(i)->text(QRectF());
 
+
+
+//        outdebug << text;
+
         // Cleanup text
         QStringList lines = text.split(QRegExp("\\n") );
+
         foreach(QString line, lines)
         {
             // Remove page dividers
             line = line.replace( QRegExp(".*Page\\s\\d+\\sof\\s\\d+"), "" );
 
             // Pad === dividers
-            QRegExp rx("(={121})");
+            QRegExp rx("(={120,122})");
             rx.indexIn( line );
             if( rx.numCaptures() > 0 )
                 line = line.replace(rx, "\n"+rx.cap()+"\n" );
@@ -40,6 +53,24 @@ TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_te
 //            qDebug() << line;
         }
     }
+//    outfile.close();
+    out.flush();
+    delete doc;
+
+    //Some more cleanup
+
+//    QRegExp rx;
+//    rx.setPattern("-----([^-]+)-----\\s+(\\w+:)(.+)\\s\\s");
+//    rx.setMinimal(true);
+//    m_text.replace(rx, "\n-----" + rx.cap(1) + "-----\n" + rx.cap(2) + rx.cap(3) + "\n" );
+
+//    rx.setPattern("------(-+)");
+//    rx.setMinimal(false);
+//    m_text.replace(rx, "\n------" + rx.cap(1) + "\n");
+
+//    rx.setPattern("^([^:]+:)");
+//    m_text.replace(rx, "\n" + rx.cap(1));
+
     parseData();
     m_parsed = true;
 }
@@ -190,7 +221,6 @@ void TurnParser::parseData()
         }
 
     }
-    parseANZs();
 }
 
 QString TurnParser::text() const
@@ -233,13 +263,13 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
 //            qDebug() << "Got anz item: " << name;
 
             // Parse Description
-            int desc_marker = rx.matchedLength();
+//            int desc_marker = rx.matchedLength();
 //            qDebug() << anz.left(desc_marker);
-            rx.setPattern("ANZ:\\s[^\\n]+\\n([^:]*):\\s+(.*)(?:(\\([\\d,]*\\s+ton(?:s)?\\)))");
+            rx.setPattern("ANZ:\\s[^\\n]+\\n[^:]*:\\s+(.*)(?:\\(\\d+ ton|Classification)");
             rx.setMinimal( true );
-            rx.indexIn( anz, desc_marker );
+            rx.indexIn( anz  );
+            QString desc = rx.cap( 1 );
             rx.setMinimal( false );
-            QString desc = rx.cap( 2 );
 
             // Is technology?
 
@@ -276,24 +306,29 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
                         current->append( rx.cap(2) );
                 pos += rx.matchedLength();
             }
+            // the previous regex isn't 100% solid, sometimes it grabs the \n plus the ===== divider
+            // so we need to parse that out.
             *integrity = integrity->left(integrity->indexOf("\n")).trimmed();
+            *classification = classification->left(classification->indexOf("\n")).trimmed();
+            *range = range->left(range->indexOf("\n")).trimmed();
 
             // Parse Components
 
-            rx.setPattern("[.\\n]*tons?\\)\\s+((?:\\d+.*-\\s)+(?:\\d+.*))\n(.*:)");
+            rx.setPattern("[.\\n]*ton(?:s)?\\)\\s+(.*)Classification:");
             rx.setMinimal(true);
             rx.indexIn(anz);
             rx.setMinimal(false);
 
             QString entry = rx.cap(1);
-            QString rest = rx.cap(2);
-            entry = entry.replace("\n", "").trimmed();
+            entry = entry.simplified();
             QStringList comps  = entry.split(" - ");
 //            qDebug() << "composed of";
             QMap<QString, int> components;
             foreach( QString comp, comps )
             {
                 comp = comp.trimmed();
+                if( comp.isEmpty() )
+                    continue;
                 int div = comp.indexOf(" ");
                 QString amt = comp.left(div).trimmed().replace(",","");
                 QString resource = comp.right(comp.length()-div).trimmed();
@@ -335,8 +370,9 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
                     //    e.g. Point Defense Accuracy: Fair [50]
                     // If there is no numeric value the pvalue is captured into spot 4
                     //    e.g. Warp Survey Gear: Fair
-                    int val_numeric = -1;
-                    if( val != "" ) {
+                    int val_numeric = 0;
+                    if( !val.isEmpty() )
+                    {
                         pval = rx.cap(2).trimmed();
                         bool ok;
                         val_numeric = val.toInt(&ok);
@@ -384,9 +420,17 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
             if( !ok && !istech && classification->trimmed() != "Mass Destruction Device")
                 qWarning() << "got int conversion error for integrity while parsing item " << name << " " << *integrity;
 
-//            qDebug() << name << " " << classification->trimmed();
-            CategoryPair pair = mapClassificationToCategory(name, classification->trimmed());
-            SNItem item(name, desc.simplified(), pair.first, pair.second, tons_numeric, struct_numeric);
+            // Get the actual category/subcategory
+            CategoryPair pair = mapClassificationToCategory( name, classification->trimmed(), istech );
+
+            // Fix numeric values for items that don't need them
+            if( istech )
+            {
+                tons_numeric = 0;
+                struct_numeric = 0;
+            }
+            SNItem item(name, QString(desc.simplified()), pair.first, pair.second, tons_numeric, struct_numeric);
+            qDebug() << item << desc;
             item.addComponents( components );
             item.addEffects( effects_normal );
 
@@ -396,9 +440,22 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
     return items;
 }
 
-CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, const QString &classification ) const
+CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, const QString &classification, bool istech ) const
 {
     // Is this really the best way to compare strings?
+
+        // Technologies
+    if( istech )
+    {
+        if( classification == "Horizon Technology")
+            return CategoryPair("Technology", "Horizon");
+        else if( classification == "Ground Combat")
+            return CategoryPair("Technology", "Ground");
+        else if( classification == "Cloaking Device")
+            return CategoryPair("Technology", "");
+        else
+            return CategoryPair("Technology", "");
+    }
 
     // Ship Components
     if( classification == "Bridge" )
@@ -420,19 +477,11 @@ CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, cons
     else if( classification == "Sensor")
         return CategoryPair("Ship Component", "C4ISTAR");
     else if( classification == "Jump Drive" ) {
-        if( classification.contains("Engine") )
+        if( name.contains("Engine") )
             return CategoryPair("Ship Component", "Engine");
         else
             return CategoryPair("Ship Component", "Jump Drive");
     }
-
-    // Technologies
-    if( classification == "Horizon Technology")
-        return CategoryPair("Technology", "Horizon");
-    else if( classification == "Ground Combat")
-        return CategoryPair("Technology", "Ground");
-    else if( classification == "Cloaking Device")
-        return CategoryPair("Technology", "");
 
     // Resources
     if( classification == "Resource")

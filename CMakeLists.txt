@@ -4,6 +4,7 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mo
 
 find_package(Qt4 REQUIRED)
 find_package(Poppler REQUIRED)
+find_package(Sqlite REQUIRED)
 
 include(${QT_USE_FILE})
 
@@ -29,6 +30,7 @@ include_directories(
     ${QT_QTGUI_INCLUDE_DIR}
     ${QT_QTXML_INCLUDE_DIR}
     ${QT_QTSQL_INCLUDE_DIR}
+    ${SQLITE_INCLUDE_DIR}
 )
 
 set( snass_SRCS
@@ -101,6 +103,7 @@ target_link_libraries(snassistant_lib
     ${QT_QTSQL_LIBRARIES}
     ${QT_QTTEST_LIBRARIES}
     ${POPPLER_LIBRARY}
+    ${SQLITE_LIBRARIES}
     )
 
 add_executable(SNAssistant ${snass_SRCS} ${SN_RC_SRCS})

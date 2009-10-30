@@ -1,23 +1,24 @@
 <?xml version="1.0"?>
 <supernova>
     <categories>
-        <category name="Technology" />
-        <category name="Composite Material" />
-        <category name="Complex Material" />
-        <category name="Refined Resource" />
-        <category name="Army Unit" />
-        <category name="Misc" />
-        <category name="Ship Component">
-            <category name="Armor" />
-            <category name="Shields" />
-            <category name="Weapon Systems" />
-            <category name="Engines" />
-            <category name="Transwarp Capable Drives" />
-            <category name="Jump Capable Drives" />
-            <category name="Bridge Systems" />
-            <category name="Defensive Systems" />
-            <category name="Jump Survey Sensors" />
-            <category name="Fuel" />
+        <category name="Technology">
+            <category name="Horizon" />
+            <category name="Ground" />
         </category>
+        <category name="Resource">
+            <category name="Initial" />
+            <category name="Improved" />
+            <category name="Advanced" />
+        </category>
+        <category name="Ship Component">
+            <category name="C4ISTAR" />
+            <category name="Defense" />
+            <category name="Drone" />
+            <category name="Engine" />
+            <category name="Jump Drive" />
+            <category name="Weapon" />
+        </category>
+        <category name="MDD" />
+        <category name="Unknown" />
     </categories>
 </supernova>

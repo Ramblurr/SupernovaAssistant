@@ -21,7 +21,7 @@ public:
     QList<SNItem> parseANZs() const;
 
 private:
-    CategoryPair mapClassificationToCategory( const QString &name, const QString &classification ) const;
+    CategoryPair mapClassificationToCategory( const QString &name, const QString &classification, bool istech ) const;
     void parseData();
     QString m_filename;
     QString m_text;
