@@ -11,6 +11,7 @@
 #include "delegates/GenericDelegate.h"
 #include "delegates/IntegerColumnDelegate.h"
 #include "delegates/ItemDelegate.h"
+#include "tests/modeltest.h"
 
 #include <QtAlgorithms>
 #include <QAction>
@@ -50,6 +51,7 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     m_ui->itemList->addAction(act);
 
     m_detailedModel = new MaterialsModel( this );
+    new ModelTest(m_detailedModel, this);
     m_ui->detailedTable->setModel( m_detailedModel );
     m_detailedTableContextMenu = new QMenu(this);
     act = m_detailedTableContextMenu ->addAction("Copy");
@@ -69,7 +71,6 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     qDebug() << "items cnt: " << items.size();
     m_componentsModel = new ComponentsModel( this, "Ship Component");
     m_proxy_model = new ComponentsProxyModel(this);
-    m_proxy_model->setFilterCaseSensitivity( Qt::CaseInsensitive );
     m_proxy_model->setSourceModel( m_componentsModel );
 
     m_ui->componentList->setModel( m_proxy_model );

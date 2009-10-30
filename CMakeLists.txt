@@ -53,6 +53,7 @@ set( snass_SRCS
     delegates/IntegerColumnDelegate.cpp
     delegates/ItemDelegate.cpp
     MaterialsWidget.cpp    
+    tests/modeltest.cpp
 )
 qt4_automoc(${snass_SRCS})
 
@@ -69,6 +70,7 @@ set( snass_TOMOC
     dialogs/ChangeEmpireDialog.h
     dialogs/ItemBrowser.h
     delegates/GenericDelegate.h
+    tests/modeltest.h
 )
 
 # run moc
