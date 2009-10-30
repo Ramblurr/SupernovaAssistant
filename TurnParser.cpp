@@ -371,12 +371,6 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
                 effects_normal << ItemEffect( *eff );
             }
 
-//            rx.setPattern( "([^\\:]+):\\s(\\S+)(?:\\s\\[(?:[^\\:]+:\\s)?(\\d+)\\])?\\s+(?:Counters:\\s(.*)\\n)" );
-//            rx.setMinimal(true);
-//            rx.indexIn(anz, prereqs_end);
-//            rx.setMinimal(false);
-//            qDebug() << rx.capturedTexts();
-
 //            qDebug() << "Effect: " << rx.cap(1) << rx.cap(2) << rx.cap(3);
 //            qDebug() << "Counters: " << rx.cap(4);
 
@@ -391,7 +385,8 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
                 qWarning() << "got int conversion error for integrity while parsing item " << name << " " << *integrity;
 
 //            qDebug() << name << " " << classification->trimmed();
-            SNItem item(name, desc, QString(classification->trimmed()), "", tons_numeric, struct_numeric);
+            CategoryPair pair = mapClassificationToCategory(name, classification->trimmed());
+            SNItem item(name, desc.simplified(), pair.first, pair.second, tons_numeric, struct_numeric);
             item.addComponents( components );
             item.addEffects( effects_normal );
 
@@ -399,4 +394,64 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
         }
     }
     return items;
+}
+
+CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, const QString &classification ) const
+{
+    // Is this really the best way to compare strings?
+
+    // Ship Components
+    if( classification == "Bridge" )
+        return CategoryPair("Ship Component", "C4ISTAR");
+    else if( classification == "Armor")
+        return CategoryPair("Ship Component", "Defense");
+    else if( classification == "Diplomatic Facility")
+        return CategoryPair("Ship Component", "C4ISTAR");
+    else if( classification == "Science Lab")
+        return CategoryPair("Ship Component", "C4ISTAR");
+    else if( classification == "Shield")
+        return CategoryPair("Ship Component", "Defense");
+    else if( classification == "Defensive System")
+        return CategoryPair("Ship Component", "Defense");
+    else if( classification == "Drone Rack")
+        return CategoryPair("Ship Component", "Drone");
+    else if( classification == "Fighter Bay")
+        return CategoryPair("Ship Component", "C4ISTAR");
+    else if( classification == "Sensor")
+        return CategoryPair("Ship Component", "C4ISTAR");
+    else if( classification == "Jump Drive" ) {
+        if( classification.contains("Engine") )
+            return CategoryPair("Ship Component", "Engine");
+        else
+            return CategoryPair("Ship Component", "Jump Drive");
+    }
+
+    // Technologies
+    if( classification == "Horizon Technology")
+        return CategoryPair("Technology", "Horizon");
+    else if( classification == "Ground Combat")
+        return CategoryPair("Technology", "Ground");
+    else if( classification == "Cloaking Device")
+        return CategoryPair("Technology", "");
+
+    // Resources
+    if( classification == "Resource")
+    {
+        if( name.contains( QRegExp( "Improved.*") ) )
+            return CategoryPair("Resource", "Improved");
+        else if( name.contains( QRegExp( "Advanced.*") ) )
+            return CategoryPair("Resource", "Advanced");
+        else
+            return CategoryPair("Resource", "Initial");
+
+    }
+    //Weapons
+    if( classification == "Mass Destruction Device" )
+        return CategoryPair("MDD", "" );
+    else if( classification == "Weapon" )
+        return CategoryPair( "Ship Component",  "Weapon" );
+
+
+    qDebug() << "WARNING: Found uncatagorizable item; '"  << name << "' '"  << classification <<"'";
+    return CategoryPair( "Unknown" , "" );
 }

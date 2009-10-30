@@ -6,7 +6,8 @@
 #include <QString>
 #include <QHash>
 #include <QStringList>
-
+#include <QPair>
+typedef QPair<QString, QString> CategoryPair;
 class TurnParser
 {
 public:
@@ -20,6 +21,7 @@ public:
     QList<SNItem> parseANZs() const;
 
 private:
+    CategoryPair mapClassificationToCategory( const QString &name, const QString &classification ) const;
     void parseData();
     QString m_filename;
     QString m_text;
