@@ -136,25 +136,25 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEmpire">
     <property name="title">
-     <string>Empire</string>
+     <string>&amp;Empire</string>
     </property>
     <addaction name="actionCreate_an_Empire"/>
     <addaction name="actionSelect_Empire"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>Tools</string>
+     <string>&amp;Tools</string>
     </property>
     <addaction name="actionShip_Designer"/>
     <addaction name="actionItem_Editor"/>
@@ -166,27 +166,27 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuit">
    <property name="text">
-    <string>Quit</string>
+    <string>&amp;Quit</string>
    </property>
   </action>
   <action name="actionCreate_an_Empire">
    <property name="text">
-    <string>Create Empire</string>
+    <string>&amp;Create Empire</string>
    </property>
   </action>
   <action name="actionSelect_Empire">
    <property name="text">
-    <string>Change Empire</string>
+    <string>C&amp;hange Empire</string>
    </property>
   </action>
   <action name="actionShip_Designer">
    <property name="text">
-    <string>Ship Designer</string>
+    <string>&amp;Ship Designer</string>
    </property>
   </action>
   <action name="actionItem_Editor">
    <property name="text">
-    <string>Item Editor</string>
+    <string>&amp;Item Editor</string>
    </property>
   </action>
  </widget>
