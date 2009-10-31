@@ -25,6 +25,7 @@ include_directories(
     delegates
     models
     views
+    google_diff
     ${POPPLER_INCLUDE_DIR}
     ${QT_QTTEST_INCLUDE_DIR}
     ${QT_QTGUI_INCLUDE_DIR}
@@ -50,12 +51,14 @@ set( snass_SRCS
     data/Order.cpp
     dialogs/ChangeEmpireDialog.cpp
     dialogs/ItemBrowser.cpp
+    dialogs/ItemConflictDialog.cpp
     data/ItemEffect.cpp
     delegates/GenericDelegate.cpp
     delegates/IntegerColumnDelegate.cpp
     delegates/ItemDelegate.cpp
     MaterialsWidget.cpp    
     tests/modeltest.cpp
+    google_diff/diff_match_patch.cpp
 )
 qt4_automoc(${snass_SRCS})
 
@@ -71,6 +74,7 @@ set( snass_TOMOC
     models/MaterialsModel.h
     dialogs/ChangeEmpireDialog.h
     dialogs/ItemBrowser.h
+    dialogs/ItemConflictDialog.h
     delegates/GenericDelegate.h
     tests/modeltest.h
 )
@@ -85,6 +89,7 @@ set( snass_UIS
     dialogs/ChangeEmpireDialog.ui
     dialogs/ItemBrowser.ui
     dialogs/NewEmpireDialog.ui
+    dialogs/ItemConflictDialog.ui
 )
 # run uic
 QT4_WRAP_UI(snass_UIS_H ${snass_UIS})
