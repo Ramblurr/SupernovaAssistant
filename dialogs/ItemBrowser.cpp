@@ -10,6 +10,8 @@
 
 #include "models/ComponentsModel.h"
 
+#include "ItemConflictDialog.h"
+
 #include <QtXml/QDomDocument>
 #include <QFile>
 #include <QDebug>
@@ -80,6 +82,7 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
     IntegerColumnDelegate *quantityDelegate = new IntegerColumnDelegate(0, INT_MAX);
     generic->insertColumnDelegate(1, quantityDelegate );
     m_ui->materialsTable->setItemDelegate( generic );
+
     m_fieldsChanged = false;
 
     setWindowTitle("SN Assistant: Item Editor");
@@ -396,7 +399,17 @@ void ItemBrowser::on_importBut_clicked()
     QList<SNItem> list = SNItem::getItemsFromXml( fileName );
     foreach( SNItem item, list )
     {
-        m_itemModel->appendItem( item );
+        SNItem existing = SNItem::getItem( item.name() );
+        if( existing.isEmpty() ) //no conflict
+            m_itemModel->appendItem( item );
+
+        ItemConflictDialog conflictDialog( existing, item, this  );
+        int res = conflictDialog.exec();
+        if( res == SN::KeepNewItem )
+        {
+           m_itemModel->removeItem( existing );
+           m_itemModel->appendItem( item );
+        }
     }
 
 
@@ -445,7 +458,17 @@ void ItemBrowser::on_turnSheetBut_clicked()
     qDebug() << "got " << items.size();
     foreach( SNItem item, items )
     {
-        m_itemModel->appendItem( item );
+        SNItem existing = SNItem::getItem( item.name() );
+        if( existing.isEmpty() ) //no conflict
+            m_itemModel->appendItem( item );
+
+        ItemConflictDialog conflictDialog( existing, item, this  );
+        int res = conflictDialog.exec();
+        if( res == SN::KeepNewItem )
+        {
+           m_itemModel->removeItem( existing );
+           m_itemModel->appendItem( item );
+        }
     }
 
 }
