@@ -18,19 +18,17 @@ SNItem::SNItem( const QString &name, const QString &desc, const QString &categor
 {
 }
 
-SNItem::SNItem( const QString &name, const QString &desc, const QString &category, int weight ): m_name( name ), m_desc( desc ), m_tons( weight ), m_category( category ), m_components(), m_structure( 0 )
+SNItem::SNItem( const QString &name, const QString &desc, const QString &category, int weight ): m_name( name ), m_desc( desc ), m_category( category ), m_tons( weight ), m_components(), m_structure( 0 )
 {
 }
 
 SNItem::SNItem( const QString &name, const QString &desc, const QString &category, const QString &subcat, int weight, int structure )
         : m_name( name )
         , m_desc( desc )
-        , m_tons( weight )
         , m_category( category )
+        , m_tons( weight )
         , m_subcategory( subcat )
         , m_structure( structure )
-        , m_components()
-        , m_effects()
 {}
 
 SNItem::SNItem( const SNItem &other )
@@ -261,6 +259,11 @@ bool SNItem::deleteItem() const
             return false;
     }
     return true;
+}
+
+bool SNItem::isEmpty() const
+{
+    return m_name.isEmpty();
 }
 
 void SNItem::writeToDatabase( const QList<SNItem> &list)

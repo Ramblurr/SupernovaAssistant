@@ -48,6 +48,7 @@ public:
     bool setData ( const QModelIndex & index, const QVariant & value, int role = Qt::EditRole );
     bool insertRows ( int row, int count, const QModelIndex & parent = QModelIndex() );
     bool removeItem ( const QModelIndex & index );
+    bool removeItem ( const SNItem &item );
 
     void appendItem( const SNItem &item );
 
@@ -62,8 +63,8 @@ private:
     void emitRowChanged(int parent, int child = -1);
     bool prepareSubCat( const SNItem &item, ComponentTreeItem *parent );
     void getItemsRecursive( const ComponentTreeItem *parent, QList<SNItem> &list ) const;
+    QModelIndex getIndexRecursive( const QModelIndex & index, const QString &item_name ) const;
 
-    QList<SNItem> m_items;
     ComponentTreeItem *m_rootItem;
     QHash<QString, ComponentTreeItem*> m_cats;
     QHash<QString, ComponentTreeItem*> m_subcats;

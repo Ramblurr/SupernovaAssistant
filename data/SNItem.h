@@ -37,6 +37,8 @@ public:
     bool updateItem( const SNItem &item ) const;
     bool deleteItem() const;
 
+    bool isEmpty() const;
+
     bool operator==(const SNItem &other) const;
 
     static QList<SNItem> getItemsFromDatabase();

@@ -347,13 +347,78 @@ bool ComponentsModel::removeItem ( const QModelIndex & index )
     SNItem old_item = i->data().value<SNItem>();
     //Second, remove the old data
     ComponentTreeItem* oldcat = m_cats.value(old_item.category());
-    old_item.deleteItem();
-    if( oldcat )
-        oldcat->removeChild( i );
+    ComponentTreeItem* oldsubcat = m_subcats.value(old_item.subcategory(), 0);
+
+
+    bool removed = false;
+    if( oldsubcat != 0 )
+    {
+        oldsubcat->removeChild( i );
+        removed = true;
+        if( oldsubcat->childCount() == 0 )
+        {
+            m_subcats.remove( old_item.subcategory() );
+            oldcat->removeChild( oldsubcat );
+        }
+    }
+    if( oldcat != 0 )
+    {
+        if( !removed )
+            oldcat->removeChild( i );
+        if ( oldcat->childCount() == 0 )
+        {
+            m_cats.remove( old_item.category() );
+            m_rootItem->removeChild( oldcat );
+        }
+    }
     else
         m_rootItem->removeChild( i );
-     emit reset();
+
+    old_item.deleteItem();
+    reset();
     return true;
+}
+
+bool ComponentsModel::removeItem ( const SNItem &item )
+{
+    int rows = rowCount(QModelIndex());
+    for( int j = 0; j < rows; ++j ) {
+        QModelIndex child = this->index( j, 0, QModelIndex() );
+        QModelIndex index = getIndexRecursive( child, item.name() );
+        if( index.isValid() )
+            return removeItem( index );
+    }
+    return false;
+}
+
+QModelIndex ComponentsModel::getIndexRecursive( const QModelIndex & index, const QString &item_name ) const
+{
+    ComponentTreeItem *i;
+    if( !index.isValid() )
+        i = m_rootItem;
+    else
+        i = static_cast<ComponentTreeItem*> ( index.internalPointer() );
+    if( i == 0 )
+        return QModelIndex();
+
+    switch( i->type() )
+    {
+    case SN::Component:
+        if( item_name == i->data().value<SNItem>().name() )
+            return index;
+        break;
+    case SN::Category:
+    case SN::SubCategory: {
+        int rows = i->childCount();
+        for( int j = 0; j < rows; ++j ) {
+            QModelIndex child = this->index( j, 0, index );
+            return getIndexRecursive( child, item_name );
+        }
+    }
+    default:
+        break;
+    }
+    return QModelIndex();
 }
 
 void ComponentsModel::appendItem( const SNItem &item )
