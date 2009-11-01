@@ -349,33 +349,58 @@ bool ComponentsModel::removeItem ( const QModelIndex & index )
     ComponentTreeItem* oldcat = m_cats.value(old_item.category());
     ComponentTreeItem* oldsubcat = m_subcats.value(old_item.subcategory(), 0);
 
-
+    QModelIndex parent = index.parent();
+    QModelIndex parentParent = index.parent().parent();
+    int row = index.row();
     bool removed = false;
+    bool subcat_removed = false;
     if( oldsubcat != 0 )
     {
+        beginRemoveRows(parent, row, row);
         oldsubcat->removeChild( i );
+        endRemoveRows();
         removed = true;
         if( oldsubcat->childCount() == 0 )
         {
+            beginRemoveRows(parentParent, parent.row(), parent.row());
             m_subcats.remove( old_item.subcategory() );
             oldcat->removeChild( oldsubcat );
+            endRemoveRows();
+            subcat_removed = true;
         }
     }
     if( oldcat != 0 )
     {
         if( !removed )
+        {
+            beginRemoveRows(parent, row, row);
             oldcat->removeChild( i );
+            endRemoveRows();
+        }
         if ( oldcat->childCount() == 0 )
         {
-            m_cats.remove( old_item.category() );
-            m_rootItem->removeChild( oldcat );
+            if( subcat_removed )
+            {
+                beginRemoveRows(QModelIndex(), parentParent.row(), parentParent.row());
+                m_cats.remove( old_item.category() );
+                m_rootItem->removeChild( oldcat );
+                endRemoveRows();
+            } else {
+                beginRemoveRows(parentParent, parent.row(), parent.row());
+                m_cats.remove( old_item.category() );
+                m_rootItem->removeChild( oldcat );
+                endRemoveRows();
+            }
         }
     }
     else
+    {
+        beginRemoveRows(parent, row, row);
         m_rootItem->removeChild( i );
+        endRemoveRows();
+    }
 
     old_item.deleteItem();
-    reset();
     return true;
 }
 
