@@ -439,16 +439,18 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
     return list;
 }
 
-SNItem SNItem::getItem( const QString &name )
+SNItem SNItem::getItem( const QString &item_name )
 {
     QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
     if ( db.isOpen() )
     {
         QSqlQuery query( db );
         query.prepare("SELECT * FROM items WHERE iname = :iname");
-        query.bindValue(":iname", name);
+        query.bindValue(":iname", item_name);
         query.exec();
-        query.next();
+
+        if( !query.next() )
+            return SNItem();
 
         int idxName = query.record().indexOf( "iname" );
         int idxCategory = query.record().indexOf( "category" );
