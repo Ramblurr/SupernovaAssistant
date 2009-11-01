@@ -19,6 +19,7 @@ Qt::ItemFlags MaterialsModel::flags( const QModelIndex &index ) const
 
 void MaterialsModel::item_changed( const SNItem &item, quint64 diff )
 {
+//    qDebug() << item.name() << "changed";
     if( diff == 0 )
         return;
     QMap<QString, int> comps = item.getComponents();
