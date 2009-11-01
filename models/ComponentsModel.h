@@ -60,10 +60,22 @@ public:
     void clear(); //!< ERASES the database!
 
 private:
-    void emitRowChanged(int parent, int child = -1);
+//    void emitRowChanged(int parent, int child = -1);
     bool prepareSubCat( const SNItem &item, ComponentTreeItem *parent );
     void getItemsRecursive( const ComponentTreeItem *parent, QList<SNItem> &list ) const;
-    QModelIndex getIndexRecursive( const QModelIndex & index, const QString &item_name ) const;
+    /*!
+      Returns the QModelIndex of an SNItem.
+     */
+    QModelIndex getSNItemIndexRecursive( const QModelIndex & parent, const QString &item_name ) const;
+    /*!
+      Returns the QModelIndex of a ComponentTreeItem* item
+     */
+    QModelIndex getIndexRecursive( const QModelIndex & parent, const ComponentTreeItem *item ) const;
+
+    /*!
+      Returns the newly created ComponentTreeItem
+      */
+    ComponentTreeItem* insertItem( ComponentTreeItem* parent, const QVariant & value,  const SN::Type &type );
 
     ComponentTreeItem *m_rootItem;
     QHash<QString, ComponentTreeItem*> m_cats;

@@ -282,22 +282,19 @@ bool ComponentsModel::setData ( const QModelIndex & index, const QVariant & valu
 
     //Check to see if we need to change the category
     // and hence change the tree structure.
-    if( new_item.category() != old_item.category() )
+    if( new_item.category() != old_item.category()
+        || new_item.subcategory() != old_item.subcategory() )
     {
-        //First, create a new item with the new data under the correct category
+
+        //First, remove the old data
+        removeItem( old_item );
+
+        //Second, create a new item with the new data under the correct category
         appendItem( new_item );
-
-        //Second, remove the old data
-        ComponentTreeItem* oldcat = m_cats.value(old_item.category());
-        if( oldcat )
-            oldcat->removeChild( i );
-        else
-            m_rootItem->removeChild( i );
+    } else {
+        i->setData( value );
+        emit dataChanged(index, index);
     }
-
-    i->setData( value );
-//    emit dataChanged( index, index );
-    emit ( reset() );
     return true;
 }
 
@@ -409,20 +406,20 @@ bool ComponentsModel::removeItem ( const SNItem &item )
     int rows = rowCount(QModelIndex());
     for( int j = 0; j < rows; ++j ) {
         QModelIndex child = this->index( j, 0, QModelIndex() );
-        QModelIndex index = getIndexRecursive( child, item.name() );
+        QModelIndex index = getSNItemIndexRecursive( child, item.name() );
         if( index.isValid() )
             return removeItem( index );
     }
     return false;
 }
 
-QModelIndex ComponentsModel::getIndexRecursive( const QModelIndex & index, const QString &item_name ) const
+QModelIndex ComponentsModel::getSNItemIndexRecursive( const QModelIndex & parent, const QString &item_name ) const
 {
     ComponentTreeItem *i;
-    if( !index.isValid() )
+    if( !parent.isValid() )
         i = m_rootItem;
     else
-        i = static_cast<ComponentTreeItem*> ( index.internalPointer() );
+        i = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
     if( i == 0 )
         return QModelIndex();
 
@@ -430,14 +427,53 @@ QModelIndex ComponentsModel::getIndexRecursive( const QModelIndex & index, const
     {
     case SN::Component:
         if( item_name == i->data().value<SNItem>().name() )
-            return index;
+            return parent;
         break;
     case SN::Category:
     case SN::SubCategory: {
         int rows = i->childCount();
         for( int j = 0; j < rows; ++j ) {
-            QModelIndex child = this->index( j, 0, index );
-            return getIndexRecursive( child, item_name );
+            QModelIndex child = this->index( j, 0, parent );
+            QModelIndex idx = getSNItemIndexRecursive( child, item_name );
+            if( idx.isValid() )
+                return idx;
+        }
+    }
+    default:
+        break;
+    }
+    return QModelIndex();
+}
+
+QModelIndex ComponentsModel::getIndexRecursive( const QModelIndex & parent, const ComponentTreeItem *item ) const
+{
+    ComponentTreeItem *i;
+    if( !parent.isValid() )
+        i = m_rootItem;
+    else
+        i = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
+
+    if( i == 0 )
+        return QModelIndex();
+
+    if ( i == item )
+        return parent;
+
+    switch( i->type() )
+    {
+    case SN::Component:
+        break;
+    case SN::Root:
+    case SN::Category:
+    case SN::SubCategory:
+        {
+        int rows = i->childCount();
+        for(int j = 0; j < rows; ++j )
+        {
+            QModelIndex child = this->index( j, 0, parent );
+            QModelIndex idx = getIndexRecursive( child, item );
+            if( idx.isValid() )
+                return idx;
         }
     }
     default:
@@ -450,17 +486,14 @@ void ComponentsModel::appendItem( const SNItem &item )
 {
     if( item.category() == "")
     {
-        ComponentTreeItem* c = new ComponentTreeItem( SN::Component, item, m_rootItem );
-        m_rootItem->appendChild(c);
+        insertItem(m_rootItem, item, SN::Component );
     }
     else if( !m_cats.contains( item.category() ) ) // category not seen before
     {
-        ComponentTreeItem* p = new ComponentTreeItem(SN::Category, item.category(), m_rootItem );
-        m_rootItem->appendChild( p );
+        ComponentTreeItem* p = insertItem(m_rootItem, item.category(), SN::Category );
         if( !prepareSubCat( item, p ) )
         {
-            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, item, p );
-            p->appendChild( c );
+            insertItem(p, item, SN::Component );
         }
         m_cats.insert( item.category(), p );
 
@@ -468,13 +501,28 @@ void ComponentsModel::appendItem( const SNItem &item )
         ComponentTreeItem* p = m_cats.value( item.category(), 0);
         if( !prepareSubCat( item, p ) )
         {
-            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, item, p );
-            p->appendChild( c );
+            insertItem(p, item, SN::Component );
         }
     } else
         qDebug() << "IMPOSSIBLE!";
     item.saveItem();
-    emit( reset() );
+//    emit( reset() );
+}
+
+ComponentTreeItem* ComponentsModel::insertItem( ComponentTreeItem* parent, const QVariant & value, const SN::Type &type )
+{
+    QModelIndex idx = getIndexRecursive(QModelIndex(), parent);
+    if( parent == m_rootItem || idx.isValid() )
+    {
+        beginInsertRows( idx, parent->childCount(), parent->childCount() );
+        ComponentTreeItem* c = new ComponentTreeItem( type, value, parent );
+        parent->appendChild( c );
+        endInsertRows();
+        return c;
+    }
+    else
+        qDebug() << "get IndexRecursive failed";
+    return 0;
 }
 
 QList<SNItem> ComponentsModel::getItems() const
@@ -509,31 +557,16 @@ bool ComponentsModel::prepareSubCat( const SNItem &item, ComponentTreeItem *pare
     {
         if( !m_subcats.contains( item.subcategory() ) )
         {
-            ComponentTreeItem* s = new ComponentTreeItem( SN::Category, item.subcategory(), parent );
-            ComponentTreeItem* c = new ComponentTreeItem( SN::Component, QVariant::fromValue( item ), s );
-            m_subcats.insert( item.subcategory(), s );
-            s->appendChild( c );
-            parent->appendChild( s );
+            ComponentTreeItem* c = insertItem( parent, item.subcategory(), SN::SubCategory );
+            m_subcats.insert( item.subcategory(), c );
+            insertItem( c, item, SN::Component );
         } else { // subcat already created
             ComponentTreeItem* s = m_subcats.value( item.subcategory(), 0 );
-            ComponentTreeItem* c = new ComponentTreeItem(SN::Component, QVariant::fromValue( item ), s );
-            s->appendChild( c );
+            insertItem( s, item, SN::Component );
         }
         return true;
     }
     return false;
-}
-
-void
-ComponentsModel::emitRowChanged( int parent_row, int child_row )
-{
-    QModelIndex parent;
-    if (child_row != -1)
-    parent = index( parent_row, 0 );
-
-    QModelIndex i = index( child_row, 0, parent );
-
-    emit dataChanged( i, i );
 }
 
 
