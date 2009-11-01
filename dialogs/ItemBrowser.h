@@ -30,6 +30,7 @@ signals:
 
 protected:
     void changeEvent(QEvent *e);
+    bool eventFilter( QObject *, QEvent * );
 
 private:
     void populateFields( const SNItem &);
@@ -37,16 +38,24 @@ private:
     void addEffect( const ItemEffect &effect );
     void addMaterial( const QString &name, int amt );
 
+    /*!
+      Adds an item to the model/dbase, but shows a dialog if
+      the item already exists.
+      */
+    void appendItemToModel( const SNItem & item );
+
     Ui::ItemBrowser *m_ui;
     ComponentsModel *m_itemModel;
     QMultiHash<QString, QString> m_categories;
     QPersistentModelIndex m_selectedItem;
     bool m_fieldsChanged;
+    int m_itemConflictResolution;
 
     bool loadCategories();
     void loadCategoryAndChildren( const QDomElement & element, const QString & parent = "" );
 
 private slots:
+    void setCurrent( QModelIndex index );
     void on_clearDbaseBut_clicked();
     void on_turnSheetBut_clicked();
     void on_exportBut_clicked();

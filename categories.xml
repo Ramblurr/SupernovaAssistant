@@ -19,6 +19,7 @@
             <category name="Weapon" />
         </category>
         <category name="MDD" />
+        <category name="Misc" />
         <category name="Unknown" />
     </categories>
 </supernova>

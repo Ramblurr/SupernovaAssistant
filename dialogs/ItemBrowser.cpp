@@ -31,7 +31,8 @@
 ItemBrowser::ItemBrowser(QWidget *parent) :
         QDialog(parent),
         m_ui(new Ui::ItemBrowser),
-        m_fieldsChanged( false )
+        m_fieldsChanged( false ),
+        m_itemConflictResolution( -1 )
 {
     m_ui->setupUi(this);
 
@@ -42,10 +43,14 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
     m_ui->treeView->setItemDelegate( delegate );
     m_ui->treeView->setDragEnabled( true );
     m_ui->treeView->viewport()->setAcceptDrops(true);
+    m_ui->treeView->installEventFilter( this );
+    m_ui->treeView->setRootIsDecorated( false );
+//    m_ui->treeView->setSelectionMode( QAbstractItemView::ExtendedSelection );
 
     // Setup categories
     loadCategories();
     QStringList list = m_categories.uniqueKeys();
+    list.removeAll("");
     qSort( list );
     m_ui->categoryCombo->addItems( list );
     m_ui->subcatCombo->setSizeAdjustPolicy( QComboBox::AdjustToContents );
@@ -86,6 +91,9 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
     m_fieldsChanged = false;
 
     setWindowTitle("SN Assistant: Item Editor");
+
+    connect( m_ui->treeView->selectionModel(),
+             SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT( setCurrent( QModelIndex ) ) );
 }
 
 ItemBrowser::~ItemBrowser()
@@ -105,6 +113,22 @@ void ItemBrowser::changeEvent(QEvent *e)
     }
 }
 
+bool ItemBrowser::eventFilter( QObject * obj, QEvent * evt )
+{
+    if ( evt->type() == QEvent::KeyPress )
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>( evt );
+        if ( keyEvent->key() == Qt::Key_Delete ) {
+            if( m_ui->treeView->hasFocus() )
+            {
+                on_deleteItemBut_clicked();
+                return true;
+            }
+        }
+    }
+    return QObject::eventFilter( obj, evt );
+}
+
 void ItemBrowser::on_addItemBut_clicked()
 {
     int num = 1;
@@ -115,45 +139,53 @@ void ItemBrowser::on_addItemBut_clicked()
             break;
         num++;
     }
-    SNItem item("New Item " + QString::number(num), "Edit me", "Misc");
+    SNItem item("New Item " + QString::number(num), "Edit me", "Unknown");
     m_itemModel->appendItem( item );
 }
 
 void ItemBrowser::on_treeView_clicked( QModelIndex index )
 {
-    // Do not trigger the save message if clicking the same item
-    if( index == m_selectedItem )
-        return;
-    if( m_fieldsChanged )
+    int type = m_itemModel->data(index, SN::TypeRole ).toInt();
+    if( type == SN::Category || type == SN::SubCategory )
     {
-        QMessageBox msgBox;
-        msgBox.setText("The item has been modified.");
-        msgBox.setInformativeText("Do you want to save your changes?");
-        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-        msgBox.setDefaultButton(QMessageBox::Save);
-        int ret = msgBox.exec();
-        if( ret == QMessageBox::Save )
-            on_saveItemBut_clicked();
-        else if( ret == QMessageBox::Cancel ) {
-            m_ui->treeView->setCurrentIndex( m_selectedItem );
-            return;
-        } else if( ret == QMessageBox::Discard )
-                m_fieldsChanged = false;
-    }
-    QVariant data = m_itemModel->data( index, SN::ComponentRole );
-    if( !data.canConvert<SNItem>() ) {
         if( m_ui->treeView->isExpanded( index ) )
             m_ui->treeView->collapse( index );
         else
             m_ui->treeView->expand( index );
-        return;
     }
-    SNItem item = data.value<SNItem>();
+}
 
-    populateFields( item );
-    m_fieldsChanged = false;
+void ItemBrowser::setCurrent( QModelIndex index )
+{
+    if( int type = m_itemModel->data(index, SN::TypeRole ).toInt() == SN::Component )
+    {
+        // Do not trigger the save message if clicking the same item
+        if( index == m_selectedItem )
+            return;
+        if( m_fieldsChanged )
+        {
+            QMessageBox msgBox;
+            msgBox.setText("The item has been modified.");
+            msgBox.setInformativeText("Do you want to save your changes?");
+            msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+            msgBox.setDefaultButton(QMessageBox::Save);
+            int ret = msgBox.exec();
+            if( ret == QMessageBox::Save )
+                on_saveItemBut_clicked();
+            else if( ret == QMessageBox::Cancel ) {
+                m_ui->treeView->setCurrentIndex( m_selectedItem );
+                return;
+            } else if( ret == QMessageBox::Discard )
+                m_fieldsChanged = false;
+        }
+        QVariant data = m_itemModel->data( index, SN::ComponentRole );
+        SNItem item = data.value<SNItem>();
 
-    m_selectedItem = QPersistentModelIndex( index );
+        populateFields( item );
+        m_fieldsChanged = false;
+
+        m_selectedItem = QPersistentModelIndex( index );
+    }
 }
 
 void ItemBrowser::on_addEffectBut_clicked()
@@ -319,7 +351,7 @@ bool ItemBrowser::loadCategories()
 void ItemBrowser::loadCategoryAndChildren( const QDomElement & e, const QString & parent )
 {
 
-    if( parent == "" )
+    if( parent.isEmpty() )
         m_categories.insertMulti(e.attribute("name" ).trimmed(), "");
     else
         m_categories.insertMulti(parent, e.attribute("name" ).trimmed());
@@ -334,6 +366,7 @@ void ItemBrowser::loadCategoryAndChildren( const QDomElement & e, const QString 
 void ItemBrowser::on_categoryCombo_currentIndexChanged( QString category )
 {
     QStringList sub_cats = m_categories.values( category );
+    sub_cats.removeAll("");
 
     m_ui->subcatCombo->clear();
     m_ui->subcatCombo->addItems( sub_cats );
@@ -345,8 +378,8 @@ void ItemBrowser::on_saveItemBut_clicked()
         return;
     SNItem item = itemFromFields();
     //    QModelIndex indx = m_itemModel->index(m_selectedItem.row(), m_selectedItem.column(), m_selectedItem.parent() );
-    m_itemModel->setData( m_selectedItem, item );
     m_fieldsChanged = false;
+    m_itemModel->setData( m_selectedItem, item );
 }
 
 void ItemBrowser::on_deleteItemBut_clicked()
@@ -399,17 +432,7 @@ void ItemBrowser::on_importBut_clicked()
     QList<SNItem> list = SNItem::getItemsFromXml( fileName );
     foreach( SNItem item, list )
     {
-        SNItem existing = SNItem::getItem( item.name() );
-        if( existing.isEmpty() ) //no conflict
-            m_itemModel->appendItem( item );
-
-        ItemConflictDialog conflictDialog( existing, item, this  );
-        int res = conflictDialog.exec();
-        if( res == SN::KeepNewItem )
-        {
-           m_itemModel->removeItem( existing );
-           m_itemModel->appendItem( item );
-        }
+        appendItemToModel( item );
     }
 
 
@@ -458,19 +481,38 @@ void ItemBrowser::on_turnSheetBut_clicked()
     qDebug() << "got " << items.size();
     foreach( SNItem item, items )
     {
+        appendItemToModel( item );
+    }
+
+}
+
+void ItemBrowser::appendItemToModel( const SNItem & item )
+{
         SNItem existing = SNItem::getItem( item.name() );
         if( existing.isEmpty() ) //no conflict
+        {
             m_itemModel->appendItem( item );
+            return;
+        }
+        if( m_itemConflictResolution == SN::KeepNewItemAndRepeat )
+        {
+            m_itemModel->removeItem( existing );
+            m_itemModel->appendItem( item );
+            return;
+        } else if ( m_itemConflictResolution == SN::KeepOldItemAndRepeat )
+        {
+            m_itemModel->appendItem( item );
+            return;
+        }
 
         ItemConflictDialog conflictDialog( existing, item, this  );
-        int res = conflictDialog.exec();
-        if( res == SN::KeepNewItem )
+        m_itemConflictResolution = conflictDialog.exec();
+
+        if( m_itemConflictResolution == SN::KeepNewItem || m_itemConflictResolution == SN::KeepNewItemAndRepeat )
         {
            m_itemModel->removeItem( existing );
            m_itemModel->appendItem( item );
         }
-    }
-
 }
 
 void ItemBrowser::on_clearDbaseBut_clicked()
