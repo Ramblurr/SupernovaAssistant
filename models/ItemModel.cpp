@@ -107,9 +107,9 @@ bool ItemModel::removeRows( int position, int rows, const QModelIndex &index )
         SNItem item = m_data.at( position ).first;
         quint64 diff = 0 - m_data.at( position ).second;
         quint64 weight = item.weight()*(0 - m_data.at( position ).second);
-        emit( statsChanged( diff, weight ) );
         m_data.removeAt( position );
         m_hash.remove( item );
+        emit( statsChanged( diff, weight ) );
         emit( componentsChanged( item, diff ) );
     }
 
@@ -127,10 +127,10 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
             SNItem item = m_data.at(row).first;
             quint64 diff = value.toUInt() - m_data.at( row ).second;
             quint64 weight = item.weight()*(value.toUInt() - m_data.at( row ).second);
-            emit( statsChanged( diff, weight ) );
-            emit( componentsChanged( item, diff ) );
             QPair<SNItem, quint64> s( m_data.at( row ).first, value.toInt());
             m_data.replace( row, s );
+            emit( statsChanged( diff, weight ) );
+            emit( componentsChanged( item, diff ) );
 
         } else
             return false;
@@ -287,7 +287,7 @@ int ItemModel::thrust() const
        SNItem item = m_data.at(i).first;
        int quantity = m_data.at(i).second;
 
-       if( item.subcategory() == "Engines" )
+       if( item.subcategory() == "Engine" )
         foreach( ItemEffect effect, item.getEffects() )
             if( effect.name() == "Maneuverability" )
             {
@@ -301,11 +301,19 @@ int ItemModel::thrust() const
 int ItemModel::actionPoints() const
 {
     int thr = thrust();
-//    qDebug() << "thrust=" << thr;
+    if( thr == 0 ) // no engines
+        return 0;
 
     int tonnage = totalItemsTonnage().second;
-//    qDebug() << "tons=" << tonnage;
+
     if( tonnage > 0 )
-        return thr / tonnage;
+    {
+        int val = thr / tonnage;
+        if( val >= 2 )
+            return val;
+        else
+            return 2;
+    }
+    qDebug () << "WARNING! Impossible state reached: ship tonnage = 0, but thrust > 0";
     return 0;
 }
