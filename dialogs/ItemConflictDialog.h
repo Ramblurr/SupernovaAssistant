@@ -12,7 +12,9 @@ namespace SN
 {
     enum ItemConflict {
         KeepOldItem = 2,
-        KeepNewItem
+        KeepNewItem,
+        KeepOldItemAndRepeat,
+        KeepNewItemAndRepeat
     };
 }
 class ItemConflictDialog : public QDialog {

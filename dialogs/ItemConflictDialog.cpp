@@ -98,12 +98,18 @@ void ItemConflictDialog::changeEvent(QEvent *e)
 
 void ItemConflictDialog::on_saveOldBut_clicked()
 {
-    done( SN::KeepOldItem );
+    if( m_ui->oldKeepRadio->isChecked() )
+        done( SN::KeepNewItemAndRepeat );
+    else
+        done( SN::KeepOldItem );
 }
 
 void ItemConflictDialog::on_saveNewBut_clicked()
 {
-    done( SN::KeepNewItem );
+    if( m_ui->newKeepRadio->isChecked() )
+        done( SN::KeepNewItemAndRepeat );
+    else
+        done( SN::KeepNewItem );
 }
 
 void ItemConflictDialog::showDiffs()

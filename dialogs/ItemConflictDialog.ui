@@ -169,6 +169,13 @@
       <item row="1" column="1" colspan="3">
        <widget class="QTextEdit" name="olddescEdit"/>
       </item>
+      <item row="9" column="1" colspan="2">
+       <widget class="QRadioButton" name="oldKeepRadio">
+        <property name="text">
+         <string>Keep all old items</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -314,6 +321,13 @@
       </item>
       <item row="1" column="1" colspan="3">
        <widget class="QTextEdit" name="newdescEdit"/>
+      </item>
+      <item row="9" column="1" colspan="2">
+       <widget class="QRadioButton" name="newKeepRadio">
+        <property name="text">
+         <string>Keep all new items</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
