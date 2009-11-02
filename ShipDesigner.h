@@ -71,6 +71,7 @@ private slots:
     void on_saveButton_clicked();
     void on_componentList_clicked( QModelIndex index );
     void on_generateNUD_clicked();
+    void showDesc( QModelIndex index );
 
 };
 

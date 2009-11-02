@@ -74,6 +74,7 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
     m_proxy_model->setSourceModel( m_componentsModel );
 
     m_ui->componentList->setModel( m_proxy_model );
+    m_ui->componentList->setRootIsDecorated( false );
     ItemDelegate* idelegate = new ItemDelegate( this );
     m_ui->componentList->setItemDelegate( idelegate );
     m_ui->componentList->setHeaderHidden( true );
@@ -89,6 +90,10 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
 
     connect( m_itemModel, SIGNAL( componentsChanged( const SNItem &, quint64 ) ), m_detailedModel, SLOT( item_changed( const SNItem&,quint64) ));
     connect( m_itemModel, SIGNAL( statsChanged( int, quint64 ) ), this, SLOT( statsChangedSlot( int, quint64 ) ) );
+    connect( m_ui->componentList->selectionModel(),
+             SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT( showDesc( QModelIndex ) ) );
+
+
 
     setupDesignsModel();
 
@@ -138,11 +143,25 @@ bool ShipDesigner::eventFilter( QObject * obj, QEvent * evt )
 
 void ShipDesigner::on_componentList_clicked( QModelIndex index )
 {
+    if ( m_componentsModel->data( index, SN::TypeRole ) != SN::Component )
+    {
+        if( m_ui->componentList->isExpanded( index ) )
+            m_ui->componentList->collapse( index );
+        else
+            m_ui->componentList->expand( index );
+        return;
+    }
+}
+
+void ShipDesigner::showDesc( QModelIndex index )
+{
     if ( m_descHtmlTemplate == "" )
         return;
-    QVariant data = m_componentsModel->data( index, SN::ComponentRole );
-    if ( data.canConvert<SNItem>() )
+    QModelIndex real_index = m_proxy_model->mapToSource( index );
+    int type = m_componentsModel->data(real_index, SN::TypeRole ).toInt();
+    if(  type == SN::Component )
     {
+        QVariant data = m_componentsModel->data( real_index, SN::ComponentRole );
         SNItem item = data.value<SNItem>();
         QLocale locale;
         QString format = m_descHtmlTemplate;
@@ -161,12 +180,6 @@ void ShipDesigner::on_componentList_clicked( QModelIndex index )
         materials.chop( 2 );
         format.replace( "{MATS}", materials );
         m_ui->componentDesc->setHtml( format );
-    } else {
-        if( m_ui->componentList->isExpanded( index ) )
-            m_ui->componentList->collapse( index );
-        else
-            m_ui->componentList->expand( index );
-        return;
     }
 }
 
