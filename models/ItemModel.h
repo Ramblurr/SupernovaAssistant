@@ -3,6 +3,7 @@
 #include "../data/SNItem.h"
 #include <QAbstractTableModel>
 #include <QStringList>
+typedef QPair<SNItem, quint64> ItemQuantityPair;
 class ItemModel : public QAbstractTableModel
 {
      Q_OBJECT
@@ -29,13 +30,13 @@ class ItemModel : public QAbstractTableModel
 
      const static int ComponentRole = 15;
 
-     QList< QPair<SNItem, quint64> > getItems() const;
+     QList<ItemQuantityPair> getItems() const;
 
      //! Returns a QPair<#items, tonnage> of the design represented in the model
      QPair<int, int> totalItemsTonnage() const;
 
      int actionPoints() const;
-     int warpBubble() const;
+     double warpBubble() const;
      int warpRating() const;
      int thrust() const;
      int massThrustRatio() const;
@@ -49,7 +50,19 @@ signals:
 
  private:
     QMap< SNItem, quint64 > m_hash;
-    QList< QPair<SNItem, quint64> > m_data;
+    QList<ItemQuantityPair> m_data;
+
+    int m_ap;
+    int m_warp;
+    int m_bubble;
+    int m_thrust;
+    int m_firewpower;
+    int m_integrity;
+    int m_firecontrol;
+
+
+private slots:
+    void refreshStats();
 };
 
 #endif // ITEMMODEL_H

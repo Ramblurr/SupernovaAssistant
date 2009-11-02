@@ -1,4 +1,7 @@
 #include "ItemModel.h"
+
+#include "SNConstants.h"
+
 #include <QDebug>
 #include <QList>
 #include <QMimeData>
@@ -6,6 +9,7 @@
 ItemModel::ItemModel( QObject *parent )
         : QAbstractTableModel( parent )
 {
+    connect(this, SIGNAL( statsChanged(int,quint64) ), this, SLOT( refreshStats()) );
 }
 
 int ItemModel::rowCount( const QModelIndex &parent ) const
@@ -127,7 +131,7 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
             SNItem item = m_data.at(row).first;
             quint64 diff = value.toUInt() - m_data.at( row ).second;
             quint64 weight = item.weight()*(value.toUInt() - m_data.at( row ).second);
-            QPair<SNItem, quint64> s( m_data.at( row ).first, value.toInt());
+            ItemQuantityPair s( m_data.at( row ).first, value.toInt());
             m_data.replace( row, s );
             emit( statsChanged( diff, weight ) );
             emit( componentsChanged( item, diff ) );
@@ -207,7 +211,7 @@ Qt::DropActions ItemModel::supportedDropActions() const
     return Qt::CopyAction | Qt::MoveAction;
 }
 
-QList< QPair<SNItem, quint64> > ItemModel::getItems() const
+QList< ItemQuantityPair > ItemModel::getItems() const
 {
     return m_data;
 }
@@ -218,7 +222,7 @@ bool ItemModel::appendData( const SNItem &item, quint64 quantity )
     {
         int row = m_data.count();
         beginInsertRows(QModelIndex(), row, row);
-        QPair<SNItem, quint64> a;
+        ItemQuantityPair a;
         a.first = item;
         a.second = quantity;
         m_data.append( a );
@@ -237,7 +241,7 @@ bool ItemModel::appendOrAlterData( const SNItem &item, quint64 quantity )
     {
         int row = m_data.count();
         beginInsertRows(QModelIndex(), row, row);
-        QPair<SNItem, quint64> a;
+        ItemQuantityPair a;
         a.first = item;
         a.second = quantity;
         m_data.append( a );
@@ -247,7 +251,7 @@ bool ItemModel::appendOrAlterData( const SNItem &item, quint64 quantity )
     } else {
         int row = m_hash[item];
         quint64 quant = quantity + m_data.at( row ).second;
-        QPair<SNItem, quint64> s( item, quant );
+        ItemQuantityPair s( item, quant );
         m_data.replace( row, s );
 
         QModelIndex i = index(row, 0);
@@ -279,27 +283,10 @@ QPair<int, int> ItemModel::totalItemsTonnage() const
     return QPair<int, int>(total, tonnage);
 }
 
-int ItemModel::thrust() const
-{
-    int thr = 0;
-    for( int i = 0; i < m_data.size(); i++ )
-    {
-       SNItem item = m_data.at(i).first;
-       int quantity = m_data.at(i).second;
-
-       if( item.subcategory() == "Engine" )
-        foreach( ItemEffect effect, item.getEffects() )
-            if( effect.name() == "Maneuverability" )
-            {
-                thr += quantity * effect.value();
-                break;
-            }
-    }
-    return thr;
-}
-
 int ItemModel::actionPoints() const
 {
+    // AP = total thrust / total tonnage
+
     int thr = thrust();
     if( thr == 0 ) // no engines
         return 0;
@@ -316,4 +303,63 @@ int ItemModel::actionPoints() const
     }
     qDebug () << "WARNING! Impossible state reached: ship tonnage = 0, but thrust > 0";
     return 0;
+}
+
+double ItemModel::warpBubble() const
+{
+    // Warp bubble = tonnage/ warp rating
+    int wr = warpRating();
+    int tons = totalItemsTonnage().second;
+    double bub = 0;
+    if( wr != 0 )
+        bub = tons / wr;
+    return bub;
+}
+
+int ItemModel::warpRating() const
+{
+    // Warp rating = JumpDrive1*quant1 + JumpDrive2*quant2 ... + JumpDrive_n*quant_n
+    return m_warp;
+}
+
+int ItemModel::thrust() const
+{
+    return m_thrust;
+}
+
+int ItemModel::massThrustRatio() const
+{
+    // thrust / tonnage
+    int thr = thrust();
+    int tons = totalItemsTonnage().second;
+    if( tons != 0 )
+        return thr / tons;
+    return 0;
+
+}
+
+void ItemModel::refreshStats()
+{
+    m_thrust = 0;
+    m_warp = 0;
+    foreach( ItemQuantityPair pair, m_data )
+    {
+       SNItem item = pair.first;
+       int quantity = pair.second;
+
+       foreach( ItemEffect effect, item.getEffects() )
+       {
+           if( item.subcategory() == SN::Category::Engine )
+           {
+               if( effect.name() == "Maneuverability" )
+                   m_thrust += quantity * effect.value();
+           }
+           else if( item.subcategory() == SN::Category::JumpDrive )
+           {
+                if( effect.name() == "Jump Drive Output" )
+                    m_warp += quantity * effect.value();
+           }
+
+       }
+    }
 }
