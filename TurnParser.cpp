@@ -1,5 +1,6 @@
 #include "TurnParser.h"
 
+#include "SNConstants.h"
 #include "data/SNItem.h"
 #include "data/ItemEffect.h"
 #include <poppler-qt4.h>
@@ -448,59 +449,59 @@ CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, cons
     if( istech )
     {
         if( classification == "Horizon Technology")
-            return CategoryPair("Technology", "Horizon");
+            return CategoryPair(SN::Category::Technology, SN::Category::HorizonTechnology);
         else if( classification == "Ground Combat")
-            return CategoryPair("Technology", "Ground");
+            return CategoryPair(SN::Category::Technology, SN::Category::GroundTechnology);
         else if( classification == "Cloaking Device")
-            return CategoryPair("Technology", "");
+            return CategoryPair(SN::Category::Technology, "");
         else
-            return CategoryPair("Technology", "");
+            return CategoryPair(SN::Category::Technology, "");
     }
 
     // Ship Components
     if( classification == "Bridge" )
-        return CategoryPair("Ship Component", "C4ISTAR");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::Bridge);
     else if( classification == "Armor")
-        return CategoryPair("Ship Component", "Defense");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::Armor);
     else if( classification == "Diplomatic Facility")
-        return CategoryPair("Ship Component", "C4ISTAR");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::DiplomaticFacility);
     else if( classification == "Science Lab")
-        return CategoryPair("Ship Component", "C4ISTAR");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::ScienceLab);
     else if( classification == "Shield")
-        return CategoryPair("Ship Component", "Defense");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::Shield);
     else if( classification == "Defensive System")
-        return CategoryPair("Ship Component", "Defense");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::DefensiveSystem);
     else if( classification == "Drone Rack")
-        return CategoryPair("Ship Component", "Drone");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::Drone);
     else if( classification == "Fighter Bay")
-        return CategoryPair("Ship Component", "C4ISTAR");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::FighterBay);
     else if( classification == "Sensor")
-        return CategoryPair("Ship Component", "C4ISTAR");
+        return CategoryPair(SN::Category::ShipComponent, SN::Category::Sensor);
     else if( classification == "Jump Drive" ) {
         if( name.contains("Engine") )
-            return CategoryPair("Ship Component", "Engine");
+            return CategoryPair(SN::Category::ShipComponent, SN::Category::Engine);
         else
-            return CategoryPair("Ship Component", "Jump Drive");
+            return CategoryPair(SN::Category::ShipComponent, SN::Category::JumpDrive);
     }
 
     // Resources
-    if( classification == "Resource")
+    if( classification == SN::Category::Resource)
     {
         if( name.contains( QRegExp( "Improved.*") ) )
-            return CategoryPair("Resource", "Improved");
+            return CategoryPair(SN::Category::Resource, SN::Category::ImprovedResource);
         else if( name.contains( QRegExp( "Advanced.*") ) )
-            return CategoryPair("Resource", "Advanced");
+            return CategoryPair(SN::Category::Resource, SN::Category::AdvancedResource);
         else
-            return CategoryPair("Resource", "Initial");
+            return CategoryPair(SN::Category::Resource, SN::Category::InitialResource);
 
     }
     //Weapons
     if( classification == "Mass Destruction Device" )
-        return CategoryPair("MDD", "" );
+        return CategoryPair(SN::Category::MDD, "" );
     else if( classification == "Weapon" )
-        return CategoryPair( "Ship Component",  "Weapon" );
+        return CategoryPair( SN::Category::ShipComponent,  SN::Category::Weapon );
 
 
     qDebug() << "WARNING: Found uncatagorizable item; '"  << name << "' '"  << classification <<"'";
-    return CategoryPair( "Unknown" , "" );
+    return CategoryPair( SN::Category::Unknown , "" );
 }

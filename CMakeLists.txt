@@ -59,6 +59,7 @@ set( snass_SRCS
     MaterialsWidget.cpp    
     tests/modeltest.cpp
     google_diff/diff_match_patch.cpp
+    SNConstants.cpp
 )
 qt4_automoc(${snass_SRCS})
 
