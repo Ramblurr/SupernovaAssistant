@@ -52,7 +52,6 @@ set( snass_SRCS
     models/ComponentsProxyModel.cpp
     models/ComponentsModel.cpp
     data/Order.cpp
-    dialogs/ChangeEmpireDialog.cpp
     dialogs/ItemConflictDialog.cpp
     dialogs/NewEmpireDialog.cpp
     data/ItemEffect.cpp
@@ -77,7 +76,6 @@ set( snass_TOMOC
     models/ComponentsProxyModel.h
     models/ItemModel.h
     models/MaterialsModel.h
-    dialogs/ChangeEmpireDialog.h
     dialogs/ItemConflictDialog.h
     dialogs/NewEmpireDialog.h
     delegates/GenericDelegate.h
@@ -98,7 +96,6 @@ qt4_wrap_cpp(moc_outfiles ${snass_TOMOC})
 #files that need ui headers generated
 set( snass_UIS
     MainWindow.ui
-    dialogs/ChangeEmpireDialog.ui
     dialogs/NewEmpireDialog.ui
     dialogs/ItemConflictDialog.ui
     widgets/WelcomeWidget.ui
