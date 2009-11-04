@@ -259,7 +259,7 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
         rx.setPattern("ANZ:\\s([^\\n]+)\\n");
         if( rx.indexIn( anz ) > -1 )
         {
-            QString name = rx.cap(1);
+            QString name = rx.cap(1).trimmed();
 //            qDebug() << anz;
 //            qDebug() << "Got anz item: " << name;
 
@@ -269,7 +269,7 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
             rx.setPattern("ANZ:\\s[^\\n]+\\n[^:]*:\\s+(.*)(?:\\(\\d+ ton|Classification)");
             rx.setMinimal( true );
             rx.indexIn( anz  );
-            QString desc = rx.cap( 1 );
+            QString desc = rx.cap( 1 ).trimmed();
             rx.setMinimal( false );
 
             // Is technology?
@@ -281,7 +281,7 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
             // Parse Weight
             rx.setPattern("\\((\\d*),?(\\d+),?(\\d*)\\s*\\n*\\s*tons?\\)");
             rx.indexIn( anz );
-            QString tons = rx.cap(1) + rx.cap(2) + rx.cap(3);
+            QString tons = (rx.cap(1) + rx.cap(2) + rx.cap(3)).trimmed();
 
             // Parse classification, range and structure
             // note: this regexp assumes the values of classification/range won't
