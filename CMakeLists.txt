@@ -42,49 +42,49 @@ ENDIF(WIN32)
 set( snass_SRCS
     main.cpp
     MainWindow.cpp
-    ShipDesigner.cpp
     TurnParser.cpp
-    models/ComponentsModel.cpp
     data/SNItem.cpp
     data/ShipDesign.cpp
-    dialogs/NewEmpireDialog.cpp
     data/Empire.cpp
     models/ShipDesignsModel.cpp
     models/ItemModel.cpp
     models/MaterialsModel.cpp
     models/ComponentsProxyModel.cpp
+    models/ComponentsModel.cpp
     data/Order.cpp
     dialogs/ChangeEmpireDialog.cpp
-    dialogs/ItemBrowser.cpp
     dialogs/ItemConflictDialog.cpp
+    dialogs/NewEmpireDialog.cpp
     data/ItemEffect.cpp
     delegates/GenericDelegate.cpp
     delegates/IntegerColumnDelegate.cpp
     delegates/ItemDelegate.cpp
-    MaterialsWidget.cpp    
     tests/modeltest.cpp
     google_diff/diff_match_patch.cpp
     SNConstants.cpp
     widgets/WelcomeWidget.cpp
+    widgets/ShipDesigner.cpp
+    widgets/ItemBrowser.cpp
+    widgets/MaterialsWidget.cpp    
 )
 qt4_automoc(${snass_SRCS})
 
 # headers that need mocs generated
 set( snass_TOMOC
     MainWindow.h
-    ShipDesigner.h
     models/ComponentsModel.h
-    dialogs/NewEmpireDialog.h
     models/ShipDesignsModel.h
     models/ComponentsProxyModel.h
     models/ItemModel.h
     models/MaterialsModel.h
     dialogs/ChangeEmpireDialog.h
-    dialogs/ItemBrowser.h
     dialogs/ItemConflictDialog.h
+    dialogs/NewEmpireDialog.h
     delegates/GenericDelegate.h
     tests/modeltest.h
     widgets/WelcomeWidget.h
+    widgets/ShipDesigner.h
+    widgets/ItemBrowser.h
 )
 
 if(WIN32)
@@ -97,13 +97,13 @@ qt4_wrap_cpp(moc_outfiles ${snass_TOMOC})
 
 #files that need ui headers generated
 set( snass_UIS
-    ShipDesigner.ui
     MainWindow.ui
     dialogs/ChangeEmpireDialog.ui
-    dialogs/ItemBrowser.ui
     dialogs/NewEmpireDialog.ui
     dialogs/ItemConflictDialog.ui
     widgets/WelcomeWidget.ui
+    widgets/ShipDesigner.ui
+    widgets/ItemBrowser.ui
 )
 # run uic
 QT4_WRAP_UI(snass_UIS_H ${snass_UIS})

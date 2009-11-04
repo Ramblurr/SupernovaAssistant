@@ -1,12 +1,12 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "ShipDesigner.h"
-#include "dialogs/NewEmpireDialog.h"
-#include "dialogs/ChangeEmpireDialog.h"
-#include "dialogs/ItemBrowser.h"
-#include "data/Empire.h"
+#include "NewEmpireDialog.h"
+#include "ChangeEmpireDialog.h"
+#include "ItemBrowser.h"
+#include "Empire.h"
 #include "TurnParser.h"
-#include "widgets/WelcomeWidget.h"
+#include "WelcomeWidget.h"
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
