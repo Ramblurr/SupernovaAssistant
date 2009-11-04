@@ -1,6 +1,7 @@
 #include "NewEmpireDialog.h"
 #include "ui_NewEmpireDialog.h"
 #include "data/Empire.h"
+#include "data/SNItem.h"
 
 #include <QDesktopServices>
 #include <QtSql>
@@ -107,7 +108,12 @@ bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
     QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
     QDir dataLoc( dataDir );
     dataLoc.cd( "SNAssistant" );
-    QSqlDatabase db = QSqlDatabase::addDatabase( "QSQLITE" );
+
+    QSqlDatabase db = QSqlDatabase::database("CurrEmpire");
+    if ( db.isOpen() )
+        db.close();
+
+    db = QSqlDatabase::addDatabase( "QSQLITE", "CurrEmpire" );
     QString dbPath = dataLoc.absolutePath() + QDir::separator() + "empire_" + m_ui->empireIDEdit->text().trimmed() + ".sql";
     db.setDatabaseName( dbPath );
     if ( db.open() )
@@ -123,6 +129,13 @@ bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
                 qDebug() << query.executedQuery() << "\nerror: " << query.lastError();
         }
         db.commit();
+
+        QList<SNItem> items = SNItem::getItemsFromXml( ":/resources.xml" );
+        foreach( SNItem item, items )
+        {
+            item.saveItem();
+        }
+
         db.close();
         return true;
     }
