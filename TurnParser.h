@@ -14,8 +14,8 @@ class TurnParser : public QThread
 {
     Q_OBJECT
 public:
-    TurnParser();
-    TurnParser( const QString &filename );
+    TurnParser(  QObject * parent = 0 );
+    TurnParser( const QString &filename ,  QObject * parent = 0);
 
     QString text() const;
     void writeOut( const QString &filename );

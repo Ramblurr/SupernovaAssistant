@@ -22,6 +22,8 @@ int main( int argc, char *argv[] )
 //        exit(1);
 //    }
     qRegisterMetaType<Empire>( "Empire" );
+    qRegisterMetaType<SNItem>( "SNItem" );
+    qRegisterMetaType<QList<SNItem> >( "QList<SNItem>" );
     qRegisterMetaTypeStreamOperators<Empire>( "Empire" );
     MainWindow w;
     w.show();

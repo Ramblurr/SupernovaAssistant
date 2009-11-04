@@ -9,12 +9,13 @@
 #include <QFile>
 #include <QTextStream>
 #include <QRegExp>
+#include <QSharedPointer>
 
-TurnParser::TurnParser(): m_filename( "" ), m_text( "" ), m_parsed( false ), m_data()
+TurnParser::TurnParser( QObject * parent ): QThread( parent ), m_filename( "" ), m_text( "" ), m_parsed( false ), m_data()
 {
 }
 
-TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_text( "" ), m_parsed( false ), m_data()
+TurnParser::TurnParser( const QString &filename, QObject * parent ) : QThread( parent ), m_filename( filename ), m_text( "" ), m_parsed( false ), m_data()
 {
 
 }
@@ -76,6 +77,7 @@ void TurnParser::run()
     parseData();
     m_parsed = true;
     exec();
+    deleteLater();
 }
 
 void TurnParser::parseData()
@@ -291,11 +293,11 @@ void TurnParser::parseANZs( const QStringList &anzs )
             // note: this regexp assumes the values of classification/range won't
             // be longer more than three words
             rx.setPattern("(Classification|Range|Structural\\s+Integrity): (\\S+\\s?\\S+\\s?\\S+|\\d+)");
-            QString *classification = new QString();
-            QString *range = new QString();
-            QString *integrity = new QString();
 
-            QString* current = 0;
+            QSharedPointer<QString> current = QSharedPointer<QString>(new QString);
+            QSharedPointer<QString> classification = QSharedPointer<QString>(new QString);
+            QSharedPointer<QString> integrity = QSharedPointer<QString>(new QString);
+            QSharedPointer<QString> range = QSharedPointer<QString>(new QString);
 
             int pos=0;
             while ((pos = rx.indexIn(anz, pos)) != -1)
@@ -411,6 +413,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
             {
                 effects_normal << ItemEffect( *eff );
             }
+            qDeleteAll(effects);
 
 //            qDebug() << "Effect: " << rx.cap(1) << rx.cap(2) << rx.cap(3);
 //            qDebug() << "Counters: " << rx.cap(4);

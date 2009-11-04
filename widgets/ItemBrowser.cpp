@@ -489,7 +489,7 @@ void ItemBrowser::on_turnSheetBut_clicked()
         return;
     settings.setValue("turn-sheet-location", info.absoluteDir().absolutePath());
 
-    TurnParser* tp = new TurnParser( fileName );
+    TurnParser* tp = new TurnParser( fileName, this );
 //    tp.writeOut("anztest");
     connect(tp, SIGNAL(anzParsingComplete( const QList<SNItem> & )), this, SLOT(anzParsingFinishedSlot( const QList<SNItem> & )), Qt::QueuedConnection);
     tp->start();
