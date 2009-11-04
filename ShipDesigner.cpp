@@ -335,14 +335,28 @@ void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
     // Set item count total
     int curr = m_ui->countLabel->text().toInt();
 
+    QLocale locale;
     // set tonnage
     QString tmp = m_ui->tonnageLabel->text();
     quint64 tonnage = tmp.toUInt();
-    m_ui->tonnageLabel->setText( QString::number( tonnage + tons ) );
-    m_ui->countLabel->setText( QString::number( curr + numitems ) );
+    m_ui->tonnageLabel->setText( locale.toString( tonnage + tons ) );
+    m_ui->countLabel->setText( locale.toString( curr + numitems ) );
 
     // set AP
-    m_ui->apsLabel->setText( QString::number( m_itemModel->actionPoints() ) );
+    m_ui->apsLabel->setText( locale.toString( m_itemModel->actionPoints() ) );
+
+    //set Thrust
+    m_ui->thrustLabel->setText( locale.toString( m_itemModel->thrust() ) );
+
+    //set warp info
+    m_ui->warpLabel->setText( locale.toString( m_itemModel->warpRating() ) );
+
+    m_ui->bubbleLabel->setText( locale.toString( m_itemModel->warpBubble(), 'f', 2) );
+
+    // mass v thrust ratio
+    m_ui->massvthrustLabel->setText( locale.toString( m_itemModel->massThrustRatio() ) );
+
+
 }
 void ShipDesigner::copyItemListTriggered()
 {
