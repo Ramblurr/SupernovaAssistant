@@ -28,17 +28,16 @@
 #include <QPair>
 
 
-ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
-        QDialog( parent ),
-        m_ui( new Ui::ShipDesigner ),
-        m_empireId( empid )
+ShipDesigner::ShipDesigner( QWidget *parent ) :
+        QWidget( parent ),
+        m_ui( new Ui::ShipDesigner )
 {
     m_ui->setupUi( this );
 
     m_itemModel = new ItemModel( this );
     m_ui->itemList->setModel( m_itemModel );
     m_ui->itemList->installEventFilter( this );
-        GenericDelegate *generic = new GenericDelegate( this );
+    GenericDelegate *generic = new GenericDelegate( this );
     IntegerColumnDelegate *delegate = new IntegerColumnDelegate(0, INT_MAX);
     generic->insertColumnDelegate(1, delegate );
     m_ui->itemList->setItemDelegate( generic );
@@ -108,6 +107,31 @@ ShipDesigner::ShipDesigner( QString empid, QWidget *parent ) :
 ShipDesigner::~ShipDesigner()
 {
     delete m_ui;
+}
+
+void ShipDesigner::currEmpireChangedSlot()
+{
+    setupDesignsModel();
+    m_itemModel->clear();
+    m_detailedModel->clear();
+    m_ui->tonnageLabel->setText("0");
+    m_ui->countLabel->setText("0");
+    m_ui->warpLabel->setText("0");
+    m_ui->bubbleLabel->setText("0");
+    m_ui->massvthrustLabel->setText("0");
+    m_ui->apsLabel->setText("0");
+    m_ui->fcLabel->setText("0");
+    m_ui->integrityLabel->setText("0");
+    m_ui->thrustLabel->setText("0");
+    m_ui->reqEnginesEdit->setText("0");
+    m_ui->desiredAPSpin->clear();
+    m_componentsModel->resetModel();
+    m_ui->designNameEdit->clear();
+    m_ui->quantityEdit->clear();
+    m_ui->popGroupEdit->clear();
+    m_ui->priorityEdit->clear();
+    m_ui->fleetEdit->clear();
+    m_ui->componentFilterEdit->clear();
 }
 
 void ShipDesigner::changeEvent( QEvent *e )

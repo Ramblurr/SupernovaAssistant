@@ -570,12 +570,19 @@ bool ComponentsModel::prepareSubCat( const SNItem &item, ComponentTreeItem *pare
 }
 
 
-void ComponentsModel::clear()
+void ComponentsModel::eraseDatabase()
 {
     SNItem::clearDatabase();
+    resetModel();
+}
+
+void ComponentsModel::resetModel()
+{
     m_rootItem->clearAllChildren();
     m_cats.clear();
     m_subcats.clear();
+    m_rootItem->setQuery( "SELECT count(DISTINCT category) FROM items" );
+    fetchMore( QModelIndex() );
     reset();
 }
 

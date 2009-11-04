@@ -3,7 +3,7 @@
 
 
 
-#include <QtGui/QDialog>
+#include <QtGui/QWidget>
 #include <QMultiHash>
 #include <QTableWidgetItem>
 #include <QItemDelegate>
@@ -18,7 +18,7 @@ class ItemEffect;
 class ComponentsModel;
 class ItemModel;
 class SNItem;
-class ItemBrowser : public QDialog {
+class ItemBrowser : public QWidget {
     Q_OBJECT
 public:
     ItemBrowser(QWidget *parent = 0);
@@ -27,6 +27,9 @@ public:
 signals:
 
     void items_changed();
+
+public slots:
+    void currEmpireChangedSlot();
 
 protected:
     void changeEvent(QEvent *e);

@@ -57,7 +57,8 @@ public:
     /*! ERASES THE DATABASE !!
         ... as well as the model.
         */
-    void clear(); //!< ERASES the database!
+    void eraseDatabase(); //!< ERASES the database!
+    void resetModel();
 
 private:
 //    void emitRowChanged(int parent, int child = -1);

@@ -25,6 +25,7 @@ include_directories(
     delegates
     models
     views
+    widgets
     google_diff
     ${POPPLER_INCLUDE_DIR}
     ${QT_QTTEST_INCLUDE_DIR}
@@ -60,6 +61,7 @@ set( snass_SRCS
     tests/modeltest.cpp
     google_diff/diff_match_patch.cpp
     SNConstants.cpp
+    widgets/WelcomeWidget.cpp
 )
 qt4_automoc(${snass_SRCS})
 

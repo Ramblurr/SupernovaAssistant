@@ -29,7 +29,7 @@
 #include <algorithm>
 
 ItemBrowser::ItemBrowser(QWidget *parent) :
-        QDialog(parent),
+        QWidget(parent),
         m_ui(new Ui::ItemBrowser),
         m_fieldsChanged( false ),
         m_itemConflictResolution( -1 )
@@ -103,7 +103,7 @@ ItemBrowser::~ItemBrowser()
 
 void ItemBrowser::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
+    QWidget::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
         m_ui->retranslateUi(this);
@@ -127,6 +127,21 @@ bool ItemBrowser::eventFilter( QObject * obj, QEvent * evt )
         }
     }
     return QObject::eventFilter( obj, evt );
+}
+
+void ItemBrowser::currEmpireChangedSlot()
+{
+    m_ui->nameEdit->clear();
+    m_ui->descEdit->clear();
+    m_ui->tonsSpin->clear();
+    m_ui->structureSpin->clear();
+
+    m_ui->effectsTable->clear();
+    m_ui->materialsTable->clear();
+
+    m_itemModel->resetModel();
+
+    m_fieldsChanged = false;
 }
 
 void ItemBrowser::on_addItemBut_clicked()
@@ -526,7 +541,7 @@ void ItemBrowser::on_clearDbaseBut_clicked()
     int ret = msgBox.exec();
     if( ret == QMessageBox::No )
         return;
-    m_itemModel->clear();
+    m_itemModel->eraseDatabase();
 
 
 }

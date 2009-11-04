@@ -4,7 +4,7 @@
 #include "data/SNItem.h"
 #include "data/ShipDesign.h"
 #include "models/ShipDesignsModel.h"
-#include <QtGui/QDialog>
+#include <QtGui/QWidget>
 #include <QtCore/QMap>
 #include <QtCore/QList>
 #include <QtCore/QModelIndex>
@@ -16,16 +16,17 @@ class ItemModel;
 class ComponentsModel;
 class MaterialsModel;
 class ComponentsProxyModel;
-class ShipDesigner : public QDialog {
+class ShipDesigner : public QWidget {
     Q_OBJECT
     Q_DISABLE_COPY(ShipDesigner)
 public:
-    explicit ShipDesigner( QString empId, QWidget *parent = 0);
+    explicit ShipDesigner( QWidget *parent = 0);
     virtual ~ShipDesigner();
 
     SNItem getItem( const QString &name );
 
-    QString empireId() const { return m_empireId; }
+public slots:
+    void currEmpireChangedSlot();
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -34,7 +35,6 @@ protected:
 private:
     Ui::ShipDesigner *m_ui;
 
-    QString m_empireId;
     QString m_descHtmlTemplate;
     ShipDesignsModel *m_designsModel;
 
