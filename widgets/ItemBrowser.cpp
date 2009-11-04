@@ -489,26 +489,33 @@ void ItemBrowser::on_turnSheetBut_clicked()
         return;
     settings.setValue("turn-sheet-location", info.absoluteDir().absolutePath());
 
-    TurnParser tp( fileName );
+    TurnParser* tp = new TurnParser( fileName );
 //    tp.writeOut("anztest");
+    connect(tp, SIGNAL(anzParsingComplete( const QList<SNItem> & )), this, SLOT(anzParsingFinishedSlot( const QList<SNItem> & )), Qt::QueuedConnection);
+    tp->start();
 
-    QList<SNItem> items = tp.parseANZs();
+}
+
+void ItemBrowser::anzParsingFinishedSlot( const QList<SNItem> & items)
+{
     qDebug() << "got " << items.size();
     foreach( SNItem item, items )
     {
         appendItemToModel( item );
     }
-
 }
 
 void ItemBrowser::appendItemToModel( const SNItem & item )
 {
         SNItem existing = SNItem::getItem( item.name() );
-        if( existing.isEmpty() ) //no conflict
+        if( existing.isEmpty() ) // doesn't exist , no conflict
         {
             m_itemModel->appendItem( item );
             return;
         }
+        if( existing == item ) // already exists, and is the same no conflict
+            return ;
+
         if( m_itemConflictResolution == SN::KeepNewItemAndRepeat )
         {
             m_itemModel->removeItem( existing );

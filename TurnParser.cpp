@@ -16,7 +16,12 @@ TurnParser::TurnParser(): m_filename( "" ), m_text( "" ), m_parsed( false ), m_d
 
 TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_text( "" ), m_parsed( false ), m_data()
 {
-    Poppler::Document *doc = Poppler::Document::load( filename );
+
+}
+
+void TurnParser::run()
+{
+    Poppler::Document *doc = Poppler::Document::load( m_filename );
     int count = doc->numPages();
 
 //    QFile outfile(filename+".txt");
@@ -31,11 +36,7 @@ TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_te
     for(int i = 0; i < count; i ++)
     {
         QString text = doc->page(i)->text(QRectF());
-
-
-
 //        outdebug << text;
-
         // Cleanup text
         QStringList lines = text.split(QRegExp("\\n") );
 
@@ -74,6 +75,7 @@ TurnParser::TurnParser( const QString &filename ) : m_filename( filename ), m_te
 
     parseData();
     m_parsed = true;
+    exec();
 }
 
 void TurnParser::parseData()
@@ -222,6 +224,7 @@ void TurnParser::parseData()
         }
 
     }
+    parseANZs();
 }
 
 QString TurnParser::text() const
@@ -242,12 +245,13 @@ void TurnParser::writeOut( const QString &filename )
     outfile.close();
 }
 
-QList<SNItem> TurnParser::parseANZs() const
+void TurnParser::parseANZs()
 {
     QStringList anzs = m_data.values("ANZ");
-    return parseANZs(anzs);
+    parseANZs(anzs);
 }
-QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
+
+void TurnParser::parseANZs( const QStringList &anzs )
 {
     qDebug() << "anzs: " << anzs.size();
     QRegExp rx;
@@ -438,7 +442,8 @@ QList<SNItem> TurnParser::parseANZs( const QStringList &anzs ) const
             items << item;
         }
     }
-    return items;
+//    m_anzs = items;
+    emit anzParsingComplete( items );
 }
 
 CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, const QString &classification, bool istech ) const

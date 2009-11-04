@@ -1,7 +1,7 @@
 #ifndef ITEMBROWSER_H
 #define ITEMBROWSER_H
 
-
+#include "SNItem.h"
 
 #include <QtGui/QWidget>
 #include <QMultiHash>
@@ -17,7 +17,7 @@ class QDomElement;
 class ItemEffect;
 class ComponentsModel;
 class ItemModel;
-class SNItem;
+
 class ItemBrowser : public QWidget {
     Q_OBJECT
 public:
@@ -30,6 +30,7 @@ signals:
 
 public slots:
     void currEmpireChangedSlot();
+    void anzParsingFinishedSlot( const QList<SNItem> & );
 
 protected:
     void changeEvent(QEvent *e);
@@ -74,5 +75,4 @@ private slots:
     void on_treeView_clicked(QModelIndex index);
     void on_addItemBut_clicked();
 };
-
 #endif // ITEMBROWSER_H

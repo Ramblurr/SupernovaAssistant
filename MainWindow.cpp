@@ -2,7 +2,6 @@
 #include "ui_MainWindow.h"
 #include "ShipDesigner.h"
 #include "NewEmpireDialog.h"
-#include "ChangeEmpireDialog.h"
 #include "ItemBrowser.h"
 #include "Empire.h"
 #include "TurnParser.h"
@@ -60,7 +59,7 @@ void MainWindow::currEmpireChangedSlot( const Empire & emp )
     QSqlDatabase::removeDatabase("CurrEmpire");
 
     m_currEmpire = emp;
-    if( emp.name() == "" )
+    if( emp.name().isEmpty() )
         return;
 
     QString dataDir = QDesktopServices::storageLocation( QDesktopServices::DataLocation );
@@ -78,7 +77,7 @@ void MainWindow::currEmpireChangedSlot( const Empire & emp )
 
 void MainWindow::on_actionShip_Designer_triggered()
 {
-    if ( m_currEmpire.name() == "" )
+    if ( m_currEmpire.name().isEmpty() )
     {
         QMessageBox::warning( 0, "No Empire Selected", "Please select an empire." );
         return;
@@ -96,7 +95,7 @@ void MainWindow::on_actionShip_Designer_triggered()
 
 void MainWindow::on_actionItem_Editor_triggered()
 {
-    if ( m_currEmpire.name() == "" )
+    if ( m_currEmpire.name().isEmpty() )
     {
         QMessageBox::warning( 0, "No Empire Selected", "Please select an empire." );
         return;

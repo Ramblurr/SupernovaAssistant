@@ -83,6 +83,7 @@ set( snass_TOMOC
     widgets/WelcomeWidget.h
     widgets/ShipDesigner.h
     widgets/ItemBrowser.h
+    TurnParser.h
 )
 
 if(WIN32)

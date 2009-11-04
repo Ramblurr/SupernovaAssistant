@@ -2,9 +2,8 @@
 #include "ui_WelcomeWidget.h"
 
 #include "ShipDesigner.h"
-#include "dialogs/NewEmpireDialog.h"
-#include "dialogs/ChangeEmpireDialog.h"
-#include "dialogs/ItemBrowser.h"
+#include "NewEmpireDialog.h"
+#include "ItemBrowser.h"
 #include "data/Empire.h"
 #include "TurnParser.h"
 #include <QDebug>
@@ -52,28 +51,19 @@ void WelcomeWidget::setupEmpiresModel()
     foreach( QString id, list )
     {
         Empire emp = settings.value(id).value<Empire>();
-        if ( emp.name() == "" )
+        if ( emp.name().isEmpty())
             continue;
         items << emp;
         m_ui->empireCombo->addItem( emp.name(), emp);
 
     }
     settings.endGroup();
-//    int empireCount = settings.value( "empireCount", -1 ).toInt();
-//    for ( int i = 0; i <= empireCount; i++ )
-//    {
-//        Empire blank_emp();
-//        Empire emp = settings.value( "empires/" + QString::number( i ), blank_emp ).value<Empire>();
-//        if ( emp.name() == "" )
-//            continue;
-//        items << emp;
-//        m_ui->empireCombo->addItem( emp.name(), emp);
-//    }
     if ( items.count() > 0 )
     {
         m_currEmpire = items.at( 0 );
         m_ui->empireName->setText( m_currEmpire.name() );
-    }
+    } else
+        m_currEmpire = Empire();
     emit currEmpireChanged( m_currEmpire );
 }
 
@@ -97,6 +87,11 @@ void WelcomeWidget::on_empireCombo_currentIndexChanged( int id )
 
 void WelcomeWidget::currEmpireChangedSlot( const Empire & emp )
 {
+    if( emp.name().isEmpty() ) {
+        m_ui->empireName->setText("No Empire Selected");
+        return;
+    }
+
     m_ui->empireName->setText( emp.name() );
     int idx = m_ui->empireCombo->currentIndex();
     Empire emp_old = m_ui->empireCombo->itemData( idx ).value<Empire>();
@@ -130,8 +125,6 @@ void WelcomeWidget::on_deleteEmpireBut_clicked()
     QFile dbf( dbPath );
     dbf.remove();
     setupEmpiresModel();
-
-//    killDialogs();
 }
 
 void WelcomeWidget::on_createEmpireBut_clicked()

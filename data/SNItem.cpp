@@ -99,7 +99,19 @@ QList<ItemEffect> SNItem::getEffects() const
 
 bool SNItem::operator==(const SNItem &other) const
 {
-    return ( m_name == other.name() );
+    bool result = m_name == other.name() &&
+                  m_desc == other.desc() &&
+                  m_category == other.category() &&
+                  m_subcategory == other.subcategory() &&
+                  m_structure == other.structure() &&
+                  m_tons == other.weight() &&
+                  m_components == other.getComponents();
+
+    QList<ItemEffect> effs2 = other.getEffects();
+    foreach(ItemEffect eff, effs2)
+        if( !m_effects.contains( eff ) )
+            return false;
+    return result;
 }
 
 bool SNItem::saveItem() const
