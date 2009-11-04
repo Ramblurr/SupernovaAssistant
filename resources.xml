@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+ <item>
+  <name>Black Market Goods</name>
+  <desc><![CDATA[Illegal goods created on worlds with an agricultural background. Simple drugs made from grasses, weeds and other plants are the most commonly found forms of this item, though drugs that require advanced pharmaceutical laboratories, many of which are addicting or even deadly, are other more illicit Black Market Goods. Certain radioactive elements are considered to be Black Market Goods as well, and on occasion a miner will unearth a previously undiscovered type of mineral that has some bizarre and probably dangerous industrial or pharmacological use.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="2">Pharmaceuticals</component>
+   <component quantity="1">Rare Herbs &amp; Spices</component>
+  </components>
+ </item>
+ <item>
+  <name>Caldaran Crystals</name>
+  <desc><![CDATA[These are translucent crystals with a blue-white tinge. They are found in underground caverns in small, naturally-formed deposits. The perfectly shaped crystals are crucial for the production of a number of advanced pieces of technology. Unfortunately, they are quite rare and the slightest crack will ruin the crystal and render it valueless.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Coal</name>
+  <desc><![CDATA[Coal is a resource that is most often used by primitive societies as a power source. The poor efficiency of coal compared to more advanced resources generally discourages its use once power production facilities such as Fission or Fusion power plants can be constructed.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Construction Materials</name>
+  <desc><![CDATA[Construction Materials includes such things as bricks, cement, ferroconcrete, steel, asphalt, plaster, granite, refined lumber and a variety of advanced construction alloys. It is an absolutely critical item since Construction Materials are used directly to produce Installations.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="1">Steel</component>
+   <component quantity="2">Timber</component>
+  </components>
+ </item>
+ <item>
+  <name>Consumer Goods</name>
+  <desc><![CDATA[Consumer Goods represents a plethora of items used by the average citizen in day-to-day life. This item includes dishwashers, clothes dryers, irons, pots, frying pans, home electronics, entertainment devices and much more.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="2">Light Metals</component>
+   <component quantity="1">Petroleum</component>
+  </components>
+ </item>
+ <item>
+  <name>Crystals</name>
+  <desc><![CDATA[Natural crystalline growths or quasiperiodic solids valued primarily for their industrial applications but also used in the production of luxury goods. Quartz, glass, amethyst and cryptocrystalline substances such as chert and chalcedony are excellent examples of Crystals.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Electronics</name>
+  <desc><![CDATA[Computers, integrated circuit boards, radios, semiconductors, transistors, navigation systems, microprocessors, transformers, photoelectric cells and telecommunication device are all examples of Electronics components. Electronics are used to construct other, more complex items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="2">Refined Crystals</component>
+   <component quantity="1">Synthetic Materials</component>
+  </components>
+ </item>
+ <item>
+  <name>Fibers</name>
+  <desc><![CDATA[Fibers are obtained from a plant or an animal. The majority of these fibers are used in weaving textiles, although the coarser plant fibers are also used for rope and twine. Plant fibers come from the seed hairs, leaves, stems or husks of the plant. Animal fibers are provided, generally, by animal hair and, in the case of silk, by the secretion of the silkworm. Cotton is an extremely common plant fiber, while wool is a typical animal fiber. Fibers are used as a material in the manufacture of more complex items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Food Concentrates</name>
+  <desc><![CDATA[Condensed, refined or purified foodstuffs that are generally easier to store and ship. Most lifeforms consider Food Concentrates dull and tasteless, especially compared to fine cuisine.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="1">Foodstuffs</component>
+  </components>
+ </item>
+ <item>
+  <name>Foodstuffs</name>
+  <desc><![CDATA[Foodstuffs are considered a combination of plant and animal byproducts, depending on the needs of the individual consuming them. Animal foodstuffs are processed meats and refined dairy products edible by animal lifeforms, while plant foodstuffs are animal feeds, milled grains, bread products, edible plants and foods digestible by animal lifeforms.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="1">Fruits &amp; Vegetables</component>
+   <component quantity="1">Grains</component>
+   <component quantity="1">Meat</component>
+   <component quantity="1">Water</component>
+  </components>
+ </item>
+ <item>
+  <name>Fruits &amp; Vegetables</name>
+  <desc><![CDATA[Fruits &amp; Vegetables combine many common foodstuffs such as oranges, apples, bananas, berries, peas, corn, tomatoes, beans and various tubers. They can be considered an important source of vitamins and minerals for most lifeforms.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Fuel</name>
+  <desc><![CDATA[Refined hydrogen is most often used as a fuel source by jump drives. Raw hydrogen, often skimmed from the upper atmosphere of a gas giant, can also be used but manufactured Fuel is preferred as it removes any impurities from the gaseous mixture. Fuel can be dangerous to store, and is most often held in special Fuel Tankage aboard spacegoing vessels.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Gaseous Elements</component>
+  </components>
+ </item>
+ <item>
+  <name>Garoxx Jewels</name>
+  <desc><![CDATA[Garoxx Jewels are tiny green crystalline rocks in rough form, becoming a translucent light green crystal of incredible beauty once refined and polished. The base crystal is usually found in underground caverns in small, naturally-formed deposits. The perfect jewels are required as a focusing device in the production of a variety of advanced pieces of technology having to do with ESP. The slightest trace of impurities will ruin the jewel's use as a focusing lens, rendering it useless. Garoxx Jewel deposits are incredibly rare, but as it happens, 1 ton can be created by purifying 10 tons of Raw Resources.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Gaseous Elements</name>
+  <desc><![CDATA[Helium, neon, argon, hydrogen compounds, ammonia, fluorine, methane, phosphine, xenon, chlorine, carbon dioxide and a variety of methane and nitrogen compounds fall into the Gaseous Elements category. All are valued for industrial applications and as energy sources.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Gemstones</name>
+  <desc><![CDATA[Gemstones include precious gems prized for their beauty or industrial applications, such as diamonds, emeralds, rubies and sapphires. They are used as an intermediate resource in the manufacture of more complex items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Ghuran Demonblood</name>
+  <desc><![CDATA[This is a vile, oily blue-black liquid that is found most often in pure form in underground ice caverns where it collects in small pools. Ghuran Demonblood remains a liquid even at temperatures that come close to absolute zero. The liquid is highly corrosive and can be safely handled only when it is kept extremely cold. As the liquid warms it becomes unstable and a deadly vapor is produced. Synthetic production of the stuff is exceedingly dangerous. The liquid is collected and used in units of approximately one quart at a time, is extremely rare, and is used only for special applications.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Grains</name>
+  <desc><![CDATA[The principal Grain crops are wheat, corn, rice, barley, oats, rye, sorghum, and millet. Sometimes seeds other than grasses, such as buckwheat, wild rice and soybeans, are characterized as Grains. Some grain crops can be grown under a wide variety of environmental conditions.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Heavy Machinery</name>
+  <desc><![CDATA[Heavy Machinery includes everything from jackhammers to bulldozers, snowplows, tractors, tow trucks, automobiles, swamp buggies and a huge variety of industrial equipment.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Steel</component>
+  </components>
+ </item>
+ <item>
+  <name>Industrial Chemicals</name>
+  <desc><![CDATA[Any of a variety of chemicals, compounds and byproducts used to increase industrial productivity. Industrial Chemicals are often refined and used as an intermediate resource for the production of more complex items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Iron</name>
+  <desc><![CDATA[Iron is a generic term that includes all common ferrous metal ores valued for their industrial applications. Iron, nickel, tungsten and molybdenum are typical components of this fantastically important resource. Iron is most often refined into Steel, which is used in a plethora of complex items. Maintaining a steady supply of Iron is of paramount importance for your Empire's well-being.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Jinn Crystals</name>
+  <desc><![CDATA[Jinn Crystals are dull blue crystalline rocks in rough form, becoming a translucent bluish crystal of incredible beauty once refined and polished. The crystal is usually found in underground caverns in small, naturally-formed deposits. The perfect crystals are required as a focusing device in the production of a variety of advanced pieces of technology of Telepathic nature. The slightest trace of impurities will ruin the crystal's use as a focusing lens, rendering it useless. Jinn Crystal deposits are incredibly rare, but fortunately 1 ton can be created by purifying 10 tons of Raw Resources.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Light Metals</name>
+  <desc><![CDATA[Light Metals is a generic term that encompasses common non-ferrous metal ores valued for their industrial applications. Light Metals includes such metals as copper, tin, lead, mercury and zinc.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Lumber</name>
+  <desc><![CDATA[Raw wood and other forest products in an unfinished form. Lumber is refined into Timber for use in the manufacture of more complex items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Luxury Goods</name>
+  <desc><![CDATA[Luxury Goods includes ornaments such as necklaces, bracelets or rings, often made from precious metals set with rare gems, along with perfumes and various works of art. Exceedingly rare jewelry, artwork and other luxuries, usually created by artists who are masters in their fields, represent the more desirable forms of Luxury Goods.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="1">Gemstones</component>
+   <component quantity="2">Precious Metals</component>
+  </components>
+ </item>
+ <item>
+  <name>Meat</name>
+  <desc><![CDATA[Meat is a generic term that includes animal meats, animal fats, dairy products such as milks and cheeses, eggs, furs and leather.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Mineral Fertilizers</name>
+  <desc><![CDATA[Phosphates, nitrates, pyrites and potash make up Mineral Fertilizers, which are valued for some industrial applications but are most often used in agriculture.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Petrochemicals</name>
+  <desc><![CDATA[Petrochemicals include fuel sources such as butane, derived from petroleum or natural gas. Petrochemicals are valued in many industrial uses.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Petroleum</name>
+  <desc><![CDATA[Though normally the term Petroleum is a more raw source of energy than Petrochemicals, here it is used to represent basic Petrochemicals into a more refined form. Petroleum is used as an intermediate product for the production of other, more complex, items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Petrochemicals</component>
+  </components>
+ </item>
+ <item>
+  <name>Pharmaceuticals</name>
+  <desc><![CDATA[Pharmaceuticals includes drugs such as narcotics, medications and vaccines used to treat medical conditions.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Rare Herbs &amp; Spices</component>
+  </components>
+ </item>
+ <item>
+  <name>Plantfoods</name>
+  <desc><![CDATA[Plantfoods include various composts, manure, mulches, fish and bone meal, humus and other materials used to fertilize soils for the purpose of feeding advanced plant lifeforms.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Mineral Fertilizers</component>
+  </components>
+ </item>
+ <item>
+  <name>Power</name>
+  <desc><![CDATA[Power is used to supply the energy needs of various Installations. Power is generated by various Power Plant Installations that consume resources during operation. Coal Fired Power Plants are crude, polluting Installations that consume Coal to generate Power. More advanced Power Plants are more efficient in their operation.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+ </item>
+ <item>
+  <name>Precious Metals</name>
+  <desc><![CDATA[Rare metals prized for their industrial applications or used for coinage. Gold, silver and platinum are the most commonly sought-after Precious Metals.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Primitive Artwork</name>
+  <desc><![CDATA[Cave drawings, simple sculptures, crude painting, handmade jewelry and other basic art forms are examples of Primitive Artwork. They can be quite rare and beautiful if preserved properly, and are often just as valuable as more modern luxury goods.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Gaseous Elements</component>
+  </components>
+ </item>
+ <item>
+  <name>Processed Radioactives</name>
+  <desc><![CDATA[Unstable elements with atomic numbers greater than 103, such as hahnium, meitnerium and hassium, along with refined or otherwise unstable forms of uranium and plutonium are considered Processed Radioactives.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Radioactive Elements</component>
+  </components>
+ </item>
+ <item>
+  <name>Radioactive Elements</name>
+  <desc><![CDATA[The entire series of group IIIb elements (the actinide series), including actinium, thorium, protactinium, uranium, neptunium, plutonium, americium, curium, berkelium, californium, einsteinium, fermium, mendelevium, nobelium and lawrencium. Uranium through lawrencium are grouped together to form the transuranium elements. Radioactives are valued for all manner of industrial applications and as the basis for some energy sources.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Rare Elements</name>
+  <desc><![CDATA[Unusual minerals such as bastnasite, cerite, euxenite, gadolinite, and all elements of the lanthanide series (Lanthanum, Cerium, Praseodymium and so forth through Lutium). Often used in such applications as the making of ceramic glazes, glassmaking, glass-polishing abrasives, catalysts for petroleum refining, projection-tube phosphors and laser construction among other things.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Rare Herbs &amp; Spices</name>
+  <desc><![CDATA[Uncommon herbs, spices, pungent or aromatic plant substances and poisonous plants. Valued for medicinal and recreational purposes.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Raw Resources</name>
+  <desc><![CDATA[Raw Resources is a generic term that encompasses a bit of numerous other resources available to your Empire. Raw Resources can be extracted from any planet and then converted, at exceedingly poor efficiency, into other more useful resources. Raw Resources exist as a countermeasure to safeguard your Empire from running completely dry of a particular resource type, and should not be relied upon once you have the capability to directly mine the useful resources. It is possible to survive entirely upon Raw Resources converted into other base resource types, but it is inefficient.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+ </item>
+ <item>
+  <name>Refined Crystals</name>
+  <desc><![CDATA[Natural Crystals converted into more advanced forms which are generally more useful in industrial applications or weapons development than when in their more primitive raw state.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Crystals</component>
+  </components>
+ </item>
+ <item>
+  <name>Reflective Armor Coating</name>
+  <desc><![CDATA[Reflective Armor Coating is applied to naval units as a defensive measure against Coherent Beam class weapons. Reflective Armor Coating does not require that the unit have armor installed, as it can be layered over standard bulkheads, girders, armor or whatever else comprises the exterior of a ship.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="5">Steel</component>
+  </components>
+ </item>
+ <item>
+  <name>Shenn Stones</name>
+  <desc><![CDATA[Shenn Stones are dull red crystalline rocks in rough form, becoming a translucent reddish crystal of incredible beauty once refined and polished. The crystal is usually found in underground caverns in small, naturally-formed deposits. The perfect crystals are required as a focusing device in the production of a variety of advanced pieces of technology. The slightest trace of impurities will ruin the crystal's use as a focusing lens, rendering it useless.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Steel</name>
+  <desc><![CDATA[Iron refined into a more pure form. Steel is much more useful for advanced industrial needs than raw Iron, and is used in the construction of a bewildering array of items crucial to the survival of your Empire. The reason that you cannot have enough Iron is that you really cannot have enough Steel….]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Iron</component>
+  </components>
+ </item>
+ <item>
+  <name>Synthetic Materials</name>
+  <desc><![CDATA[Artificially produced isotopes, often radioactive, and synthetic fibers and materials such as thermoplastic materials, polyurethane, epoxy resins and various types of plastics. The uses for such materials are nearly endless, as they are generally strong, light and durable.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="1">Gaseous Elements</component>
+   <component quantity="1">Industrial Chemicals</component>
+   <component quantity="1">Petrochemicals</component>
+  </components>
+ </item>
+ <item>
+  <name>Textiles</name>
+  <desc><![CDATA[Fabrics made by weaving or knitting together natural fibers as a material base. Cloth, linen, silk, embroidered tapestries and woolen textiles are included as Textiles. Fabrics created by weaving or knitting together synthetic fibers as a material base are considered polytextiles and are included here along with artificially created fabrics such as polyester, microfiber and polyacrylonitrile fibers.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Fibers</component>
+  </components>
+ </item>
+ <item>
+  <name>Timber</name>
+  <desc><![CDATA[Raw timber refined into final forms such as cut and dressed timber, or wood processed with various chemicals to be moisture or heat resistant. Timber is an important component in the manufacture of Construction Materials.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Lumber</component>
+  </components>
+ </item>
+ <item>
+  <name>Transaluminum</name>
+  <desc><![CDATA[Aluminum, like most other elements, was formed during the birth of most solar systems through successive collisions of hydrogen atoms under conditions of high temperatures and pressure, and is an extremely common metal. Because of its affinity to oxygen, aluminum is found most often in the form of its compounds, such as alumina. Transaluminum is a technologically advanced form of aluminum that is both stronger and more flexible than its raw counterpart. It is used as a key ingredient in several other important items.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="3">Light Metals</component>
+  </components>
+ </item>
+ <item>
+  <name>Tritantalum</name>
+  <desc><![CDATA[Tritantalum is a dull grey rock that otherwise does not appear to have much value. However, when smashed and combined with certain exceedingly powerful acids, a potent powder is produced that greatly enhances an individual's telekinetic abilities. When properly refined, this powder is often used in the construction of telekinetically-based mass destruction devices. Though Tritantalum deposits are exceedingly rare, 1 ton of Tritantalum can be obtained by refining 10 tons of Raw Resources.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Water</name>
+  <desc><![CDATA[Water as an item includes primarily H2-0, but it also includes many other gases in liquid or solid form. It is most often valued for industrial and agricultural applications, and is typically transported in solid form (ice).]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="10">Raw Resources</component>
+  </components>
+ </item>
+ <item>
+  <name>Weapons</name>
+  <desc><![CDATA[Weapons includes all manner of small arms, grenades, mortars, heavy artillery, battle armor, missile launchers and high explosives. Such items are generally considered contraband on most worlds, though some political systems might not think anything of having large quantities of laser rifles or even mobile tactical guided missile launchers shipped through their port facilities.]]></desc>
+  <weight>1</weight>
+  <category>Resource</category>
+  <subcategory>Initial</subcategory>
+  <components>
+   <component quantity="2">Iron</component>
+   <component quantity="1">Light Metals</component>
+  </components>
+ </item>
+</items>

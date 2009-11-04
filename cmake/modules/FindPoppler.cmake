@@ -18,6 +18,12 @@ if(POPPLER_INCLUDE_DIR AND POPPLER_LIBRARY)
 
 else(POPPLER_INCLUDE_DIR AND POPPLER_LIBRARY)
 
+if(WIN32)
+    set(POPPLER_FOUND TRUE)
+     set(POPPLER_INCLUDE_DIR /opt/mingw32/include/poppler/qt4)
+     set(_PopplerLinkFlags /opt/mingw32/lib/libpoppler.a /opt/mingw32/bin/libpoppler-qt4.dll)
+else(WIN32)
+
 # use pkg-config to get the directories and then use these values
 # in the FIND_PATH() and FIND_LIBRARY() calls
 INCLUDE(UsePkgConfig)
@@ -43,7 +49,7 @@ else(_PopplerLinkFlags)
     set(POPPLER_INCLUDE_DIR ${INCLUDEPOPPLER})
   endif( LIBPOPPLER_QT4 AND LIBPOPPLER AND INCLUDEPOPPLER )
 endif(_PopplerLinkFlags)
-
+endif(WIN32)
 if (POPPLER_FOUND)
   INCLUDE(CheckCXXSourceCompiles)
 

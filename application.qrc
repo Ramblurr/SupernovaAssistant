@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/" >
+    <qresource prefix="/">
         <file>item_desc_format.html</file>
         <file>icons/arrow-left.png</file>
         <file>supernova.sql</file>
@@ -12,5 +12,6 @@
         <file>icons/supernova-24x24.png</file>
         <file>icons/supernova-32x32.png</file>
         <file>icons/supernova.ico</file>
+        <file>resources.xml</file>
     </qresource>
 </RCC>
