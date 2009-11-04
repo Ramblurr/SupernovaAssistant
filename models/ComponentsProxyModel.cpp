@@ -8,7 +8,6 @@ ComponentsProxyModel::ComponentsProxyModel(QObject *parent) : QSortFilterProxyMo
 
 bool ComponentsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-
     QModelIndex idx = sourceModel()->index(sourceRow, 0, sourceParent);
     if (sourceModel()->hasChildren(idx))
     {
