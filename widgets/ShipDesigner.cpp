@@ -337,8 +337,9 @@ void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
 
     QLocale locale;
     // set tonnage
+
     QString tmp = m_ui->tonnageLabel->text();
-    quint64 tonnage = tmp.toUInt();
+    quint64 tonnage = locale.toUInt(tmp);
     m_ui->tonnageLabel->setText( locale.toString( tonnage + tons ) );
     m_ui->countLabel->setText( locale.toString( curr + numitems ) );
 

@@ -129,8 +129,11 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
         if ( index.column() == 1 )
         {
             SNItem item = m_data.at(row).first;
-            quint64 diff = value.toUInt() - m_data.at( row ).second;
-            quint64 weight = item.weight()*(value.toUInt() - m_data.at( row ).second);
+            quint64 curr_num_of_item = m_data.at( row ).second;
+            quint64 new_num_of_item = value.toUInt();
+            quint64 diff = new_num_of_item - curr_num_of_item;
+            quint64 tondiff = new_num_of_item - curr_num_of_item;
+            quint64 weight = item.weight()*tondiff;
             ItemQuantityPair s( m_data.at( row ).first, value.toInt());
             m_data.replace( row, s );
             emit( statsChanged( diff, weight ) );
