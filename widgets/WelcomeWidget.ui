@@ -111,7 +111,7 @@
           </spacer>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="300,400,500,200,200,1000">
+          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="300,0,0,500,200,200,1000">
            <item>
             <widget class="QLabel" name="label">
              <property name="font">
@@ -124,6 +124,42 @@
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Welcome to SN Assistant. Select or Create an Empire below to get started</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -177,7 +213,7 @@
              <item>
               <widget class="QPushButton" name="createEmpireBut">
                <property name="text">
-                <string>Create Empire</string>
+                <string>&amp;Create Empire</string>
                </property>
               </widget>
              </item>
