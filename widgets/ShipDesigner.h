@@ -27,6 +27,7 @@ public:
 
 public slots:
     void currEmpireChangedSlot();
+    void componentsFilterAccepted( const QModelIndex & );
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -52,6 +53,7 @@ private:
     QMenu* m_itemListContextMenu;
 
     void setupDesignsModel();
+    void showDesc( const SNItem & item );
 
 public slots:
     void statsChangedSlot(  int numitems, quint64 tons );
@@ -59,6 +61,7 @@ public slots:
     void copyItemListTriggered();
 
 private slots:
+    void on_addEnginesBut_clicked();
     void on_componentFilterEdit_textChanged(QString );
     void on_itemList_customContextMenuRequested(QPoint pos);
     void on_detailedTable_customContextMenuRequested(QPoint pos);
@@ -71,7 +74,8 @@ private slots:
     void on_saveButton_clicked();
     void on_componentList_clicked( QModelIndex index );
     void on_generateNUD_clicked();
-    void showDesc( QModelIndex index );
+    void showDescComponents( QModelIndex index );
+    void showDescItems( QModelIndex index );
 
 };
 

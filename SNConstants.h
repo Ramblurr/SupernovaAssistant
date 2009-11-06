@@ -4,6 +4,21 @@
 #include <QString>
 namespace SN
 {
+    enum CompType
+    {
+        Root = 0,
+        Category,
+        SubCategory,
+        Component
+    };
+
+    enum Role
+    {
+        ComponentRole = Qt::UserRole + 1,
+        TypeRole
+
+    };
+
     class Category
     {
         public:

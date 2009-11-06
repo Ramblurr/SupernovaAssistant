@@ -13,3 +13,8 @@ objs
 *.directory
 object_script.SNAssistant.Debug
 object_script.SNAssistant.Release
+build/
+winbuild/
+mests/ModelTester.cpp
+tests/ModelTester.h
+

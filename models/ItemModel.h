@@ -1,9 +1,24 @@
 #ifndef ITEMMODEL_H
 #define ITEMMODEL_H
-#include "../data/SNItem.h"
+#include "SNItem.h"
+
+#include "SNConstants.h"
+
 #include <QAbstractTableModel>
 #include <QStringList>
-typedef QPair<SNItem, quint64> ItemQuantityPair;
+
+
+class ItemEntry
+{
+public:
+    ItemEntry() : lockpercentage( false ) {}
+    SNItem item;
+    quint64 quantity;
+    quint64 percentage;
+    bool lockpercentage;
+};
+
+class ItemEntry;
 class ItemModel : public QAbstractTableModel
 {
      Q_OBJECT
@@ -28,9 +43,7 @@ class ItemModel : public QAbstractTableModel
 
      void clear();
 
-     const static int ComponentRole = 15;
-
-     QList<ItemQuantityPair> getItems() const;
+     QList<ItemEntry> getItems() const;
 
      //! Returns a QPair<#items, tonnage> of the design represented in the model
      QPair<int, int> totalItemsTonnage() const;
@@ -50,7 +63,7 @@ signals:
 
  private:
     QMap< SNItem, quint64 > m_hash;
-    QList<ItemQuantityPair> m_data;
+    QList<ItemEntry> m_data;
 
     int m_ap;
     int m_warp;

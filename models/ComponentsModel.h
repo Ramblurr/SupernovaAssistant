@@ -1,29 +1,14 @@
 #ifndef COMPONENTSMODEL_H
 #define COMPONENTSMODEL_H
 
-#include "../data/SNItem.h"
+#include "SNItem.h"
+
+#include "SNConstants.h"
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QList>
 #include <QMimeData>
 
-namespace SN
-{
-    enum Type
-    {
-        Root = 0,
-        Category,
-        SubCategory,
-        Component
-    };
-
-    enum Role
-    {
-        ComponentRole = Qt::UserRole,
-        TypeRole
-
-    };
-}
 class ComponentTreeItem;
 class ComponentsModel : public QAbstractItemModel
 {
@@ -76,7 +61,7 @@ private:
     /*!
       Returns the newly created ComponentTreeItem
       */
-    ComponentTreeItem* insertItem( ComponentTreeItem* parent, const QVariant & value,  const SN::Type &type );
+    ComponentTreeItem* insertItem( ComponentTreeItem* parent, const QVariant & value,  const SN::CompType &type );
 
     ComponentTreeItem *m_rootItem;
     QHash<QString, ComponentTreeItem*> m_cats;
@@ -87,7 +72,7 @@ private:
 class ComponentTreeItem
 {
 public:
-    ComponentTreeItem( const SN::Type &type, const QVariant &data,  ComponentTreeItem *parent = 0 );
+    ComponentTreeItem( const SN::CompType &type, const QVariant &data,  ComponentTreeItem *parent = 0 );
     ~ComponentTreeItem();
 
     void clearAllChildren();
@@ -108,14 +93,14 @@ public:
     int row() const;
     ComponentTreeItem *parent();
 //    SNItem item() const;
-    SN::Type type() const
+    SN::CompType type() const
     {
         return m_type;
     }
     QString query() const { return m_query; }
 private:
     QList<ComponentTreeItem*> childItems;
-    SN::Type m_type;
+    SN::CompType m_type;
     QVariant itemData;
     ComponentTreeItem *parentItem;
 

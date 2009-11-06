@@ -88,6 +88,13 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
     generic->insertColumnDelegate(1, quantityDelegate );
     m_ui->materialsTable->setItemDelegate( generic );
 
+    /* you cannot adjust the stretch factor of layouts in
+     * a splitter. So we set proportional sizes here*/
+    QList<int> sizes;
+    sizes.push_back(400);
+    sizes.push_back(600);
+    m_ui->splitter->setSizes(sizes);
+
     m_fieldsChanged = false;
 
     setWindowTitle("SN Assistant: Item Editor");

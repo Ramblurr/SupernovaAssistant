@@ -1,4 +1,4 @@
-include_directories( ../ )
+include_directories( ../ . )
 include(${QT_USE_FILE})
 #
 # TurnParser test
@@ -23,3 +23,19 @@ TARGET_LINK_LIBRARIES(turnparser_test
     ${POPPLER_LIBRARY}
     snassistant_lib )
 ADD_TEST(turnparser_test turnparser_test)
+
+
+SET(model_test_SRCS ModelTester.cpp modeltest.cpp)
+SET(model_test_MOC_H ModelTester.h modeltest.h)
+qt4_automoc(${model_test_SRCS})
+QT4_WRAP_CPP(model_test_MOC_SRCS ${model_test_MOC_H})
+ADD_EXECUTABLE(model_test ${model_test_SRCS} ${model_test_MOC_SRCS} ${SN_TEST_RC_SRCS} )
+TARGET_LINK_LIBRARIES(model_test
+    ${QT_LIBRARIES}
+    ${QT_QTGUI_LIBRARIES}
+    ${QT_QTXML_LIBRARIES}
+    ${QT_QTSQL_LIBRARIES}
+    ${QT_QTTEST_LIBRARIES}
+    ${POPPLER_LIBRARY}
+    snassistant_lib )
+ADD_TEST(model_test model_test)

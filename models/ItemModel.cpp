@@ -21,7 +21,7 @@ int ItemModel::rowCount( const QModelIndex &parent ) const
 int ItemModel::columnCount( const QModelIndex &parent ) const
 {
     Q_UNUSED( parent );
-    return 3;
+    return 4;
 }
 
 QVariant ItemModel::data( const QModelIndex &index, int role ) const
@@ -36,25 +36,39 @@ QVariant ItemModel::data( const QModelIndex &index, int role ) const
     {
         int row = index.row();
         if ( index.column() == 0 )
-            return  m_data[row].first.name();
+            return  m_data[row].item.name();
         else if ( index.column() == 1 )
-            return  QVariant::fromValue ( m_data[row].second );
-        else if ( index.column() == 2 ) {
+            return  QVariant::fromValue ( m_data[row].quantity );
+        else if ( index.column() == 2 )
+        {
+            // item_tonnage / total tonnage = percent tonnage
             QPair<int, int> p = totalItemsTonnage();
             double tot_tons = p.second;
-            double item_tons = m_data[row].second*m_data[row].first.weight(); // Quantity * Tons
-            double percent = (item_tons/tot_tons)*100; // item_tonnage / total tonnage = percent tonnage
+            double item_tons = m_data[row].quantity*m_data[row].item.weight(); // Quantity * Tons
+            double percent = 0;
+            if( tot_tons != 0)
+                percent = (item_tons/tot_tons)*100;
             return QString::number(percent, 'f', 1) + "%";
+        }
+        else if( index.column() == 3)
+            return QVariant();
+    }
+
+    if( role == Qt::CheckStateRole )
+    {
+        int row = index.row();
+        if ( index.column() == 3 )
+        {
+            return m_data[row].lockpercentage ? Qt::Checked : Qt::Unchecked;
         }
     }
 
-    if( role == ComponentRole )
+    if( role == SN::ComponentRole )
     {
         int row = index.row();
-        if ( index.column() == 0 )
-            return  QVariant::fromValue( m_data[row].first );
-        else
-            return  m_data[row].second;
+        return  QVariant::fromValue( m_data[row].item );
+//        else
+//            return  m_data[row].quantity;
     }
     return QVariant();
 }
@@ -72,9 +86,11 @@ QVariant ItemModel::headerData( int section, Qt::Orientation orientation, int ro
             return tr( "Item" );
 
         case 1:
-            return tr( "Amt" );
+            return tr( "Amount" );
         case 2:
-            return tr( "Percentage");
+            return tr( "Tonnage Percent");
+        case 3:
+            return tr( "Edit Percent");
         default:
             return QVariant();
         }
@@ -108,9 +124,9 @@ bool ItemModel::removeRows( int position, int rows, const QModelIndex &index )
 
     for ( int row = 0; row < rows; ++row )
     {
-        SNItem item = m_data.at( position ).first;
-        quint64 diff = 0 - m_data.at( position ).second;
-        quint64 weight = item.weight()*(0 - m_data.at( position ).second);
+        SNItem item = m_data.at( position ).item;
+        quint64 diff = 0 - m_data.at( position ).quantity;
+        quint64 weight = item.weight()*(0 - m_data.at( position ).quantity);
         m_data.removeAt( position );
         m_hash.remove( item );
         emit( statsChanged( diff, weight ) );
@@ -123,19 +139,49 @@ bool ItemModel::removeRows( int position, int rows, const QModelIndex &index )
 
 bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int role )
 {
-    if ( index.isValid() && role == Qt::EditRole )
+    if ( !index.isValid()  )
+        return false;
+    if ( role == Qt::EditRole )
     {
         int row = index.row();
         if ( index.column() == 1 )
         {
-            SNItem item = m_data.at(row).first;
-            quint64 curr_num_of_item = m_data.at( row ).second;
+            SNItem item = m_data.at(row).item;
+            quint64 curr_num_of_item = m_data.at( row ).quantity;
             quint64 new_num_of_item = value.toUInt();
             quint64 diff = new_num_of_item - curr_num_of_item;
             quint64 tondiff = new_num_of_item - curr_num_of_item;
             quint64 weight = item.weight()*tondiff;
-            ItemQuantityPair s( m_data.at( row ).first, value.toInt());
+            ItemEntry s = m_data.at( row );
+            s.quantity = value.toUInt();
             m_data.replace( row, s );
+            emit( statsChanged( diff, weight ) );
+            emit( componentsChanged( item, diff ) );
+        }
+        else if ( index.column() == 2 )
+        {
+            // quantity = (percent_tonnage * total(minus item) tonnage) / item_weight*(1-percent_tonnage)
+            SNItem item = m_data.at(row).item;
+            int item_weight = item.weight();
+            int total_tonnage = totalItemsTonnage().second - (item_weight*m_data.at( row ).quantity);
+            double percent_tonnage = (value.toDouble() / 100);
+
+            int new_quantity = 0;
+            if( item_weight != 0 )
+                new_quantity = ( percent_tonnage * total_tonnage ) / (item_weight*(1-percent_tonnage));
+
+
+
+            quint64 curr_num_of_item = m_data.at( row ).quantity;
+            quint64 new_num_of_item = new_quantity;
+            quint64 diff = new_num_of_item - curr_num_of_item;
+            quint64 tondiff = new_num_of_item - curr_num_of_item;
+            quint64 weight = item.weight()*tondiff;
+
+            ItemEntry s = m_data.at( row );
+            s.quantity = new_quantity;
+            m_data.replace( row, s );
+
             emit( statsChanged( diff, weight ) );
             emit( componentsChanged( item, diff ) );
 
@@ -146,6 +192,22 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
         return true;
     }
 
+    if ( role == Qt::CheckStateRole )
+    {
+        int row = index.row();
+        if( index.column() == 3)
+        {
+            Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+            ItemEntry s = m_data.at( row );
+            if( state == Qt::Checked )
+                s.lockpercentage = true;
+            else
+                s.lockpercentage = false;
+            m_data.replace( row, s );
+            emit( dataChanged( index, index ) );
+        }
+    }
+
     return false;
 }
 
@@ -154,9 +216,26 @@ Qt::ItemFlags ItemModel::flags( const QModelIndex &index ) const
     if ( !index.isValid() )
         return 0;
 
-    if ( index.column() == 0 || index.column() == 2 )
+    if ( index.column() == 0 )
         return  Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDropEnabled;
-    return  QAbstractItemModel::flags( index ) | Qt::ItemIsEditable | Qt::ItemIsDropEnabled;
+    else if ( index.column() == 3 )
+        return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable ;
+
+    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    if( index.column() == 1 )
+    {
+        if( m_data[index.row()].lockpercentage )
+            return flags;
+        else
+            return flags | Qt::ItemIsEditable ;
+    } else if( index.column() == 2 )
+    {
+        if( m_data[index.row()].lockpercentage )
+            return flags | Qt::ItemIsEditable ;
+        else
+            return flags;
+    }
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
 }
 
@@ -214,7 +293,7 @@ Qt::DropActions ItemModel::supportedDropActions() const
     return Qt::CopyAction | Qt::MoveAction;
 }
 
-QList< ItemQuantityPair > ItemModel::getItems() const
+QList< ItemEntry > ItemModel::getItems() const
 {
     return m_data;
 }
@@ -225,9 +304,9 @@ bool ItemModel::appendData( const SNItem &item, quint64 quantity )
     {
         int row = m_data.count();
         beginInsertRows(QModelIndex(), row, row);
-        ItemQuantityPair a;
-        a.first = item;
-        a.second = quantity;
+        ItemEntry a;
+        a.item = item;
+        a.quantity = quantity;
         m_data.append( a );
         m_hash[item] = row;
         endInsertRows();
@@ -244,17 +323,21 @@ bool ItemModel::appendOrAlterData( const SNItem &item, quint64 quantity )
     {
         int row = m_data.count();
         beginInsertRows(QModelIndex(), row, row);
-        ItemQuantityPair a;
-        a.first = item;
-        a.second = quantity;
+        ItemEntry a;
+        a.item = item;
+        a.quantity = quantity;
+        a.lockpercentage = false;
         m_data.append( a );
         m_hash[item] = row;
         endInsertRows();
         return true;
     } else {
         int row = m_hash[item];
-        quint64 quant = quantity + m_data.at( row ).second;
-        ItemQuantityPair s( item, quant );
+        quint64 quant = quantity + m_data.at( row ).quantity;
+        ItemEntry s;
+        s.item = item;
+        s.quantity = quant;
+        s.lockpercentage = m_data.at( row ).lockpercentage;
         m_data.replace( row, s );
 
         QModelIndex i = index(row, 0);
@@ -280,8 +363,8 @@ QPair<int, int> ItemModel::totalItemsTonnage() const
     int total = 0;
     for( int i = 0; i < m_data.size(); i++ )
     {
-       total += m_data.at(i).second;
-       tonnage += m_data.at(i).first.weight()*m_data.at(i).second;
+       total += m_data.at(i).quantity;
+       tonnage += m_data.at(i).item.weight()*m_data.at(i).quantity;
     }
     return QPair<int, int>(total, tonnage);
 }
@@ -345,10 +428,10 @@ void ItemModel::refreshStats()
 {
     m_thrust = 0;
     m_warp = 0;
-    foreach( ItemQuantityPair pair, m_data )
+    foreach( ItemEntry entry, m_data )
     {
-       SNItem item = pair.first;
-       int quantity = pair.second;
+       SNItem item = entry.item;
+       quint64 quantity = entry.quantity;
 
        foreach( ItemEffect effect, item.getEffects() )
        {

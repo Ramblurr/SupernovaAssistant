@@ -509,7 +509,7 @@ void ComponentsModel::appendItem( const SNItem &item )
 //    emit( reset() );
 }
 
-ComponentTreeItem* ComponentsModel::insertItem( ComponentTreeItem* parent, const QVariant & value, const SN::Type &type )
+ComponentTreeItem* ComponentsModel::insertItem( ComponentTreeItem* parent, const QVariant & value, const SN::CompType &type )
 {
     QModelIndex idx = getIndexRecursive(QModelIndex(), parent);
     if( parent == m_rootItem || idx.isValid() )
@@ -593,7 +593,7 @@ void ComponentsModel::resetModel()
 
 
 //////ComponentTreeItem
-ComponentTreeItem::ComponentTreeItem( const SN::Type &type, const QVariant &data,  ComponentTreeItem *parent )
+ComponentTreeItem::ComponentTreeItem( const SN::CompType &type, const QVariant &data,  ComponentTreeItem *parent )
         : m_type( type )
         , itemData( data )
         , parentItem( parent )

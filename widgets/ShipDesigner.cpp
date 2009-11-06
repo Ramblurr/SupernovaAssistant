@@ -12,6 +12,7 @@
 #include "delegates/IntegerColumnDelegate.h"
 #include "delegates/ItemDelegate.h"
 #include "tests/modeltest.h"
+#include "SNConstants.h"
 
 #include <QtAlgorithms>
 #include <QAction>
@@ -37,10 +38,18 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     m_itemModel = new ItemModel( this );
     m_ui->itemList->setModel( m_itemModel );
     m_ui->itemList->installEventFilter( this );
+
     GenericDelegate *generic = new GenericDelegate( this );
     IntegerColumnDelegate *delegate = new IntegerColumnDelegate(0, INT_MAX);
     generic->insertColumnDelegate(1, delegate );
+
+    delegate = new IntegerColumnDelegate(0, INT_MAX);
+    generic->insertColumnDelegate(2, delegate );
+
     m_ui->itemList->setItemDelegate( generic );
+
+//    m_ui->itemList->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
     m_itemListContextMenu = new QMenu(this);
     QAction *act = m_itemListContextMenu ->addAction("Copy");
     connect(act, SIGNAL(triggered()), this, SLOT(copyItemListTriggered()));
@@ -77,6 +86,7 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     ItemDelegate* idelegate = new ItemDelegate( this );
     m_ui->componentList->setItemDelegate( idelegate );
     m_ui->componentList->setHeaderHidden( true );
+    m_ui->componentList->installEventFilter( this );
 
     QFile file( ":/item_desc_format.html" );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
@@ -90,8 +100,10 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     connect( m_itemModel, SIGNAL( componentsChanged( const SNItem &, quint64 ) ), m_detailedModel, SLOT( item_changed( const SNItem&,quint64) ));
     connect( m_itemModel, SIGNAL( statsChanged( int, quint64 ) ), this, SLOT( statsChangedSlot( int, quint64 ) ) );
     connect( m_ui->componentList->selectionModel(),
-             SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT( showDesc( QModelIndex ) ) );
+             SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT( showDescComponents( QModelIndex ) ) );
 
+    connect( m_ui->itemList->selectionModel(),
+             SIGNAL(currentRowChanged(QModelIndex,QModelIndex)), this, SLOT( showDescItems( QModelIndex ) ) );
 
 
     setupDesignsModel();
@@ -99,8 +111,13 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     /* you cannot adjust the stretch factor of layouts in
      * a splitter. So we set proportional sizes here*/
     QList<int> sizes;
-    sizes.push_back(800);
-    sizes.push_back(200);
+    sizes.push_back(700);
+    sizes.push_back(300);
+    m_ui->splitter_2->setSizes(sizes);
+
+    QList<int> sizes2;
+    sizes2.push_back(600);
+    sizes2.push_back(400);
     m_ui->splitter->setSizes(sizes);
 }
 
@@ -134,6 +151,11 @@ void ShipDesigner::currEmpireChangedSlot()
     m_ui->componentFilterEdit->clear();
 }
 
+void ShipDesigner::componentsFilterAccepted( const QModelIndex & idx)
+{
+    m_ui->componentList->expand( idx );
+}
+
 void ShipDesigner::changeEvent( QEvent *e )
 {
     switch ( e->type() )
@@ -162,6 +184,11 @@ bool ShipDesigner::eventFilter( QObject * obj, QEvent * evt )
             }
         }
     }
+    if( (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return )&& m_ui->componentList->hasFocus() )
+    {
+        on_addButton_clicked();
+        return true;
+    }
     return QObject::eventFilter( obj, evt );
 }
 
@@ -177,7 +204,46 @@ void ShipDesigner::on_componentList_clicked( QModelIndex index )
     }
 }
 
-void ShipDesigner::showDesc( QModelIndex index )
+void ShipDesigner::showDesc( const SNItem & item )
+{
+    if( item.isEmpty() )
+        return;
+    QLocale locale;
+    QString format = m_descHtmlTemplate;
+    format.replace( "{CAT}", item.category());
+    format.replace( "{SUBCAT}", item.subcategory());
+    format.replace( "{DESC}", item.desc() );
+    format.replace( "{TONS}", locale.toString( item.weight() ) );
+    format.replace( "{INTEG}", locale.toString( item.structure() ) );
+
+    m_ui->componentName->setText( item.name() );
+
+    QString materials = "";
+    QMapIterator<QString, int> i( item.getComponents() );
+    while ( i.hasNext() )
+    {
+        i.next();
+        materials.append( QString::number( i.value() ) + " " + i.key() );
+        materials.append( ", " );
+    }
+    materials.chop( 2 );
+    format.replace( "{MATS}", materials );
+
+    QString effects = "";
+    QList<ItemEffect> effs = item.getEffects();
+    foreach(ItemEffect eff, effs)
+    {
+        effects.append( eff.name() + ": " + eff.prettyValue());
+        if( eff.value() != 0 )
+            effects.append( "["+ locale.toString( eff.value() ) +"]" );
+        effects.append("<br />");
+    }
+    format.replace( "{EFFS}", effects );
+
+    m_ui->componentDesc->setHtml( format );
+}
+
+void ShipDesigner::showDescComponents( QModelIndex index )
 {
     if ( m_descHtmlTemplate == "" )
         return;
@@ -187,24 +253,17 @@ void ShipDesigner::showDesc( QModelIndex index )
     {
         QVariant data = m_componentsModel->data( real_index, SN::ComponentRole );
         SNItem item = data.value<SNItem>();
-        QLocale locale;
-        QString format = m_descHtmlTemplate;
-        format.replace( "{DESC}", item.desc() );
-        format.replace( "{TONS}", locale.toString( item.weight() ) );
-        m_ui->componentName->setText( item.name() );
-
-        QString materials = "";
-        QMapIterator<QString, int> i( item.getComponents() );
-        while ( i.hasNext() )
-        {
-            i.next();
-            materials.append( QString::number( i.value() ) + " " + i.key() );
-            materials.append( ", " );
-        }
-        materials.chop( 2 );
-        format.replace( "{MATS}", materials );
-        m_ui->componentDesc->setHtml( format );
+        showDesc( item );
     }
+}
+
+void ShipDesigner::showDescItems( QModelIndex index )
+{
+    if ( m_descHtmlTemplate == "" )
+        return;
+    QVariant data = m_itemModel->data( index, SN::ComponentRole );
+    SNItem item = data.value<SNItem>();
+    showDesc( item );
 }
 
 void ShipDesigner::on_saveButton_clicked()
@@ -225,14 +284,14 @@ void ShipDesigner::on_saveButton_clicked()
     QString mclass = m_ui->missionCombo->currentText().left( 1 );
     ShipDesign design( name, type, mclass );
 
-    QList< QPair<SNItem, quint64> > items = m_itemModel->getItems();
+    QList< ItemEntry > items = m_itemModel->getItems();
 
     for( int i = 0; i < items.size(); i++ )
     {
-        QPair<SNItem, quint64> p = items.at(i);
-        qDebug() << "appending: " << p.first.name();
-        if( p.second > 0 )
-            design.addComponent( p.first.name(), p.second );
+        ItemEntry p = items.at(i);
+        qDebug() << "appending: " << p.item.name();
+        if( p.quantity > 0 )
+            design.addComponent( p.item.name(), p.quantity );
     }
 
     design.saveDesign();
@@ -332,6 +391,10 @@ void ShipDesigner::on_addButton_clicked()
 
 void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
 {
+    m_ui->itemList->resizeColumnToContents(0);
+    m_ui->itemList->resizeColumnToContents(1);
+    m_ui->itemList->resizeColumnToContents(2);
+    m_ui->itemList->resizeColumnToContents(3);
     // Set item count total
     int curr = m_ui->countLabel->text().toInt();
 
@@ -484,9 +547,39 @@ void ShipDesigner::on_generateBI_clicked()
 
 }
 
-void ShipDesigner::on_desiredAPSpin_valueChanged(int desired_ap)
+void ShipDesigner::on_desiredAPSpin_valueChanged(int ap)
 {
+    //  (#E) = ( AP * tonnage ) / ( thrust – 100AP )
+    quint64 total_tonnage = m_itemModel->totalItemsTonnage().second;
 
+    quint64 engine_tonnage = 0;
+    int thrust_value = 0;
+    QList<ItemEntry> items = m_itemModel->getItems();
+    foreach(ItemEntry pair, items)
+    {
+        if(pair.item.subcategory() == SN::Category::Engine)
+        {
+            engine_tonnage += pair.quantity* pair.item.weight();
+            foreach( ItemEffect effect, pair.item.getEffects() )
+            {
+                    if( effect.name() == "Maneuverability" )
+                        thrust_value += effect.value();
+            }
+        }
+    }
+
+    int numerator = (ap * (total_tonnage - engine_tonnage ) );
+    int denominator = (thrust_value - (100*ap));
+    int num_engines = -1;
+    if( denominator != 0 )
+        num_engines = (numerator / denominator)+1;
+
+//    qDebug() << "num" << numerator << "dem" << denominator;
+
+    if( num_engines != -1)
+        m_ui->reqEnginesEdit->setText( QString::number(num_engines) );
+    else
+        m_ui->reqEnginesEdit->setText( "Not possible" );
 }
 
 void ShipDesigner::on_detailedTable_customContextMenuRequested(QPoint pos)
@@ -502,4 +595,9 @@ void ShipDesigner::on_itemList_customContextMenuRequested(QPoint pos)
 void ShipDesigner::on_componentFilterEdit_textChanged(QString filter)
 {
     m_proxy_model->setFilterWildcard( filter );
+}
+
+void ShipDesigner::on_addEnginesBut_clicked()
+{
+
 }

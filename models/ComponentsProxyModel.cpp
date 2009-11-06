@@ -17,9 +17,12 @@ bool ComponentsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &so
         for(int i = 1; i < num_children; ++i)
         {
             if( filterAcceptsRow(i, idx) )
+            {
                 return true;
+            }
         }
     }
+
     bool test = QSortFilterProxyModel::filterAcceptsRow(sourceRow, sourceParent);;
     return test;
 }

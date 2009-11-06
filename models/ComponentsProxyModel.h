@@ -8,6 +8,7 @@ class ComponentsProxyModel : public QSortFilterProxyModel
     Q_OBJECT
 public:
     ComponentsProxyModel(QObject *parent = 0);
+
 protected:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 };

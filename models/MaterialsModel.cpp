@@ -1,6 +1,6 @@
 #include "MaterialsModel.h"
 
-#include "../ShipDesigner.h"
+#include "ShipDesigner.h"
 
 #include <QDebug>
 
