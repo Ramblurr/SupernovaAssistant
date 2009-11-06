@@ -24,7 +24,7 @@ public:
         return out;
     }
 
-    friend Order &operator<<(Order &out,  quint64 arg )
+    friend Order &operator<<(Order &out,  qint64 arg )
     {
         out.addArg( QString::number( arg ) );
         return out;

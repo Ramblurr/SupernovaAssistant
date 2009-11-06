@@ -97,8 +97,8 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
 
     this->setWindowTitle( "Supernova Assistant: Ship Designer" );
 
-    connect( m_itemModel, SIGNAL( componentsChanged( const SNItem &, quint64 ) ), m_detailedModel, SLOT( item_changed( const SNItem&,quint64) ));
-    connect( m_itemModel, SIGNAL( statsChanged( int, quint64 ) ), this, SLOT( statsChangedSlot( int, quint64 ) ) );
+    connect( m_itemModel, SIGNAL( componentsChanged( const SNItem &, qint64 ) ), m_detailedModel, SLOT( item_changed( const SNItem&, qint64) ));
+    connect( m_itemModel, SIGNAL( statsChanged( int, qint64 ) ), this, SLOT( statsChangedSlot( int, qint64 ) ) );
     connect( m_ui->componentList->selectionModel(),
              SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT( showDescComponents( QModelIndex ) ) );
 
@@ -119,6 +119,9 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     sizes2.push_back(600);
     sizes2.push_back(400);
     m_ui->splitter->setSizes(sizes);
+
+    on_desiredAPSpin_valueChanged(3);
+    m_ui->componentList->expandToDepth(0);
 }
 
 ShipDesigner::~ShipDesigner()
@@ -208,45 +211,77 @@ void ShipDesigner::showDesc( const SNItem & item )
 {
     if( item.isEmpty() )
         return;
+
     QLocale locale;
-    QString format = m_descHtmlTemplate;
-    format.replace( "{CAT}", item.category());
-    format.replace( "{SUBCAT}", item.subcategory());
-    format.replace( "{DESC}", item.desc() );
-    format.replace( "{TONS}", locale.toString( item.weight() ) );
-    format.replace( "{INTEG}", locale.toString( item.structure() ) );
+    m_ui->componentInfoGroupBox->setTitle( item.name() );
 
-    m_ui->componentName->setText( item.name() );
+    m_ui->itemintegLabel->setText( locale.toString( item.structure() ) );
+    m_ui->itemtonLabel->setText( locale.toString( item.weight() ) );
+    m_ui->categoryLabel->setText( item.category() );
+    m_ui->subCatLabel->setText( item.subcategory() );
 
-    QString materials = "";
+    QFormLayout *materialsLayout = qobject_cast<QFormLayout*>( m_ui->materialsGroup->layout());
+
+
+    // delete current materials
+    foreach(QLabel* lbl, m_materialsLabels)
+        materialsLayout->removeWidget( lbl );
+    qDeleteAll(m_materialsLabels);
+    m_materialsLabels.clear();
+
     QMapIterator<QString, int> i( item.getComponents() );
     while ( i.hasNext() )
     {
         i.next();
-        materials.append( QString::number( i.value() ) + " " + i.key() );
-        materials.append( ", " );
-    }
-    materials.chop( 2 );
-    format.replace( "{MATS}", materials );
+        QLabel * name = new QLabel(m_ui->materialsGroup);
+        QLabel * amt = new QLabel(m_ui->materialsGroup);
+        m_materialsLabels.append(name);
+        m_materialsLabels.append(amt);
+        name->setText( i.key() );
 
-    QString effects = "";
+        //highlight the item name, if the item is not in the database
+        if( SNItem::getItem( i.key() ).isEmpty() )
+        {
+            name->setStyleSheet("QLabel{ color: red }");
+        }
+
+
+        amt->setText( locale.toString( i.value() ) );
+
+        materialsLayout->addRow(name, amt);
+    }
+
+    QVBoxLayout *effectsLayout = qobject_cast<QVBoxLayout*>( m_ui->effectsGroup->layout());
+
+    // delete current effects
+    foreach(QLabel* lbl, m_effectLabels)
+        effectsLayout->removeWidget( lbl );
+    qDeleteAll(m_effectLabels);
+    m_effectLabels.clear();
     QList<ItemEffect> effs = item.getEffects();
     foreach(ItemEffect eff, effs)
     {
-        effects.append( eff.name() + ": " + eff.prettyValue());
+        QLabel * lineLabel = new QLabel(m_ui->effectsGroup);
+        QString line = eff.name() + " - " +eff.prettyValue();
         if( eff.value() != 0 )
-            effects.append( "["+ locale.toString( eff.value() ) +"]" );
-        effects.append("<br />");
+            line.append( " [" + locale.toString( eff.value() ) +"]" );
+        lineLabel->setText( line );
+        QFont font = lineLabel->font();
+        font.setBold(false);
+        lineLabel->setFont( font );
+        m_effectLabels.append(lineLabel);
+        effectsLayout->addWidget( lineLabel );
     }
-    format.replace( "{EFFS}", effects );
 
-    m_ui->componentDesc->setHtml( format );
+    QFont font = m_ui->descLabel->font();
+    font.setBold(false);
+    m_ui->descLabel->setText( item.desc() );
+    m_ui->descLabel->setFont( font );
+
 }
 
 void ShipDesigner::showDescComponents( QModelIndex index )
 {
-    if ( m_descHtmlTemplate == "" )
-        return;
     QModelIndex real_index = m_proxy_model->mapToSource( index );
     int type = m_componentsModel->data(real_index, SN::TypeRole ).toInt();
     if(  type == SN::Component )
@@ -259,8 +294,6 @@ void ShipDesigner::showDescComponents( QModelIndex index )
 
 void ShipDesigner::showDescItems( QModelIndex index )
 {
-    if ( m_descHtmlTemplate == "" )
-        return;
     QVariant data = m_itemModel->data( index, SN::ComponentRole );
     SNItem item = data.value<SNItem>();
     showDesc( item );
@@ -289,7 +322,6 @@ void ShipDesigner::on_saveButton_clicked()
     for( int i = 0; i < items.size(); i++ )
     {
         ItemEntry p = items.at(i);
-        qDebug() << "appending: " << p.item.name();
         if( p.quantity > 0 )
             design.addComponent( p.item.name(), p.quantity );
     }
@@ -354,7 +386,7 @@ void ShipDesigner::on_designsCombo_currentIndexChanged( int index )
             break;
         }
     }
-    QMapIterator< QString, quint64 > it( m_currentDesign.getComponents() );
+    QMapIterator< QString, qint64 > it( m_currentDesign.getComponents() );
     qDebug() << "num comps " << m_currentDesign.getComponents().size();
     while( it.hasNext() )
     {
@@ -389,22 +421,26 @@ void ShipDesigner::on_addButton_clicked()
     }
 }
 
-void ShipDesigner::statsChangedSlot( int numitems, quint64 tons )
+void ShipDesigner::statsChangedSlot( int numitems, qint64 tons )
 {
     m_ui->itemList->resizeColumnToContents(0);
     m_ui->itemList->resizeColumnToContents(1);
     m_ui->itemList->resizeColumnToContents(2);
     m_ui->itemList->resizeColumnToContents(3);
     // Set item count total
-    int curr = m_ui->countLabel->text().toInt();
 
     QLocale locale;
+    qDebug() << m_ui->countLabel->text();
+    int curr = locale.toInt( m_ui->countLabel->text() );
+    int newcurr = curr + numitems;
+
+
     // set tonnage
 
     QString tmp = m_ui->tonnageLabel->text();
-    quint64 tonnage = locale.toUInt(tmp);
-    m_ui->tonnageLabel->setText( locale.toString( tonnage + tons ) );
-    m_ui->countLabel->setText( locale.toString( curr + numitems ) );
+    qint64 tonnage = locale.toLongLong(tmp) + tons;
+    m_ui->tonnageLabel->setText( locale.toString( tonnage ) );
+    m_ui->countLabel->setText( locale.toString( newcurr ) );
 
     // set AP
     m_ui->apsLabel->setText( locale.toString( m_itemModel->actionPoints() ) );
@@ -520,7 +556,7 @@ void ShipDesigner::on_generateNUD_clicked()
     Order order( "NUD" );
 
     order << m_currentDesign.type() << m_currentDesign.name() << m_currentDesign.missionClass();
-    QMapIterator< QString, quint64 > it( m_currentDesign.getComponents() );
+    QMapIterator< QString, qint64 > it( m_currentDesign.getComponents() );
     while( it.hasNext() )
     {
         it.next();
@@ -550,9 +586,9 @@ void ShipDesigner::on_generateBI_clicked()
 void ShipDesigner::on_desiredAPSpin_valueChanged(int ap)
 {
     //  (#E) = ( AP * tonnage ) / ( thrust – 100AP )
-    quint64 total_tonnage = m_itemModel->totalItemsTonnage().second;
+    qint64 total_tonnage = m_itemModel->totalItemsTonnage().second;
 
-    quint64 engine_tonnage = 0;
+    qint64 engine_tonnage = 0;
     int thrust_value = 0;
     QList<ItemEntry> items = m_itemModel->getItems();
     foreach(ItemEntry pair, items)
@@ -595,9 +631,30 @@ void ShipDesigner::on_itemList_customContextMenuRequested(QPoint pos)
 void ShipDesigner::on_componentFilterEdit_textChanged(QString filter)
 {
     m_proxy_model->setFilterWildcard( filter );
+    if( !filter.isEmpty() )
+        m_ui->componentList->expandAll();
+    else {
+        m_ui->componentList->collapseAll();
+        m_ui->componentList->expandToDepth(0);
+    }
 }
 
 void ShipDesigner::on_addEnginesBut_clicked()
 {
+    bool ok;
+    qint64 req_engines = m_ui->reqEnginesEdit->text().toLongLong(&ok);
+
+    if( !ok )
+        return;
+
+    QList<ItemEntry> items = m_itemModel->getItems();
+    foreach(ItemEntry pair, items)
+    {
+        if(pair.item.subcategory() == SN::Category::Engine)
+        {
+            m_itemModel->appendOrAlterData( pair.item, req_engines);
+        }
+    }
+
 
 }

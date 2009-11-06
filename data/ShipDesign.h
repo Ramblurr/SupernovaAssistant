@@ -18,12 +18,12 @@ public:
     QString name() const { return m_name; }
     QString type() const { return m_type; }
     QString missionClass() const { return m_class; }
-    QMap<QString, quint64> getComponents() const { return m_components; }
+    QMap<QString, qint64> getComponents() const { return m_components; }
 
     void setName( const QString &name) { m_name = name; }
     void setType( const QString &type) { m_type = type; }
     void setMissionClass( const QString &missionClass) { m_class = missionClass; }
-    void addComponent(const QString &item, quint64 quantity);
+    void addComponent(const QString &item, qint64 quantity);
 
     bool saveDesign();
     bool deleteDesign();
@@ -36,7 +36,7 @@ private:
     QString m_type;
     QString m_class;
 
-    QMap<QString, quint64> m_components;
+    QMap<QString, qint64> m_components;
 };
 
 Q_DECLARE_METATYPE( ShipDesign )

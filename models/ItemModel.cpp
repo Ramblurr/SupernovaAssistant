@@ -9,7 +9,7 @@
 ItemModel::ItemModel( QObject *parent )
         : QAbstractTableModel( parent )
 {
-    connect(this, SIGNAL( statsChanged(int,quint64) ), this, SLOT( refreshStats()) );
+    connect(this, SIGNAL( statsChanged(int,qint64) ), this, SLOT( refreshStats()) );
 }
 
 int ItemModel::rowCount( const QModelIndex &parent ) const
@@ -21,7 +21,7 @@ int ItemModel::rowCount( const QModelIndex &parent ) const
 int ItemModel::columnCount( const QModelIndex &parent ) const
 {
     Q_UNUSED( parent );
-    return 4;
+    return 3;
 }
 
 QVariant ItemModel::data( const QModelIndex &index, int role ) const
@@ -125,8 +125,8 @@ bool ItemModel::removeRows( int position, int rows, const QModelIndex &index )
     for ( int row = 0; row < rows; ++row )
     {
         SNItem item = m_data.at( position ).item;
-        quint64 diff = 0 - m_data.at( position ).quantity;
-        quint64 weight = item.weight()*(0 - m_data.at( position ).quantity);
+        qint64 diff = 0 - m_data.at( position ).quantity;
+        qint64 weight = item.weight()*(0 - m_data.at( position ).quantity);
         m_data.removeAt( position );
         m_hash.remove( item );
         emit( statsChanged( diff, weight ) );
@@ -147,15 +147,14 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
         if ( index.column() == 1 )
         {
             SNItem item = m_data.at(row).item;
-            quint64 curr_num_of_item = m_data.at( row ).quantity;
-            quint64 new_num_of_item = value.toUInt();
-            quint64 diff = new_num_of_item - curr_num_of_item;
-            quint64 tondiff = new_num_of_item - curr_num_of_item;
-            quint64 weight = item.weight()*tondiff;
+            qint64 curr_num_of_item = m_data.at( row ).quantity;
+            qint64 new_num_of_item = value.toLongLong();
+            qint64 diff = new_num_of_item - curr_num_of_item;
+            qint64 tondiff = (new_num_of_item - curr_num_of_item)*item.weight();
             ItemEntry s = m_data.at( row );
-            s.quantity = value.toUInt();
+            s.quantity = value.toLongLong();
             m_data.replace( row, s );
-            emit( statsChanged( diff, weight ) );
+            emit( statsChanged( diff, tondiff ) );
             emit( componentsChanged( item, diff ) );
         }
         else if ( index.column() == 2 )
@@ -172,11 +171,11 @@ bool ItemModel::setData( const QModelIndex &index, const QVariant &value, int ro
 
 
 
-            quint64 curr_num_of_item = m_data.at( row ).quantity;
-            quint64 new_num_of_item = new_quantity;
-            quint64 diff = new_num_of_item - curr_num_of_item;
-            quint64 tondiff = new_num_of_item - curr_num_of_item;
-            quint64 weight = item.weight()*tondiff;
+            qint64 curr_num_of_item = m_data.at( row ).quantity;
+            qint64 new_num_of_item = new_quantity;
+            qint64 diff = new_num_of_item - curr_num_of_item;
+            qint64 tondiff = new_num_of_item - curr_num_of_item;
+            qint64 weight = item.weight()*tondiff;
 
             ItemEntry s = m_data.at( row );
             s.quantity = new_quantity;
@@ -221,21 +220,21 @@ Qt::ItemFlags ItemModel::flags( const QModelIndex &index ) const
     else if ( index.column() == 3 )
         return Qt::ItemIsEnabled | Qt::ItemIsUserCheckable ;
 
-    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    if( index.column() == 1 )
-    {
-        if( m_data[index.row()].lockpercentage )
-            return flags;
-        else
-            return flags | Qt::ItemIsEditable ;
-    } else if( index.column() == 2 )
-    {
-        if( m_data[index.row()].lockpercentage )
-            return flags | Qt::ItemIsEditable ;
-        else
-            return flags;
-    }
-    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+//    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+//    if( index.column() == 1 )
+//    {
+//        if( m_data[index.row()].lockpercentage )
+//            return flags;
+//        else
+//            return flags | Qt::ItemIsEditable ;
+//    } else if( index.column() == 2 )
+//    {
+//        if( m_data[index.row()].lockpercentage )
+//            return flags | Qt::ItemIsEditable ;
+//        else
+//            return flags;
+//    }
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 
 }
 
@@ -298,7 +297,7 @@ QList< ItemEntry > ItemModel::getItems() const
     return m_data;
 }
 
-bool ItemModel::appendData( const SNItem &item, quint64 quantity )
+bool ItemModel::appendData( const SNItem &item, qint64 quantity )
 {
     if( !m_hash.contains( item ) )
     {
@@ -317,7 +316,7 @@ bool ItemModel::appendData( const SNItem &item, quint64 quantity )
     return false;
 }
 
-bool ItemModel::appendOrAlterData( const SNItem &item, quint64 quantity )
+bool ItemModel::appendOrAlterData( const SNItem &item, qint64 quantity )
 {
     if( !m_hash.contains( item ) )
     {
@@ -333,16 +332,19 @@ bool ItemModel::appendOrAlterData( const SNItem &item, quint64 quantity )
         return true;
     } else {
         int row = m_hash[item];
-        quint64 quant = quantity + m_data.at( row ).quantity;
-        ItemEntry s;
-        s.item = item;
-        s.quantity = quant;
+        qint64 curr_num_of_item = m_data.at( row ).quantity;
+        qint64 new_num_of_item = quantity;
+        qint64 diff = new_num_of_item - curr_num_of_item;
+        qint64 tondiff = new_num_of_item - curr_num_of_item;
+        qint64 weight = item.weight()*tondiff;
+        ItemEntry s = m_data.at( row );
+        s.quantity = quantity;
         s.lockpercentage = m_data.at( row ).lockpercentage;
         m_data.replace( row, s );
+        emit( statsChanged( diff, weight ) );
+        emit( componentsChanged( item, diff ) );
 
-        QModelIndex i = index(row, 0);
-        QModelIndex i2 = index(row, 1);
-//        emit( dataChanged( i2, i2 ) );
+        reset();
     }
     return true;
 }
@@ -431,7 +433,7 @@ void ItemModel::refreshStats()
     foreach( ItemEntry entry, m_data )
     {
        SNItem item = entry.item;
-       quint64 quantity = entry.quantity;
+       qint64 quantity = entry.quantity;
 
        foreach( ItemEffect effect, item.getEffects() )
        {

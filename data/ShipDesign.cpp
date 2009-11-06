@@ -21,7 +21,7 @@ ShipDesign::ShipDesign( const QString &name, const QString &type, const QString 
         m_class( missionclass )
 {}
 
-void ShipDesign::addComponent( const QString &item, quint64 quantity )
+void ShipDesign::addComponent( const QString &item, qint64 quantity )
 {
     if ( quantity <= 0 )
         return;
@@ -42,7 +42,7 @@ bool ShipDesign::saveDesign()
         if ( !query.exec() )
             qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
 
-        QMapIterator<QString, quint64> it( m_components );
+        QMapIterator<QString, qint64> it( m_components );
         while( it.hasNext() )
         {
             it.next();
@@ -102,7 +102,7 @@ QList<ShipDesign> ShipDesign::getDesigns()
             while ( comp_query.next() )
             {
                 QString name = comp_query.value( idxItem ).toString();
-                quint64 quant = comp_query.value( idxQuan ).toUInt();
+                qint64 quant = comp_query.value( idxQuan ).toUInt();
                 des.addComponent( name, quant );
             }
             list << des;

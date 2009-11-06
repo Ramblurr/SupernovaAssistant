@@ -9,6 +9,8 @@
 #include <QtCore/QList>
 #include <QtCore/QModelIndex>
 #include <QStringListModel>
+#include <QLabel>
+
 namespace Ui {
     class ShipDesigner;
 }
@@ -46,17 +48,20 @@ private:
     ComponentsModel *m_componentsModel;
     ComponentsProxyModel *m_proxy_model;
 
-    QMap<SNItem, quint64> m_materials;
+    QMap<SNItem, qint64> m_materials;
     QList<SNItem> m_components;
 
     QMenu* m_detailedTableContextMenu;
     QMenu* m_itemListContextMenu;
 
+    QList<QLabel*> m_materialsLabels;
+    QList<QLabel*> m_effectLabels;
+
     void setupDesignsModel();
     void showDesc( const SNItem & item );
 
 public slots:
-    void statsChangedSlot(  int numitems, quint64 tons );
+    void statsChangedSlot(  int numitems, qint64 tons );
     void copyDetailedTableTriggered();
     void copyItemListTriggered();
 

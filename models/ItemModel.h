@@ -13,8 +13,8 @@ class ItemEntry
 public:
     ItemEntry() : lockpercentage( false ) {}
     SNItem item;
-    quint64 quantity;
-    quint64 percentage;
+    qint64 quantity;
+    qint64 percentage;
     bool lockpercentage;
 };
 
@@ -38,8 +38,8 @@ class ItemModel : public QAbstractTableModel
      QStringList mimeTypes() const;
      bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
      Qt::DropActions supportedDropActions () const;
-     bool appendData( const SNItem &name, quint64 quantity );
-     bool appendOrAlterData( const SNItem &name, quint64 quantity );
+     bool appendData( const SNItem &name, qint64 quantity );
+     bool appendOrAlterData( const SNItem &name, qint64 quantity );
 
      void clear();
 
@@ -58,11 +58,11 @@ class ItemModel : public QAbstractTableModel
      int firecontrol() const;
 
 signals:
-    void componentsChanged( const SNItem &, quint64 diff );
-    void statsChanged( int, quint64 );
+    void componentsChanged( const SNItem &, qint64 diff );
+    void statsChanged( int, qint64 );
 
  private:
-    QMap< SNItem, quint64 > m_hash;
+    QMap< SNItem, qint64 > m_hash;
     QList<ItemEntry> m_data;
 
     int m_ap;

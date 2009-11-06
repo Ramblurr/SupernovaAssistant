@@ -16,21 +16,21 @@ public:
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role=Qt::EditRole);
     bool removeRows(int position, int rows, const QModelIndex &index=QModelIndex());
-    bool appendData( const SNItem &name, quint64 quantity );
-    bool appendOrAlterData( const SNItem &name, quint64 quantity );
+    bool appendData( const SNItem &name, qint64 quantity );
+    bool appendOrAlterData( const SNItem &name, qint64 quantity );
 
     void clear();
 
     const static int ComponentRole = 15;
 
-    QList< QPair<SNItem, quint64> > getItems() const;
+    QList< QPair<SNItem, qint64> > getItems() const;
 
 signals:
-    void componentsChanged( const SNItem &, quint64 diff );
-    void statsChanged( int, quint64 );
+    void componentsChanged( const SNItem &, qint64 diff );
+    void statsChanged( int, qint64 );
 
 public slots:
-    void item_changed( const SNItem &item, quint64 diff );
+    void item_changed( const SNItem &item, qint64 diff );
 
 private:
 
@@ -39,8 +39,8 @@ private:
       m_hash[element] > m_hash[removeme]
       */
     void removeItem( const SNItem & removeme );
-    QMap< SNItem, quint64 > m_hash;
-    QList< QPair<SNItem, quint64> > m_data;
+    QMap< SNItem, qint64 > m_hash;
+    QList< QPair<SNItem, qint64> > m_data;
 
 };
 
