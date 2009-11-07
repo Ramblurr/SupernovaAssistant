@@ -17,4 +17,5 @@ build/
 winbuild/
 mests/ModelTester.cpp
 tests/ModelTester.h
-
+*.exe
+*.user

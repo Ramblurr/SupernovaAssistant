@@ -1,0 +1,1 @@
+/usr/include/sqlite3ext.h

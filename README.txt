@@ -43,6 +43,6 @@ No idea, but you will need the Qt SDK for windows that includes mingw from:
 http://qt.nokia.com/downloads/sdk-windows-cpp
 
 Pre-compiled windows binaries of Poppler and its dependencies are available in the
-bin/ directory
+win32_resources/ directory
 
 
