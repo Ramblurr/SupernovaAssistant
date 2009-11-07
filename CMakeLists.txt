@@ -35,10 +35,6 @@ include_directories(
     ${SQLITE_INCLUDE_DIR}
 )
 
-if(WIN32)
-    include_directories( wmstyle )
-ENDIF(WIN32)
-
 set( snass_SRCS
     main.cpp
     MainWindow.cpp
@@ -85,11 +81,6 @@ set( snass_TOMOC
     widgets/ItemBrowser.h
     TurnParser.h
 )
-
-if(WIN32)
-    set( snass_SRCS ${snass_SRCS} wmstyle/windowsmodernstyle.cpp )
-    set( snass_TOMOC ${snass_TOMOC} wmstyle/windowsmodernstyle.h )
-endif(WIN32)
 
 # run moc
 qt4_wrap_cpp(moc_outfiles ${snass_TOMOC})
