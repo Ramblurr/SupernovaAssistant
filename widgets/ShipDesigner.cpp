@@ -43,7 +43,7 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     IntegerColumnDelegate *delegate = new IntegerColumnDelegate(0, INT_MAX);
     generic->insertColumnDelegate(1, delegate );
 
-    delegate = new IntegerColumnDelegate(0, INT_MAX);
+    delegate = new IntegerColumnDelegate(1, 99);
     generic->insertColumnDelegate(2, delegate );
 
     m_ui->itemList->setItemDelegate( generic );
