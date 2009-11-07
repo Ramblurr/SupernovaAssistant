@@ -45,6 +45,8 @@ set( snass_SRCS
     data/SNItem.cpp
     data/ShipDesign.cpp
     data/Empire.cpp
+    data/System.cpp
+    data/Planet.cpp
     models/ShipDesignsModel.cpp
     models/ItemModel.cpp
     models/MaterialsModel.cpp
@@ -63,7 +65,8 @@ set( snass_SRCS
     widgets/WelcomeWidget.cpp
     widgets/ShipDesigner.cpp
     widgets/ItemBrowser.cpp
-    widgets/MaterialsWidget.cpp    
+    widgets/MaterialsWidget.cpp
+    widgets/SystemsOverviewWidget.cpp
 )
 qt4_automoc(${snass_SRCS})
 
@@ -82,6 +85,7 @@ set( snass_TOMOC
     widgets/WelcomeWidget.h
     widgets/ShipDesigner.h
     widgets/ItemBrowser.h
+    widgets/SystemsOverviewWidget.h
     TurnParser.h
 )
 
@@ -96,6 +100,7 @@ set( snass_UIS
     widgets/WelcomeWidget.ui
     widgets/ShipDesigner.ui
     widgets/ItemBrowser.ui
+    widgets/SystemsOverviewWidget.ui
 )
 # run uic
 QT4_WRAP_UI(snass_UIS_H ${snass_UIS})

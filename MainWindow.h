@@ -11,6 +11,7 @@
 class ShipDesigner;
 class ItemBrowser;
 class WelcomeWidget;
+class SystemsOverviewWidget;
 namespace Ui
 {
     class MainWindowClass;
@@ -32,6 +33,7 @@ private:
     ShipDesigner *m_shipDesigner;
     ItemBrowser *m_itemBrowser;
     WelcomeWidget *m_welcomeWidget;
+    SystemsOverviewWidget *m_systemsWidget;
 
     QMap<QWidget *, int> m_indexes;
 
@@ -43,6 +45,7 @@ private:
 
 private slots:
 
+    void on_actionEmpire_Overview_triggered();
     void on_actionSelect_Empire_triggered();
     void on_actionQuit_triggered();
     void on_actionItem_Editor_triggered();

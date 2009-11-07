@@ -36,12 +36,14 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionLoad_Turn_Sheet"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEmpire">
     <property name="title">
      <string>&amp;Empire</string>
     </property>
+    <addaction name="actionEmpire_Overview"/>
     <addaction name="actionSelect_Empire"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -79,6 +81,21 @@
   <action name="actionItem_Editor">
    <property name="text">
     <string>&amp;Item Editor</string>
+   </property>
+  </action>
+  <action name="actionLoad_Turn_Sheet">
+   <property name="text">
+    <string>Load Turn Sheet</string>
+   </property>
+  </action>
+  <action name="actionOrder_Manager">
+   <property name="text">
+    <string>Order Manager</string>
+   </property>
+  </action>
+  <action name="actionEmpire_Overview">
+   <property name="text">
+    <string>&amp;Systems Overview</string>
    </property>
   </action>
  </widget>

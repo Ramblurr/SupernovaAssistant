@@ -6,6 +6,7 @@
 #include "Empire.h"
 #include "TurnParser.h"
 #include "WelcomeWidget.h"
+#include "SystemsOverviewWidget.h"
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
@@ -14,7 +15,7 @@
 #include <QMessageBox>
 
 MainWindow::MainWindow( QWidget *parent )
-        : QMainWindow( parent ), ui( new Ui::MainWindowClass ), m_shipDesigner( 0 ), m_itemBrowser(0)
+        : QMainWindow( parent ), ui( new Ui::MainWindowClass ), m_shipDesigner( 0 ), m_itemBrowser(0), m_systemsWidget( 0 )
 {
     ui->setupUi( this );
     setWindowTitle( tr( "Supernova Assistant" ) );
@@ -118,4 +119,21 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionSelect_Empire_triggered()
 {
     ui->stackedWidget->setCurrentIndex( m_indexes.value(m_welcomeWidget) );
+}
+
+void MainWindow::on_actionEmpire_Overview_triggered()
+{
+    if ( m_currEmpire.name().isEmpty() )
+    {
+        QMessageBox::warning( 0, "No Empire Selected", "Please select an empire." );
+        return;
+    }
+    if( m_systemsWidget == 0 )
+    {
+        m_systemsWidget = new SystemsOverviewWidget( this );
+        int i = ui->stackedWidget->addWidget(m_systemsWidget);
+        m_indexes.insert(m_systemsWidget, i);
+        connect(m_welcomeWidget, SIGNAL(currEmpireChanged(Empire)), m_systemsWidget, SLOT(currEmpireChangedSlot()));
+    }
+    ui->stackedWidget->setCurrentIndex( m_indexes.value( m_systemsWidget ) );
 }
