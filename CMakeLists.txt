@@ -5,6 +5,9 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mo
 find_package(Qt4 REQUIRED)
 find_package(Poppler REQUIRED)
 find_package(Sqlite REQUIRED)
+if(NOT SQLITE_FK_SUPPORT)
+    message(FATAL_ERROR "The installed version of SQLite3 does not have foreign key support. Please upgrade to version >=3.6.19")
+endif(NOT SQLITE_FK_SUPPORT)
 
 include(${QT_USE_FILE})
 
