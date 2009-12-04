@@ -2,15 +2,17 @@
 #define ITEMBROWSER_H
 
 #include "SNItem.h"
+#include "TurnParser.h"
 
 #include <QtGui/QWidget>
 #include <QMultiHash>
 #include <QTableWidgetItem>
 #include <QItemDelegate>
+#include <QProgressDialog>
+#include <QQueue>
 namespace Ui {
     class ItemBrowser;
 }
-
 
 
 class QDomElement;
@@ -41,6 +43,7 @@ private:
     SNItem itemFromFields() const;
     void addEffect( const ItemEffect &effect );
     void addMaterial( const QString &name, int amt );
+    void parseNext();
 
     /*!
       Adds an item to the model/dbase, but shows a dialog if
@@ -54,6 +57,10 @@ private:
     QPersistentModelIndex m_selectedItem;
     bool m_fieldsChanged;
     int m_itemConflictResolution;
+
+    QProgressDialog *m_progressBar;
+    QQueue<TurnParser*> m_turnsheetQueue;
+    int m_progressStep;
 
     bool loadCategories();
     void loadCategoryAndChildren( const QDomElement & element, const QString & parent = "" );

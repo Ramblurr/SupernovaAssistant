@@ -32,7 +32,9 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
         QWidget(parent),
         m_ui(new Ui::ItemBrowser),
         m_fieldsChanged( false ),
-        m_itemConflictResolution( -1 )
+        m_itemConflictResolution( -1 ),
+        m_progressBar( 0 ),
+        m_progressStep( 0 )
 {
     m_ui->setupUi(this);
 
@@ -490,17 +492,48 @@ void ItemBrowser::on_turnSheetBut_clicked()
     // picks his turn sheets from
     QSettings settings( "SN", "SNAssistant" );
     QVariant loc = settings.value("turn-sheet-location", QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Select turn sheet PDF"), loc.toString(), tr("PDF Files(*.pdf)"));
-    QFileInfo info( fileName );
-    if(!info.exists())
-        return;
-    settings.setValue("turn-sheet-location", info.absoluteDir().absolutePath());
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Select one or more turn sheet PDFs"), loc.toString(), tr("PDF Files(*.pdf)"));
 
-    TurnParser* tp = new TurnParser( fileName, this );
-//    tp.writeOut("anztest");
+    foreach(QString fileName, fileNames)
+    {
+        QFileInfo info( fileName );
+        if(!info.exists())
+            return;
+        settings.setValue("turn-sheet-location", info.absoluteDir().absolutePath());
+
+        TurnParser* tp = new TurnParser( fileName, this );
+        m_turnsheetQueue.enqueue(tp);
+    }
+    if( !m_progressBar )
+        m_progressBar = new QProgressDialog("Importing Turnsheets", "Cancel", 0, m_turnsheetQueue.size());
+    else
+    {
+        m_progressBar->setMaximum(m_turnsheetQueue.size());
+        m_progressBar->setLabelText("Importing Turnsheets");
+    }
+    m_progressBar->setMinimumDuration(2000);
+    m_progressStep = 0;
+    parseNext();
+}
+
+void ItemBrowser::parseNext()
+{
+    if( m_turnsheetQueue.isEmpty() )
+    {
+        if( m_progressBar )
+            m_progressBar->reset();
+        return;
+    }
+
+    if( m_progressBar )
+    {
+        m_progressBar->setValue(m_progressStep);
+        m_progressStep++;
+    }
+
+    TurnParser* tp = m_turnsheetQueue.dequeue();
     connect(tp, SIGNAL(anzParsingComplete( const QList<SNItem> & )), this, SLOT(anzParsingFinishedSlot( const QList<SNItem> & )), Qt::QueuedConnection);
     tp->start();
-
 }
 
 void ItemBrowser::anzParsingFinishedSlot( const QList<SNItem> & items)
@@ -510,6 +543,7 @@ void ItemBrowser::anzParsingFinishedSlot( const QList<SNItem> & items)
     {
         appendItemToModel( item );
     }
+    parseNext();
 }
 
 void ItemBrowser::appendItemToModel( const SNItem & item )
