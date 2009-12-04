@@ -556,6 +556,9 @@
              <property name="minimum">
               <number>3</number>
              </property>
+             <property name="maximum">
+              <number>3580</number>
+             </property>
              <property name="value">
               <number>3</number>
              </property>
@@ -792,7 +795,7 @@
              <x>0</x>
              <y>0</y>
              <width>525</width>
-             <height>297</height>
+             <height>220</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
