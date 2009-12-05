@@ -46,10 +46,11 @@ private:
     void parseNext();
 
     /*!
-      Adds an item to the model/dbase, but shows a dialog if
-      the item already exists.
-      */
-    void appendItemToModel( const SNItem & item );
+     * Adds an item to the model/dbase, but shows a dialog if
+     * the item already exists.
+     * @return true if item was a duplicate
+     */
+    bool appendItemToModel( const SNItem & item );
 
     Ui::ItemBrowser *m_ui;
     ComponentsModel *m_itemModel;
@@ -61,6 +62,10 @@ private:
     QProgressDialog *m_progressBar;
     QQueue<TurnParser*> m_turnsheetQueue;
     int m_progressStep;
+
+    int m_importedItemsCnt;
+    int m_duplicateItemsCnt;
+
 
     bool loadCategories();
     void loadCategoryAndChildren( const QDomElement & element, const QString & parent = "" );

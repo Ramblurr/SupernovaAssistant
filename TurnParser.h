@@ -28,10 +28,16 @@ protected:
     void run();
 
 private:
+    void parseData();
+
+    // SS (System Scan)
+    void parseSS();
+
+    // ANZ
     void parseANZs( const QStringList &anzs  );
     void parseANZs();
     CategoryPair mapClassificationToCategory( const QString &name, const QString &classification, bool istech ) const;
-    void parseData();
+
 
     QString m_filename;
     QString m_text;

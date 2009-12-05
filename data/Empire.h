@@ -1,10 +1,11 @@
 #ifndef EMPIRE_H
 #define EMPIRE_H
 
+#include "Debug"
+
 #include <QString>
 #include <QtCore/QMetaType>
 #include <QDataStream>
-#include <QDebug>
 #include <QVariant>
 
 class Empire
@@ -27,7 +28,7 @@ public:
     friend QDataStream &operator>>(QDataStream &in, Empire &myObj)
     {
         in >> myObj.m_name >> myObj.m_id;// >> myObj.m_symbol;
-//        qDebug() << "YO!"<< myObj.m_name << " " << myObj.m_id;
+//        debug() << "YO!"<< myObj.m_name << " " << myObj.m_id;
         return in;
     }
 

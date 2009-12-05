@@ -35,3 +35,4 @@ set(QT_QTXML_INCLUDE_DIR ${KDE_PREFIX}/include/qt4/QtXml)
 #set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} /opt/mingw32/lib)
 
 set(CMAKE_RC_COMPILER_INIT /opt/mingw32/bin/i586-pc-mingw32-windres)
+set(LINK_FLAGS "${LINK_FLAGS} -mwindows -mconsole")

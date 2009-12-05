@@ -133,14 +133,20 @@ target_link_libraries(snassistant_lib
     ${POPPLER_LIBRARY}
     ${SQLITE_LIBRARIES}
     )
-
+SET( CMAKE_BUILD_TYPE debugfull )
 if(WIN32)
+ SET( CMAKE_CXX_FLAGS_DEBUG     "-O0 -g -Wall" )
+ SET( CMAKE_CXX_FLAGS_DEBUGFULL "-O0 -g3 -fno-inline -Wall -Woverloaded-virtual -Wsign-compare -Wundef" )
  add_executable(SNAssistant WIN32 ${snass_SRCS} ${SN_RC_SRCS})
 else(WIN32)
  add_executable(SNAssistant ${snass_SRCS} ${SN_RC_SRCS} )
 endif(WIN32)
 
-target_link_libraries(SNAssistant ${QT_LIBRARIES} snassistant_lib )
+IF(WIN32)
+  target_link_libraries(SNAssistant ${QT_LIBRARIES} snassistant_lib "-Wl,-subsystem,console" )
+else(WIN32)
+  target_link_libraries(SNAssistant ${QT_LIBRARIES} snassistant_lib )
+endif(WIN32)
 
 #add_subdirectory(tests)
 

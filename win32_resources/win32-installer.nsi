@@ -19,7 +19,7 @@ UninstallIcon "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 DirText "Setup will install $(^Name) in the following folder.$\r$\n$\r$\nTo install in a different folder, click Browse and select another folder."
 LicenseText "If you accept all the terms of the agreement, choose I Agree to continue. You must accept the agreement to install $(^Name)."
-LicenseData "${SOURCE_PATH}/LICENSE"
+LicenseData "${SOURCE_PATH}/LICENSE.txt"
 ShowInstDetails show
 ShowUnInstDetails show
 

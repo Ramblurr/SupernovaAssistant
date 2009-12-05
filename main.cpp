@@ -4,6 +4,8 @@
 #include "data/Empire.h"
 #include "data/SNItem.h"
 
+#include "Debug.h"
+
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
@@ -11,6 +13,7 @@
 int main( int argc, char *argv[] )
 {
     QApplication a( argc, argv );
+    QApplication::setApplicationName( "SNAssistant" );
 //    #if defined( Q_WS_WIN )
 //        a.setStyle( "windowsmodernstyle" );
 //    #endif
@@ -33,5 +36,6 @@ int main( int argc, char *argv[] )
     qRegisterMetaTypeStreamOperators<Empire>( "Empire" );
     MainWindow w;
     w.show();
+    debug() << "OMG HELLO!";
     return a.exec();
 }

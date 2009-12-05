@@ -42,13 +42,7 @@ create table systembodies (
         type            character(20),
         orbdist         float,
         diameter        integer,
-        atmosphere      character(20),
-        explored        character,
-        pmap            character,
-        csv             character,
-        pop             character,
-        geo             character,
-        attrition       character(20),
+        atmosphere      character(20)
         FOREIGN KEY(sysname) REFERENCES systems(sysname) ON DELETE CASCADE
 );
 
@@ -159,7 +153,7 @@ create table pmapdata (
 );
 
 create table pmapterrain (
-        pname           character(20) not null unique,
+        pname           character(20) not null,
         name           character(30) not null,
         percent        integer,
         FOREIGN KEY (pname) REFERENCES systembodies(pname) ON DELETE CASCADE

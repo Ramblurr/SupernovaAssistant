@@ -7,7 +7,7 @@
 #include "TurnParser.h"
 #include "WelcomeWidget.h"
 #include "SystemsOverviewWidget.h"
-#include <QDebug>
+#include "Debug.h"
 #include <QDesktopServices>
 #include <QDir>
 #include <QtSql>
@@ -30,7 +30,6 @@ MainWindow::MainWindow( QWidget *parent )
     connect(m_welcomeWidget, SIGNAL(currEmpireChanged(Empire)), this, SLOT(currEmpireChangedSlot(Empire)));
 
     currEmpireChangedSlot( m_welcomeWidget->currentEmire() );
-
 }
 
 MainWindow::~MainWindow()

@@ -34,7 +34,9 @@ ItemBrowser::ItemBrowser(QWidget *parent) :
         m_fieldsChanged( false ),
         m_itemConflictResolution( -1 ),
         m_progressBar( 0 ),
-        m_progressStep( 0 )
+        m_progressStep( 0 ),
+        m_importedItemsCnt( 0 ),
+        m_duplicateItemsCnt( 0 )
 {
     m_ui->setupUi(this);
 
@@ -513,6 +515,9 @@ void ItemBrowser::on_turnSheetBut_clicked()
     }
     m_progressBar->setMinimumDuration(2000);
     m_progressStep = 0;
+
+    m_importedItemsCnt = 0;
+    m_duplicateItemsCnt = 0;
     parseNext();
 }
 
@@ -522,6 +527,21 @@ void ItemBrowser::parseNext()
     {
         if( m_progressBar )
             m_progressBar->reset();
+        // finished, show results dialog
+
+        QMessageBox msgBox;
+        msgBox.setText("Import Complete");
+        QString infotext;
+        QTextStream stream(&infotext);
+        stream << "Imported " << m_progressStep << " turn sheets\n";
+        stream << "     " << m_importedItemsCnt << " total items.\n";
+        stream << "     " << m_duplicateItemsCnt << " duplicate items.\n";
+        stream << "     " << (m_importedItemsCnt - m_duplicateItemsCnt) << " new items.\n";
+        msgBox.setInformativeText(infotext);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.setDetailedText(infotext);
+        int ret = msgBox.exec();
         return;
     }
 
@@ -541,31 +561,33 @@ void ItemBrowser::anzParsingFinishedSlot( const QList<SNItem> & items)
     qDebug() << "got " << items.size();
     foreach( SNItem item, items )
     {
-        appendItemToModel( item );
+        m_importedItemsCnt++;
+        if( appendItemToModel( item ) )
+            m_duplicateItemsCnt++;
     }
     parseNext();
 }
 
-void ItemBrowser::appendItemToModel( const SNItem & item )
+bool ItemBrowser::appendItemToModel( const SNItem & item )
 {
         SNItem existing = SNItem::getItem( item.name() );
         if( existing.isEmpty() ) // doesn't exist , no conflict
         {
             m_itemModel->appendItem( item );
-            return;
+            return false;
         }
         if( existing == item ) // already exists, and is the same no conflict
-            return ;
+            return true;
 
         if( m_itemConflictResolution == SN::KeepNewItemAndRepeat )
         {
             m_itemModel->removeItem( existing );
             m_itemModel->appendItem( item );
-            return;
+            return true;
         } else if ( m_itemConflictResolution == SN::KeepOldItemAndRepeat )
         {
             m_itemModel->appendItem( item );
-            return;
+            return true;
         }
 
         ItemConflictDialog conflictDialog( existing, item, this  );
@@ -576,6 +598,7 @@ void ItemBrowser::appendItemToModel( const SNItem & item )
            m_itemModel->removeItem( existing );
            m_itemModel->appendItem( item );
         }
+        return true;
 }
 
 void ItemBrowser::on_clearDbaseBut_clicked()

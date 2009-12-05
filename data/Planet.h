@@ -7,21 +7,27 @@
 
 typedef QPair<QString, QString> TerrainPair;
 typedef QPair<QString, int> ResourceYield;
+
+class QSqlQuery;
+
 class Planet
 {
 public:
     Planet();
-    Planet( const QString &orbit, const QString &type, const QString &distance, const QString &diameter,
-            const QString &atmosphere);
+    Planet( const QString &name, const QString &sysname, const QString &orbit, const QString &suborbit,
+            const QString &type, float distance, int diameter, const QString &atmosphere);
 
     Planet( const QString &temperature, const QString &axialtilt, const QString &gravity,
             const QString &ocean, const QString &microorganisms, const QString &pollution,
             const QString &radiation);
 
+    QString name() const { return m_name; }
+    QString sysname() const { return m_sysname; }
     QString orbit() const { return m_orbit; }
+    QString suborbit() const { return m_suborbit; }
     QString type() const { return m_type; }
-    QString distance() const { return m_distance; }
-    QString diameter() const { return m_diameter; }
+    float distance() const { return m_distance; }
+    int diameter() const { return m_diameter; }
     QString atmosphere() const { return m_atmosphere; }
 
     QString temp() const { return m_temperature; }
@@ -39,13 +45,29 @@ public:
     void addTerrain(const QString &terrain, const QString &percentage);
     void addResource(const QString &resource, int yield);
 
+    /**
+      @brief Gets planetary bodies from the database
+      @param systemname Optionally specify the name of the system to retrieve planets from
+      @return A list of all planetary bodies, or the ones on the requested system
+      */
+    static QList<Planet> getPlanets( const QString & systemname = "" );
+    static Planet find( const QString & planet );
+
+
 private:
+    static void loadPmap( const QSqlQuery &query, Planet &planet );
+    static void loadTerrain( const QSqlQuery &query, Planet &planet );
+    static void loadGeo( const QSqlQuery &query, Planet &planet );
+    static void loadSS( const QSqlQuery &query, Planet &planet );
 
     //From SS
+    QString m_name;
+    QString m_sysname;
     QString m_orbit;
+    QString m_suborbit;
     QString m_type;
-    QString m_distance;
-    QString m_diameter;
+    float m_distance;
+    int m_diameter;
     QString m_atmosphere;
 
     //From PMAP

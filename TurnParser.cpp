@@ -3,9 +3,9 @@
 #include "SNConstants.h"
 #include "data/SNItem.h"
 #include "data/ItemEffect.h"
+#include "Debug.h"
 #include <poppler-qt4.h>
 #include <QRectF>
-#include <QDebug>
 #include <QFile>
 #include <QTextStream>
 #include <QRegExp>
@@ -22,22 +22,24 @@ TurnParser::TurnParser( const QString &filename, QObject * parent ) : QThread( p
 
 void TurnParser::run()
 {
+    qDebug() << "---------------------------------------------";
+    qDebug() << "Turn Parser Loading:" << m_filename;
     Poppler::Document *doc = Poppler::Document::load( m_filename );
     int count = doc->numPages();
 
-//    QFile outfile(filename+".txt");
-//    if ( !outfile.open( QIODevice::WriteOnly ) )
-//    {
-//        qDebug() << "file open failed";
-//        return;
-//    }
-//    QTextStream outdebug(&outfile);
+    QFile outfile(m_filename+".txt");
+    if ( !outfile.open( QIODevice::WriteOnly ) )
+    {
+        qDebug() << "file open failed";
+        return;
+    }
+    QTextStream outdebug(&outfile);
 
     QTextStream out( &m_text, QIODevice::WriteOnly );
     for(int i = 0; i < count; i ++)
     {
         QString text = doc->page(i)->text(QRectF());
-//        outdebug << text;
+        outdebug << text;
         // Cleanup text
         QStringList lines = text.split(QRegExp("\\n") );
 
@@ -56,7 +58,7 @@ void TurnParser::run()
 //            qDebug() << line;
         }
     }
-//    outfile.close();
+    outfile.close();
     out.flush();
     delete doc;
 
@@ -266,8 +268,10 @@ void TurnParser::parseANZs( const QStringList &anzs )
         if( rx.indexIn( anz ) > -1 )
         {
             QString name = rx.cap(1).trimmed();
-//            qDebug() << anz;
-//            qDebug() << "Got anz item: " << name;
+            qDebug() << "\nGot anz item: " << name;
+            qDebug() << "=====";
+            qDebug() << anz;
+            qDebug() << "=====";
 
             // Parse Description
 //            int desc_marker = rx.matchedLength();
@@ -329,7 +333,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
             QString entry = rx.cap(1);
             entry = entry.simplified();
             QStringList comps  = entry.split(" - ");
-//            qDebug() << "composed of";
+            qDebug() << "composed of";
             QMap<QString, int> components;
             foreach( QString comp, comps )
             {
@@ -340,7 +344,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
                 QString amt = comp.left(div).trimmed().replace(",","");
                 QString resource = comp.right(comp.length()-div).trimmed();
                 resource.replace(QRegExp(" {2,}"), " ");
-//                qDebug() << amt << resource;
+                qDebug() << amt << resource;
                 bool ok;
                 components.insert( resource, amt.toInt(&ok) );
                 if( !ok && !istech )
