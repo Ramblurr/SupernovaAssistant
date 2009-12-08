@@ -18,7 +18,7 @@ set(CMAKE_CXX_FLAGS "-g -Wall")
 # add_subdirectory(models)
 # add_subdirectory(views)
 
-#ENABLE_TESTING()
+ENABLE_TESTING()
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -39,7 +39,8 @@ include_directories(
 )
 
 set( snass_SRCS
-    main.cpp
+    #main.cpp
+    Global.cpp
     MainWindow.cpp
     TurnParser.cpp
     data/SNItem.cpp
@@ -137,9 +138,9 @@ SET( CMAKE_BUILD_TYPE debugfull )
 if(WIN32)
  SET( CMAKE_CXX_FLAGS_DEBUG     "-O0 -g -Wall" )
  SET( CMAKE_CXX_FLAGS_DEBUGFULL "-O0 -g3 -fno-inline -Wall -Woverloaded-virtual -Wsign-compare -Wundef" )
- add_executable(SNAssistant WIN32 ${snass_SRCS} ${SN_RC_SRCS})
+ add_executable(SNAssistant WIN32 ${snass_SRCS} ${SN_RC_SRCS} main.cpp)
 else(WIN32)
- add_executable(SNAssistant ${snass_SRCS} ${SN_RC_SRCS} )
+ add_executable(SNAssistant ${snass_SRCS} ${SN_RC_SRCS} main.cpp)
 endif(WIN32)
 
 IF(WIN32)
@@ -148,6 +149,6 @@ else(WIN32)
   target_link_libraries(SNAssistant ${QT_LIBRARIES} snassistant_lib )
 endif(WIN32)
 
-#add_subdirectory(tests)
+add_subdirectory(tests)
 
 

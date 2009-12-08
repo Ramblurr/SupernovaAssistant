@@ -1,9 +1,12 @@
 #include <QApplication>
 
+//#include "Global.h"
+#include "Debug.h"
 #include "MainWindow.h"
 #include "data/Empire.h"
 #include "data/SNItem.h"
-#include "Debug.h"
+#include "data/System.h"
+
 
 #include <QDesktopServices>
 #include <QDir>
@@ -12,13 +15,6 @@
 #include <QMutex>
 #include <QBuffer>
 #include <QIODevice>
-
-namespace Debug
-{
-    QMutex mutex;
-    QBuffer debug_log;
-    NoDebugStream devnull;
-}
 
 void myMessageOutput(QtMsgType type, const char *msg)
  {
@@ -66,7 +62,9 @@ int main( int argc, char *argv[] )
 //    }
     qRegisterMetaType<Empire>( "Empire" );
     qRegisterMetaType<SNItem>( "SNItem" );
+    qRegisterMetaType<SNItem>( "System" );
     qRegisterMetaType<QList<SNItem> >( "QList<SNItem>" );
+    qRegisterMetaType<QList<System> >( "QList<System>" );
     qRegisterMetaTypeStreamOperators<Empire>( "Empire" );
     MainWindow w;
     w.show();

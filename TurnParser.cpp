@@ -3,7 +3,9 @@
 #include "SNConstants.h"
 #include "data/SNItem.h"
 #include "data/ItemEffect.h"
+#include "data/System.h"
 #include "Debug.h"
+
 #include <poppler-qt4.h>
 #include <QRectF>
 #include <QFile>
@@ -19,11 +21,16 @@ TurnParser::TurnParser( const QString &filename, QObject * parent ) : QThread( p
 {
 
 }
-
 void TurnParser::run()
 {
+    go();
+    exec();
+    deleteLater();
+}
+
+void TurnParser::go()
+{
     DEBUG_BLOCK
-    debug() << "---------------------------------------------";
     debug() << "Turn Parser Loading:" << m_filename;
     Poppler::Document *doc = Poppler::Document::load( m_filename );
     int count = doc->numPages();
@@ -79,12 +86,11 @@ void TurnParser::run()
 
     parseData();
     m_parsed = true;
-    exec();
-    deleteLater();
 }
 
 void TurnParser::parseData()
 {
+    DEBUG_BLOCK
     QStringList lines = m_text.split(QRegExp("\\n") );
     int mode = 0;
     QString cmdstore = "";
@@ -230,6 +236,7 @@ void TurnParser::parseData()
 
     }
     parseANZs();
+    parseSS();
 }
 
 QString TurnParser::text() const
@@ -250,16 +257,62 @@ void TurnParser::writeOut( const QString &filename )
     outfile.close();
 }
 
-void TurnParser::parseANZs()
+void TurnParser::debugData( const QString &directory )
+{
+
+    QHashIterator<QString, QString> i(m_data);
+
+    while (i.hasNext()) {
+        i.next();
+        QFile outfile(directory + "/" +i.key()+".txt");
+        if ( !outfile.open( QIODevice::Append ) )
+        {
+            debug() << "file open failed";
+            return;
+        }
+        QTextStream out(&outfile);
+        out << i.value();
+        outfile.close();
+    }
+}
+
+const QList<System> TurnParser::parseSS()
+{
+    DEBUG_BLOCK
+    QStringList sss = m_data.values("SS");
+    QRegExp rx;
+    rx.setPatternSyntax(QRegExp::RegExp);
+
+    QList<System> systems;
+    foreach( QString ss, sss)
+    {
+        rx.setPattern("-----(\\w+)\\s\\[([^\\]]+)\\]\\s\\[([^\\]]+)\\]-----");
+
+        QString sysname;
+        QString type;
+        QString size;
+        if( rx.indexIn( ss ) > -1 )
+        {
+            sysname = rx.cap(1).trimmed();
+            type = rx.cap(2).trimmed();
+            size = rx.cap(3).trimmed();
+        } else
+            warning() << "Found SS, but no details found.";
+
+        debug() << "System Scan: " << sysname << type << size;
+
+        System sys( sysname, type, size );
+        systems << sys;
+    }
+    emit( ssParsingComplete( systems ) );
+    return systems;
+}
+
+const QList<SNItem> TurnParser::parseANZs()
 {
     DEBUG_BLOCK
     debug() << "Parsing ANZs";
     QStringList anzs = m_data.values("ANZ");
-    parseANZs(anzs);
-}
-
-void TurnParser::parseANZs( const QStringList &anzs )
-{
     debug() << "found" << anzs.size() << "anzs";
     QRegExp rx;
     rx.setPatternSyntax(QRegExp::RegExp);
@@ -453,6 +506,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
     }
 //    m_anzs = items;
     emit anzParsingComplete( items );
+    return items;
 }
 
 CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, const QString &classification, bool istech ) const

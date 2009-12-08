@@ -2,6 +2,7 @@
 #define TURNPARSER_H
 
 #include "data/SNItem.h"
+#include "data/System.h"
 
 #include <QString>
 #include <QHash>
@@ -10,6 +11,7 @@
 #include <QThread>
 
 typedef QPair<QString, QString> CategoryPair;
+class TurnParserTest;
 class TurnParser : public QThread
 {
     Q_OBJECT
@@ -20,22 +22,28 @@ public:
     QString text() const;
     void writeOut( const QString &filename );
 
+
+
 signals:
 
     void anzParsingComplete( const QList<SNItem> & );
+    void ssParsingComplete( const QList<System> & );
 
 protected:
+    void go();
     void run();
 
 private:
     void parseData();
 
+    //debug data
+    void debugData( const QString &directory );
+
     // SS (System Scan)
-    void parseSS();
+    const QList<System> parseSS();
 
     // ANZ
-    void parseANZs( const QStringList &anzs  );
-    void parseANZs();
+    const QList<SNItem> parseANZs();
     CategoryPair mapClassificationToCategory( const QString &name, const QString &classification, bool istech ) const;
 
 
@@ -45,6 +53,7 @@ private:
 
     QList<SNItem> m_anzs;
     QMultiHash<QString, QString> m_data;
+    friend class TurnParserTest;
 };
 
 #endif // TURNPARSER_H

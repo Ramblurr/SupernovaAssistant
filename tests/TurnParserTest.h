@@ -1,6 +1,10 @@
 #ifndef TURNPARSERTEST_H
 #define TURNPARSERTEST_H
 
+#include "TurnParser.h"
+#include "System.h"
+#include "SNItem.h"
+
 #include <QObject>
 #include <QtTest/QtTest>
 
@@ -11,7 +15,11 @@ public:
     TurnParserTest();
 
 private slots:
-    void parseANZs();
+    void anzs();
+    void sss();
+
+private:
+    TurnParser* parser;
 };
 
 #endif // TURNPARSERTEST_H

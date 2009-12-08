@@ -1,6 +1,8 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
+#include "Global.h"
+
 #include <QDebug>
 #include <QApplication>
 #include <QMutex>
@@ -26,16 +28,7 @@
 #define Global extern
 #endif
 
-class NoDebugStream: public QIODevice
-{
-    // Q_OBJECT
-public:
-    NoDebugStream() { open(WriteOnly); }
-    bool isSequential() const { return true; }
-    qint64 readData(char *, qint64) { return 0; /* eof */ }
-    qint64 readLineData(char *, qint64) { return 0; /* eof */ }
-    qint64 writeData(const char *, qint64 len) { return len; }
-};
+
 
 /**
  * @namespace Debug
