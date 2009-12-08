@@ -1,5 +1,5 @@
 #include "Order.h"
-#include <QDebug>
+#include "Debug.h"
 
 int Order::MAX_ARGS = 52;
 

@@ -1,4 +1,6 @@
 #include "ShipDesign.h"
+#include "Debug.h"
+
 #include <QDesktopServices>
 #include <QtSql>
 #include <QMessageBox>
@@ -40,7 +42,7 @@ bool ShipDesign::saveDesign()
         query.bindValue( ":type", m_type );
         query.bindValue( ":class", m_class );
         if ( !query.exec() )
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+            debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         QMapIterator<QString, qint64> it( m_components );
         while( it.hasNext() )
@@ -54,7 +56,7 @@ bool ShipDesign::saveDesign()
             query2.bindValue( ":item", it.key() );
             query2.exec();
             if ( !query2.exec() )
-                qDebug() << query2.executedQuery()<< "\n error: " << query2.lastError();
+                debug() << query2.executedQuery()<< "\n error: " << query2.lastError();
         }
     }
     else
@@ -96,7 +98,7 @@ QList<ShipDesign> ShipDesign::getDesigns()
             comp_query.prepare("SELECT * FROM designcomp WHERE dname = :dname" );
             comp_query.bindValue(":dname", name );
             if( !comp_query.exec() )
-                qDebug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
+                debug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
             int idxItem = comp_query.record().indexOf( "item" );
             int idxQuan = comp_query.record().indexOf( "quantity" );
             while ( comp_query.next() )

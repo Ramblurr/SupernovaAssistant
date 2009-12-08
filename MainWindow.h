@@ -45,6 +45,7 @@ private:
 
 private slots:
 
+    void on_actionSave_Debug_Log_triggered();
     void on_actionEmpire_Overview_triggered();
     void on_actionSelect_Empire_triggered();
     void on_actionQuit_triggered();

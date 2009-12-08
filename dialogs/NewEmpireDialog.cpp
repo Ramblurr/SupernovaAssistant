@@ -46,7 +46,7 @@ void NewEmpireDialog::on_acceptButton_clicked()
 
     if ( ok )
     {
-        qDebug() << "Databse created succesfully";
+        debug() << "Databse created succesfully";
 //        settings.setValue( "empireCount", empireCount );
 //        settings.setValue( "empires/" + QString::number( empireCount ), emp );
         settings.beginGroup("empires");
@@ -54,7 +54,7 @@ void NewEmpireDialog::on_acceptButton_clicked()
         settings.endGroup();
     }
     else
-        qDebug() << "Error when creating dbase";
+        debug() << "Error when creating dbase";
 
 }
 
@@ -83,7 +83,7 @@ QStringList NewEmpireDialog::loadSchema( const QString &filename )
             {
                 query.append(tmp);
                 queries << query;
-//                qDebug() << "added: " << query;
+//                debug() << "added: " << query;
                 query = "";
             }
             else if( trigger && tmp.trimmed().endsWith("END;", Qt::CaseInsensitive ) )
@@ -91,7 +91,7 @@ QStringList NewEmpireDialog::loadSchema( const QString &filename )
                 trigger = false;
                 query.append(tmp);
                 queries << query;
-//                qDebug() << "added: " << query;
+//                debug() << "added: " << query;
                 query = "";
             } else {
                 query.append(tmp);
@@ -126,7 +126,7 @@ bool NewEmpireDialog::setupNewDatabase( const QString &name, const QString &id )
             QSqlQuery query( db );
             query.prepare( statement );
             if( !query.exec() )
-                qDebug() << query.executedQuery() << "\nerror: " << query.lastError();
+                debug() << query.executedQuery() << "\nerror: " << query.lastError();
         }
         db.commit();
 

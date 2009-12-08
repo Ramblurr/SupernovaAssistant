@@ -1,9 +1,11 @@
 #ifndef ITEMEFFECT_H
 #define ITEMEFFECT_H
 
+#include "Debug.h"
+
 #include <QString>
 #include <QDataStream>
-#include <QDebug>
+
 class ItemEffect
 {
 public:

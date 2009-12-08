@@ -1,8 +1,8 @@
 #include "ItemModel.h"
 
 #include "SNConstants.h"
+#include "Debug.h"
 
-#include <QDebug>
 #include <QList>
 #include <QMimeData>
 

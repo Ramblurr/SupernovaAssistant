@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QMutex>
 #include <QObject>
+#include <QBuffer>
 
 #include <sys/time.h>
 #include <unistd.h>
@@ -18,6 +19,23 @@
 #ifndef APP_PREFIX
 #define APP_PREFIX "SNAssistant"
 #endif
+
+#ifdef GLOBAL
+#define Global
+#else
+#define Global extern
+#endif
+
+class NoDebugStream: public QIODevice
+{
+    // Q_OBJECT
+public:
+    NoDebugStream() { open(WriteOnly); }
+    bool isSequential() const { return true; }
+    qint64 readData(char *, qint64) { return 0; /* eof */ }
+    qint64 readLineData(char *, qint64) { return 0; /* eof */ }
+    qint64 writeData(const char *, qint64 len) { return len; }
+};
 
 /**
  * @namespace Debug
@@ -51,7 +69,9 @@
 
 namespace Debug
 {
-    QMutex mutex;
+    Global QMutex mutex;
+    Global QBuffer debug_log;
+    Global NoDebugStream devnull;
 
     // we can't use a statically instantiated QString for the indent, because
     // static namespaces are unique to each dlopened library. So we piggy back
@@ -88,7 +108,8 @@ namespace Debug
 
     inline QDebug dbgstream()
     {
-        return QDebug( QtDebugMsg );// : qDebugDevNull();
+        return debugEnabled ? QDebug( QtDebugMsg ) : QDebug( &devnull );
+//        return QDebug( &debug_log );
     }
 
     #undef qOApp
@@ -108,10 +129,10 @@ namespace Debug
     };
 
 
-    static inline QDebug debug()   { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX ); }
-    static inline QDebug warning() { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX + " [WARNING!]" ); }
-    static inline QDebug error()   { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX + " [ERROR!]" ); }
-    static inline QDebug fatal()   { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX ); }
+    static inline QDebug debug()   { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << endl << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX ); }
+    static inline QDebug warning() { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << endl << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX + " [WARNING!]" ); }
+    static inline QDebug error()   { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << endl << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX + " [ERROR!]" ); }
+    static inline QDebug fatal()   { mutex.lock(); QString ind = indent(); mutex.unlock(); return dbgstream() << endl << qPrintable( APP_PREFIX ": " + ind + AMK_PREFIX ); }
 
     #undef AMK_PREFIX
 
@@ -190,7 +211,7 @@ namespace Debug
                 : m_label( label )
         {
             if ( gettimeofday( &m_start, 0 ) == -1 )
-                dbgstream() << APP_PREFIX ": Block - gettimeofday failed with "
+                dbgstream() << endl << APP_PREFIX ": Block - gettimeofday failed with "
                             << strerror(errno);
 
             if( !debugEnabled() ) return;
@@ -229,9 +250,9 @@ namespace Debug
 
             // Print timing information, and a special message (DELAY) if the method took longer than 5s
             if( duration < 5.0 )
-                dbgstream() << qPrintable( APP_PREFIX ": " + indent() + "END__: " + m_label + " - Took " + QString::number( duration, 'g', 2 ) + "s" );
+                dbgstream() << endl << qPrintable( APP_PREFIX ": " + indent() + "END__: " + m_label + " - Took " + QString::number( duration, 'g', 2 ) + "s" );
             else
-                dbgstream() << qPrintable( APP_PREFIX ": " + indent() + "END__: " + m_label + " - DELAY Took (quite long) " + QString::number( duration, 'g', 2 ) + "s" );
+                dbgstream() << endl << qPrintable( APP_PREFIX ": " + indent() + "END__: " + m_label + " - DELAY Took (quite long) " + QString::number( duration, 'g', 2 ) + "s" );
 
             mutex.unlock();
         }

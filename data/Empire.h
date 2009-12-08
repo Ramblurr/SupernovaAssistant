@@ -1,7 +1,7 @@
 #ifndef EMPIRE_H
 #define EMPIRE_H
 
-#include "Debug"
+#include "Debug.h"
 
 #include <QString>
 #include <QtCore/QMetaType>

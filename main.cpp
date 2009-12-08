@@ -3,15 +3,49 @@
 #include "MainWindow.h"
 #include "data/Empire.h"
 #include "data/SNItem.h"
-
 #include "Debug.h"
 
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
 #include <QList>
+#include <QMutex>
+#include <QBuffer>
+#include <QIODevice>
+
+namespace Debug
+{
+    QMutex mutex;
+    QBuffer debug_log;
+    NoDebugStream devnull;
+}
+
+void myMessageOutput(QtMsgType type, const char *msg)
+ {
+     switch (type) {
+     case QtDebugMsg:
+         Debug::debug_log.write(msg);
+         fprintf(stderr, "%s\n", msg);
+         break;
+     case QtWarningMsg:
+         Debug::debug_log.write(msg);
+         fprintf(stderr, "Warning: %s\n", msg);
+         break;
+     case QtCriticalMsg:
+         Debug::debug_log.write(msg);
+         fprintf(stderr, "Critical: %s\n", msg);
+         break;
+     case QtFatalMsg:
+         Debug::debug_log.write(msg);
+         fprintf(stderr, "Fatal: %s\n", msg);
+         abort();
+     }
+ }
+
 int main( int argc, char *argv[] )
 {
+    Debug::debug_log.open(QBuffer::ReadWrite);
+    qInstallMsgHandler(myMessageOutput);
     QApplication a( argc, argv );
     QApplication::setApplicationName( "SNAssistant" );
 //    #if defined( Q_WS_WIN )
@@ -36,6 +70,5 @@ int main( int argc, char *argv[] )
     qRegisterMetaTypeStreamOperators<Empire>( "Empire" );
     MainWindow w;
     w.show();
-    debug() << "OMG HELLO!";
     return a.exec();
 }

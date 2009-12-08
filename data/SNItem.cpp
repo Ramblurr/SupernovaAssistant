@@ -132,7 +132,7 @@ bool SNItem::saveItem() const
         query.bindValue( ":structure", m_structure );
 
         if ( !query.exec() ) {
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError().text();
+            debug() << query.executedQuery()<< "\n error: " << query.lastError().text();
             QVariant v = query.driver()->handle();
             if (v.isValid() && qstrcmp(v.typeName(), "sqlite3*")==0) {
                 // v.data() returns a pointer to the handle
@@ -154,7 +154,7 @@ bool SNItem::saveItem() const
             query.bindValue( ":resource", it.key() );
 
             if ( !query.exec() )
-                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+                debug() << query.executedQuery()<< "\n error: " << query.lastError();
         }
 
         foreach( ItemEffect effect, m_effects )
@@ -169,7 +169,7 @@ bool SNItem::saveItem() const
             query.bindValue( ":counter", effect.counter() );
 
             if ( !query.exec() )
-                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+                debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         }
         query.finish();
@@ -199,7 +199,7 @@ bool SNItem::updateItem( const SNItem &item ) const
         query.bindValue( ":oldname", m_name );
 
         if ( !query.exec() )
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+            debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         QMapIterator<QString, int> it( item.getComponents() );
         while( it.hasNext() )
@@ -213,7 +213,7 @@ bool SNItem::updateItem( const SNItem &item ) const
             query.bindValue( ":oldname", m_name );
 
             if ( !query.exec() )
-                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+                debug() << query.executedQuery()<< "\n error: " << query.lastError();
         }
 
         foreach( ItemEffect effect, item.getEffects() )
@@ -229,7 +229,7 @@ bool SNItem::updateItem( const SNItem &item ) const
             query.bindValue( ":oldname", m_name );
 
             if ( !query.exec() )
-                qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+                debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         }
         query.finish();
@@ -252,19 +252,19 @@ bool SNItem::deleteItem() const
         query.bindValue( ":iname", m_name );
 
         if ( !query.exec() )
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+            debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         query.prepare( "DELETE FROM itemcomp WHERE iname = :iname");
         query.bindValue( ":iname", m_name );
 
         if ( !query.exec() )
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+            debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         query.prepare( "DELETE FROM itemeffects WHERE iname = :iname");
         query.bindValue( ":iname", m_name );
 
         if ( !query.exec() )
-            qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+            debug() << query.executedQuery()<< "\n error: " << query.lastError();
 
         query.finish();
         if( !db.commit() )
@@ -287,7 +287,7 @@ void SNItem::writeToDatabase( const QList<SNItem> &list)
         query.exec("DELETE * FROM items");
         foreach(SNItem item, list )
         {
-            qDebug() << "Added: " << item.name();
+            debug() << "Added: " << item.name();
             item.saveItem();
         }
         query.finish();
@@ -324,7 +324,7 @@ QList<SNItem> SNItem::getItemsFromDatabase()
             comp_query.prepare("SELECT * FROM itemcomp WHERE iname = :iname" );
             comp_query.bindValue(":iname", name );
             if( !comp_query.exec() )
-                qDebug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
+                debug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
             int idxItem = comp_query.record().indexOf( "resource" );
             int idxQuan = comp_query.record().indexOf( "quantity" );
             while ( comp_query.next() )
@@ -340,7 +340,7 @@ QList<SNItem> SNItem::getItemsFromDatabase()
             effect_query.prepare("SELECT * from itemeffects WHERE iname = :iname" );
             effect_query.bindValue(":iname", name );
             if( !effect_query.exec() )
-                qDebug() << effect_query.executedQuery()<< "\n error: " << effect_query.lastError();
+                debug() << effect_query.executedQuery()<< "\n error: " << effect_query.lastError();
             int idxEffect = effect_query.record().indexOf( "effect" );
             int idxValue = effect_query.record().indexOf( "value" );
             int idxPrettyValue = effect_query.record().indexOf( "prettyvalue" );
@@ -366,11 +366,11 @@ QList<SNItem> SNItem::getItemsFromDatabase()
 QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
 {
     QList<SNItem> list;
-    qDebug() << "loading items";
+    debug() << "loading items";
     QFile file( filename );
     if ( !file.open( QIODevice::ReadOnly ) )
     {
-        qDebug() << "file open failed";
+        debug() << "file open failed";
         return list;
     }
     QDomDocument doc( "items" );
@@ -378,16 +378,16 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
     int line;
     if ( !doc.setContent( &file, false, &msg, &line ) )
     {
-        qDebug() << "setting doc failed";
-        qDebug() << msg;
-        qDebug() << line;
+        debug() << "setting doc failed";
+        debug() << msg;
+        debug() << line;
         file.close();
         return list;
     }
     QDomElement root = doc.documentElement();
     if ( root.tagName() != "items" )
         return list;
-    qDebug() << "Parsing XML. Found" << root.childNodes().size() << "items";
+    debug() << "Parsing XML. Found" << root.childNodes().size() << "items";
     QDomNode n = root.firstChild();
     while ( !n.isNull() )
     {
@@ -447,7 +447,7 @@ QList<SNItem> SNItem::getItemsFromXml( const QString &filename)
         }
         n = n.nextSibling();
     }
-    qDebug() << "But parsed" <<list.size() << "items";
+    debug() << "But parsed" <<list.size() << "items";
     return list;
 }
 
@@ -487,7 +487,7 @@ SNItem SNItem::getItem( const QString &item_name )
         comp_query.prepare("SELECT * FROM itemcomp WHERE iname = :iname" );
         comp_query.bindValue(":iname", name );
         if( !comp_query.exec() )
-            qDebug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
+            debug() << comp_query.executedQuery()<< "\n error: " << comp_query.lastError();
         int idxItem = comp_query.record().indexOf( "resource" );
         int idxQuan = comp_query.record().indexOf( "quantity" );
         while ( comp_query.next() )
@@ -503,7 +503,7 @@ SNItem SNItem::getItem( const QString &item_name )
         effect_query.prepare("SELECT * from itemeffects WHERE iname = :iname" );
         effect_query.bindValue(":iname", name );
         if( !effect_query.exec() )
-            qDebug() << effect_query.executedQuery()<< "\n error: " << effect_query.lastError();
+            debug() << effect_query.executedQuery()<< "\n error: " << effect_query.lastError();
         int idxEffect = effect_query.record().indexOf( "effect" );
         int idxValue = effect_query.record().indexOf( "value" );
         int idxPrettyValue = effect_query.record().indexOf( "prettyvalue" );
@@ -545,7 +545,7 @@ bool SNItem::createXML( const QList<SNItem> & items, const QString &filename )
     QFile *file = new QFile(filename);
     if ( !file->open( QIODevice::WriteOnly ) )
     {
-        qDebug() << "file open failed";
+        debug() << "file open failed";
         return false;
     }
     QXmlStreamWriter stream( file );

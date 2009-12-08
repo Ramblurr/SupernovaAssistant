@@ -22,15 +22,16 @@ TurnParser::TurnParser( const QString &filename, QObject * parent ) : QThread( p
 
 void TurnParser::run()
 {
-    qDebug() << "---------------------------------------------";
-    qDebug() << "Turn Parser Loading:" << m_filename;
+    DEBUG_BLOCK
+    debug() << "---------------------------------------------";
+    debug() << "Turn Parser Loading:" << m_filename;
     Poppler::Document *doc = Poppler::Document::load( m_filename );
     int count = doc->numPages();
 
     QFile outfile(m_filename+".txt");
     if ( !outfile.open( QIODevice::WriteOnly ) )
     {
-        qDebug() << "file open failed";
+        debug() << "file open failed";
         return;
     }
     QTextStream outdebug(&outfile);
@@ -55,7 +56,7 @@ void TurnParser::run()
                 line = line.replace(rx, "\n"+rx.cap()+"\n" );
 
             out << line << "\n";
-//            qDebug() << line;
+//            debug() << line;
         }
     }
     outfile.close();
@@ -92,7 +93,7 @@ void TurnParser::parseData()
 
     foreach(QString line, lines)
     {
-//         qDebug() << "mode="<<mode<<" : " << line;
+//         debug() << "mode="<<mode<<" : " << line;
         if( line.trimmed() == "" )
             continue;
         QRegExp rx( "" );
@@ -102,7 +103,7 @@ void TurnParser::parseData()
             {
                 command = "WARPPOINTS";
                 cmdstore = "-----WARPPOINTS (Warp Points Surveyed)-----\nWARPPOINTS:\n";
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
                 mode = 5;
             }
 
@@ -130,7 +131,7 @@ void TurnParser::parseData()
                 mode = 4;
                 command = "STOCK";
                 cmdstore = "-----STOCK (Imperial Stockpile)-----\nSTOCK:\n";
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
             }
             rx.setPattern("\\s*Colony Report\\s*");
             if ( rx.indexIn( line ) > -1)
@@ -138,7 +139,7 @@ void TurnParser::parseData()
                 mode = 4;
                 command = "COLONIES";
                 cmdstore = "-----COLONY (Imperial Colonies)-----\nCOLONY:\n";
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
             }
             rx.setPattern("\\s*Industrial Production\\s*");
             if ( rx.indexIn( line ) > -1)
@@ -152,7 +153,7 @@ void TurnParser::parseData()
                 mode = 4;
                 command = "UNSURVEYED";
                 cmdstore = "-----UNSURVEYED (Unsurveyed Warp Points)-----\nUNSURVEYED:\n";
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
             }
             rx.setPattern("\\s*Imperial Navy Report: Fleet Summary\\s*");
             if ( rx.indexIn( line ) > -1)
@@ -160,7 +161,7 @@ void TurnParser::parseData()
                 mode = 5;
                 command = "FLEETS";
                 cmdstore = "-----FLEETS (Imperial Navy Report)-----\nFLEETS:\n";
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
             }
             rx.setPattern("\\s*Fleet Report\\s*");
             if ( rx.indexIn( line ) > -1)
@@ -168,14 +169,14 @@ void TurnParser::parseData()
                 mode = 5;
                 command = "FLEETS2";
                 cmdstore = "-----FLEETS2 (Fleet Report)-----\nFLEETS2:\n";
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
             }
             rx.setPattern("\\s*Fleet Cargo Report\\s*");
             if ( rx.indexIn( line ) > -1)
             {
                 mode = 3;
                 cmdstore  = "=========================================================================================================================\n";
-                qDebug() << "completed command: " << command;
+                debug() << "completed command: " << command;
             }
         }
 
@@ -186,10 +187,10 @@ void TurnParser::parseData()
             {
                 mode = 2;
                 command = rx.cap(0);
-                qDebug() << "command: " << command;
+                debug() << "command: " << command;
                 cmdstore = header +"\n";
             } else {
-                qDebug() << "wrong header";
+                debug() << "wrong header";
                 mode = 0;
             }
         }
@@ -199,7 +200,7 @@ void TurnParser::parseData()
         {
             header = rx.cap(0);
             mode = 1;
-//            qDebug() <<  "new header found: xxx" << header << "xxx";
+//            debug() <<  "new header found: xxx" << header << "xxx";
         }
 
         rx.setPattern("^[^-]*-----([^-\\]]+)-----\\s+RTD$");
@@ -208,7 +209,7 @@ void TurnParser::parseData()
             header = "";
             mode = 2;
             command = "RTD";
-            qDebug() << "command RTD: " << command;
+            debug() << "command RTD: " << command;
             cmdstore = "-----RTD (Request Technology Descriptions)-----\nRTD:\n";
             continue;
         }
@@ -241,7 +242,7 @@ void TurnParser::writeOut( const QString &filename )
     QFile outfile(filename+".txt");
     if ( !outfile.open( QIODevice::WriteOnly ) )
     {
-        qDebug() << "file open failed";
+        debug() << "file open failed";
         return;
     }
     QTextStream out(&outfile);
@@ -251,13 +252,15 @@ void TurnParser::writeOut( const QString &filename )
 
 void TurnParser::parseANZs()
 {
+    DEBUG_BLOCK
+    debug() << "Parsing ANZs";
     QStringList anzs = m_data.values("ANZ");
     parseANZs(anzs);
 }
 
 void TurnParser::parseANZs( const QStringList &anzs )
 {
-    qDebug() << "anzs: " << anzs.size();
+    debug() << "found" << anzs.size() << "anzs";
     QRegExp rx;
     rx.setPatternSyntax(QRegExp::RegExp);
 
@@ -268,14 +271,12 @@ void TurnParser::parseANZs( const QStringList &anzs )
         if( rx.indexIn( anz ) > -1 )
         {
             QString name = rx.cap(1).trimmed();
-            qDebug() << "\nGot anz item: " << name;
-            qDebug() << "=====";
-            qDebug() << anz;
-            qDebug() << "=====";
+            debug() << "Got anz item: " << name;
+            debug() << anz;
 
             // Parse Description
 //            int desc_marker = rx.matchedLength();
-//            qDebug() << anz.left(desc_marker);
+//            debug() << anz.left(desc_marker);
             rx.setPattern("ANZ:\\s[^\\n]+\\n[^:]*:\\s+(.*)(?:\\(\\d+ ton|Classification)");
             rx.setMinimal( true );
             rx.indexIn( anz  );
@@ -333,7 +334,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
             QString entry = rx.cap(1);
             entry = entry.simplified();
             QStringList comps  = entry.split(" - ");
-            qDebug() << "composed of";
+            debug() << "Begin item components";
             QMap<QString, int> components;
             foreach( QString comp, comps )
             {
@@ -344,12 +345,13 @@ void TurnParser::parseANZs( const QStringList &anzs )
                 QString amt = comp.left(div).trimmed().replace(",","");
                 QString resource = comp.right(comp.length()-div).trimmed();
                 resource.replace(QRegExp(" {2,}"), " ");
-                qDebug() << amt << resource;
+                debug() << amt << resource;
                 bool ok;
                 components.insert( resource, amt.toInt(&ok) );
                 if( !ok && !istech )
-                    qWarning() << "resource amount toInt error while parsing item: " << name << " resource: " << resource << " amt:" << amt;
+                    warning() << "resource amount toInt error while parsing item: " << name << " resource: " << resource << " amt:" << amt;
             }
+            debug() << "End item components." << components.size() << " found.";
 
             // Parse Effects & counters
 
@@ -388,7 +390,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
                         bool ok;
                         val_numeric = val.toInt(&ok);
                         if( !ok )
-                            qWarning() << "converting effect value to int error while parsing item " << name;
+                            warning() << "converting effect value to int error while parsing item " << name;
                     }
                     else
                         pval = rx.cap(4).trimmed();
@@ -404,7 +406,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
                         effects << effect;
                         pending = false;
                     } else
-                        qWarning() << "got Counter without effect while parsing item " << name;
+                        warning() << "got Counter without effect while parsing item " << name;
                 }
                 pos += rx.matchedLength();
             }
@@ -419,18 +421,18 @@ void TurnParser::parseANZs( const QStringList &anzs )
             }
             qDeleteAll(effects);
 
-//            qDebug() << "Effect: " << rx.cap(1) << rx.cap(2) << rx.cap(3);
-//            qDebug() << "Counters: " << rx.cap(4);
+//            debug() << "Effect: " << rx.cap(1) << rx.cap(2) << rx.cap(3);
+//            debug() << "Counters: " << rx.cap(4);
 
             bool ok;
             int tons_numeric = tons.toInt(&ok);
             if( !ok && !istech )
-                qWarning() << "got int conversion error for tonnage while parsing item " << name;
+                warning() << "got int conversion error for tonnage while parsing item " << name;
 
 
             int struct_numeric = integrity->toInt(&ok);
             if( !ok && !istech && classification->trimmed() != "Mass Destruction Device")
-                qWarning() << "got int conversion error for integrity while parsing item " << name << " " << *integrity;
+                warning() << "got int conversion error for integrity while parsing item " << name << " " << *integrity;
 
             // Get the actual category/subcategory
             CategoryPair pair = mapClassificationToCategory( name, classification->trimmed(), istech );
@@ -442,7 +444,7 @@ void TurnParser::parseANZs( const QStringList &anzs )
                 struct_numeric = 0;
             }
             SNItem item(name, QString(desc.simplified()), pair.first, pair.second, tons_numeric, struct_numeric);
-            qDebug() << item << desc;
+            debug() << item << desc;
             item.addComponents( components );
             item.addEffects( effects_normal );
 
@@ -514,6 +516,6 @@ CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, cons
         return CategoryPair( SN::Category::ShipComponent,  SN::Category::Weapon );
 
 
-    qDebug() << "WARNING: Found uncatagorizable item; '"  << name << "' '"  << classification <<"'";
+    debug() << "WARNING: Found uncatagorizable item; '"  << name << "' '"  << classification <<"'";
     return CategoryPair( SN::Category::Unknown , "" );
 }

@@ -11,10 +11,10 @@
 #include "models/ComponentsModel.h"
 
 #include "ItemConflictDialog.h"
+#include "Debug.h"
 
 #include <QtXml/QDomDocument>
 #include <QFile>
-#include <QDebug>
 #include <QFileInfo>
 #include <QtAlgorithms>
 #include <QModelIndex>
@@ -277,7 +277,7 @@ void ItemBrowser::populateFields( const SNItem &item )
             m_ui->subcatCombo->setCurrentIndex( idx );
         }
     } else 
-        qDebug() << "CAT not found: '" << item.category() <<"'";
+        debug() << "CAT not found: '" << item.category() <<"'";
     m_ui->tonsSpin->setValue( item.weight() );
     m_ui->structureSpin->setValue( item.structure() );
 
@@ -342,11 +342,11 @@ SNItem ItemBrowser::itemFromFields() const
 
 bool ItemBrowser::loadCategories()
 {
-    qDebug() << "loading cats";
+    debug() << "loading cats";
     QFile file( ":/categories.xml" );
     if ( !file.open( QIODevice::ReadOnly ) )
     {
-        qDebug() << "file open failed";
+        debug() << "file open failed";
         return false;
     }
     QDomDocument doc( "supernova" );
@@ -354,9 +354,9 @@ bool ItemBrowser::loadCategories()
     int line;
     if ( !doc.setContent( &file, false, &msg, &line ) )
     {
-        qDebug() << "setting doc failed";
-        qDebug() << msg;
-        qDebug() << line;
+        debug() << "setting doc failed";
+        debug() << msg;
+        debug() << line;
         file.close();
         return false;
     }
@@ -453,7 +453,7 @@ void ItemBrowser::on_importBut_clicked()
     QFileInfo info( fileName );
     settings.setValue("import-items-location", info.absoluteDir().absolutePath());
 
-    qDebug() << " got file " << fileName;
+    debug() << " got file " << fileName;
 
     QList<SNItem> list = SNItem::getItemsFromXml( fileName );
     foreach( SNItem item, list )
@@ -484,12 +484,13 @@ void ItemBrowser::on_exportBut_clicked()
     settings.setValue("export-items-location", info.absoluteDir().absolutePath());
 
     QList<SNItem> items = m_itemModel->getItems();
-    qDebug() << "got " << items.size();
+    debug() << "parsed" << items.size() << "items";
     SNItem::createXML(items, fileName);
 }
 
 void ItemBrowser::on_turnSheetBut_clicked()
 {
+    DEBUG_BLOCK
     // We want to save the directory where the user
     // picks his turn sheets from
     QSettings settings( "SN", "SNAssistant" );
@@ -518,11 +519,13 @@ void ItemBrowser::on_turnSheetBut_clicked()
 
     m_importedItemsCnt = 0;
     m_duplicateItemsCnt = 0;
+    debug() << "Beginning parsing of" <<  m_turnsheetQueue.size() << "turnsheets";
     parseNext();
 }
 
 void ItemBrowser::parseNext()
 {
+    DEBUG_BLOCK
     if( m_turnsheetQueue.isEmpty() )
     {
         if( m_progressBar )
@@ -541,6 +544,7 @@ void ItemBrowser::parseNext()
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.setDetailedText(infotext);
+        debug() << infotext;
         int ret = msgBox.exec();
         return;
     }
@@ -558,7 +562,8 @@ void ItemBrowser::parseNext()
 
 void ItemBrowser::anzParsingFinishedSlot( const QList<SNItem> & items)
 {
-    qDebug() << "got " << items.size();
+    DEBUG_BLOCK
+    debug() << "parsed" << items.size() << "items";
     foreach( SNItem item, items )
     {
         m_importedItemsCnt++;

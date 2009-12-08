@@ -1,8 +1,9 @@
 #include "ComponentsModel.h"
 
 #include "data/SNItem.h"
+#include "Debug.h"
+
 #include <QHash>
-#include <QDebug>
 #include <QMutableListIterator>
 #include <QStringList>
 #include <QtSql>
@@ -157,7 +158,7 @@ bool ComponentsModel::canFetchMore ( const QModelIndex & parent ) const
 {
     ComponentTreeItem *i = static_cast<ComponentTreeItem*> ( parent.internalPointer() );
     if( i != 0 ) {
-//        qDebug() << i->data().toString() << i->loaded();
+//        debug() << i->data().toString() << i->loaded();
         return !i->loaded();
     }
     return false;
@@ -212,7 +213,7 @@ void ComponentsModel::fetchMore ( const QModelIndex & parent )
                 query.exec( "SELECT iname FROM items WHERE category = '" + i->data().toString() + "' AND (subcategory IS NULL OR subcategory = '')" );
                 int idxName = query.record().indexOf( "iname" );
                 if ( !query.exec() )
-                    qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+                    debug() << query.executedQuery()<< "\n error: " << query.lastError();
                 while ( query.next() )
                 {
                     QString name = query.value( idxName ).toString();
@@ -227,7 +228,7 @@ void ComponentsModel::fetchMore ( const QModelIndex & parent )
                 query.exec( "SELECT * FROM items WHERE subcategory = '" + i->data().toString() + "'" );
                 int idxName = query.record().indexOf( "iname" );
                 if ( !query.exec() )
-                    qDebug() << query.executedQuery()<< "\n error: " << query.lastError();
+                    debug() << query.executedQuery()<< "\n error: " << query.lastError();
                 while ( query.next() )
                 {
                     QString name = query.value( idxName ).toString();
@@ -504,7 +505,7 @@ void ComponentsModel::appendItem( const SNItem &item )
             insertItem(p, item, SN::Component );
         }
     } else
-        qDebug() << "IMPOSSIBLE!";
+        debug() << "IMPOSSIBLE!";
     item.saveItem();
 //    emit( reset() );
 }
@@ -521,7 +522,7 @@ ComponentTreeItem* ComponentsModel::insertItem( ComponentTreeItem* parent, const
         return c;
     }
     else
-        qDebug() << "get IndexRecursive failed";
+        debug() << "get IndexRecursive failed";
     return 0;
 }
 
@@ -538,7 +539,7 @@ void ComponentsModel::getItemsRecursive( const ComponentTreeItem *parent, QList<
     if( parent->type() == SN::Component )
     {
         SNItem item = parent->data().value<SNItem>();
-        qDebug() << item.name();
+        debug() << item.name();
         list << item;
     }
     else

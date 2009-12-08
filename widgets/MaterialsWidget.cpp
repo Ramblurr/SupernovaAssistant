@@ -2,7 +2,8 @@
 
 #include "data/SNItem.h"
 
-#include <QDebug>
+#include "Debug.h"
+
 QStringList MaterialsWidget::mimeTypes() const
 {
     QStringList types;
@@ -12,7 +13,7 @@ QStringList MaterialsWidget::mimeTypes() const
 
 bool MaterialsWidget::dropMimeData( int row, int column, const QMimeData * data, Qt::DropAction action )
 {
-    qDebug() << "HI!!";
+    debug() << "HI!!";
      if (action == Qt::IgnoreAction)
          return true;
 
@@ -32,11 +33,11 @@ bool MaterialsWidget::dropMimeData( int row, int column, const QMimeData * data,
      QByteArray encodedData = data->data("application/vnd.sn.item.list");
      QDataStream stream(&encodedData, QIODevice::ReadOnly);
      QList<SNItem> items;
-     qDebug() << "got :" << items.size();
+     debug() << "got :" << items.size();
      int rows = 0;
      while (!stream.atEnd()) {
          SNItem item;
-         qDebug() << item.name();
+         debug() << item.name();
          stream >> item;
          items << item;
          ++rows;

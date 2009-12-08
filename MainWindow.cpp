@@ -13,6 +13,7 @@
 #include <QtSql>
 #include <QStringListModel>
 #include <QMessageBox>
+#include <QFileDialog>
 
 MainWindow::MainWindow( QWidget *parent )
         : QMainWindow( parent ), ui( new Ui::MainWindowClass ), m_shipDesigner( 0 ), m_itemBrowser(0), m_systemsWidget( 0 )
@@ -70,7 +71,7 @@ void MainWindow::currEmpireChangedSlot( const Empire & emp )
     db.setDatabaseName( dbPath );
     bool ok = db.open();
     if( !ok )
-        qDebug() << "Failed opening DB at " << dbPath << db.lastError();
+        debug() << "Failed opening DB at " << dbPath << db.lastError();
 
 
 }
@@ -135,4 +136,21 @@ void MainWindow::on_actionEmpire_Overview_triggered()
         connect(m_welcomeWidget, SIGNAL(currEmpireChanged(Empire)), m_systemsWidget, SLOT(currEmpireChangedSlot()));
     }
     ui->stackedWidget->setCurrentIndex( m_indexes.value( m_systemsWidget ) );
+}
+
+void MainWindow::on_actionSave_Debug_Log_triggered()
+{
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Choose where to save the log"), QDesktopServices::storageLocation(QDesktopServices::HomeLocation), tr("Text Files(*.txt)"));
+    if( fileName.isEmpty() )
+        return;
+
+    QFile f(fileName);
+    if (!f.open(QIODevice::WriteOnly| QIODevice::Text))
+        return;
+    f.write(Debug::debug_log.buffer());
+
+//    QTextStream out(&f);
+//    out << Debug::debug_log;
+    f.close();
 }

@@ -7,7 +7,7 @@
 
 #include "diff_match_patch.h"
 
-#include <QDebug>
+#include "Debug.h"
 
 ItemConflictDialog::ItemConflictDialog( const SNItem &olditem, const SNItem &newitem, QWidget *parent ) :
     QDialog(parent),

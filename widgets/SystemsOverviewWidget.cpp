@@ -1,13 +1,13 @@
 #include "SystemsOverviewWidget.h"
 #include "ui_SystemsOverviewWidget.h"
 
-#include <QDebug>
+#include "Debug.h"
 SystemsOverviewWidget::SystemsOverviewWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SystemsOverviewWidget)
 {
     ui->setupUi(this);
-    qDebug() << "HI!";
+    debug() << "HI!";
 }
 
 SystemsOverviewWidget::~SystemsOverviewWidget()

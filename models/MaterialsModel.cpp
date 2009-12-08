@@ -2,7 +2,7 @@
 
 #include "ShipDesigner.h"
 
-#include <QDebug>
+#include "Debug.h"
 
 MaterialsModel::MaterialsModel( QObject *parent )
         : QAbstractTableModel( parent )

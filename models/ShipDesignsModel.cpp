@@ -1,6 +1,6 @@
 #include "ShipDesignsModel.h"
 
-#include <QDebug>
+#include "Debug.h"
 
 int ShipDesignsModel::rowCount( const QModelIndex &parent ) const
 {
@@ -36,7 +36,7 @@ QVariant ShipDesignsModel::headerData( int section, Qt::Orientation orientation,
 
 bool ShipDesignsModel::removeRow( int row, const QModelIndex & parent )
 {
-    qDebug() << "remove called";
+    debug() << "remove called";
     m_items.removeAt( row );
     return true;
 }

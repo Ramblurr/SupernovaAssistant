@@ -13,10 +13,10 @@
 #include "delegates/ItemDelegate.h"
 #include "tests/modeltest.h"
 #include "SNConstants.h"
+#include "Debug.h"
 
 #include <QtAlgorithms>
 #include <QAction>
-#include <QDebug>
 #include <QFile>
 #include <QtCore/QLocale>
 #include <QtCore/QList>
@@ -76,7 +76,7 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     for( int i=0; i<ShipDesigner::m_components.size(); i++)
         if( ShipDesigner::m_components.at(i).category() == "Ship Component" )
             items << ShipDesigner::m_components.at(i);
-    qDebug() << "items cnt: " << items.size();
+    debug() << "items cnt: " << items.size();
     m_componentsModel = new ComponentsModel( this, "Ship Component");
     m_proxy_model = new ComponentsProxyModel(this);
     m_proxy_model->setSourceModel( m_componentsModel );
@@ -91,7 +91,7 @@ ShipDesigner::ShipDesigner( QWidget *parent ) :
     QFile file( ":/item_desc_format.html" );
     if ( !file.open( QIODevice::ReadOnly | QIODevice::Text ) )
     {
-        qDebug() << "error opening file. Error: " << file.error();
+        debug() << "error opening file. Error: " << file.error();
     }
     m_descHtmlTemplate = file.readAll();
 
@@ -387,7 +387,7 @@ void ShipDesigner::on_designsCombo_currentIndexChanged( int index )
         }
     }
     QMapIterator< QString, qint64 > it( m_currentDesign.getComponents() );
-    qDebug() << "num comps " << m_currentDesign.getComponents().size();
+    debug() << "num comps " << m_currentDesign.getComponents().size();
     while( it.hasNext() )
     {
         it.next();
@@ -430,7 +430,7 @@ void ShipDesigner::statsChangedSlot( int numitems, qint64 tons )
     // Set item count total
 
     QLocale locale;
-    qDebug() << m_ui->countLabel->text();
+    debug() << m_ui->countLabel->text();
     int curr = locale.toInt( m_ui->countLabel->text() );
     int newcurr = curr + numitems;
 
@@ -563,7 +563,7 @@ void ShipDesigner::on_generateNUD_clicked()
         order << it.key() << it.value();
     }
 
-    qDebug() << order.print();
+    debug() << order.print();
 }
 
 void ShipDesigner::on_generateSHIP_clicked()
@@ -575,7 +575,7 @@ void ShipDesigner::on_generateSHIP_clicked()
     order << m_ui->quantityEdit->text().trimmed() << m_currentDesign.name() << m_ui->popGroupEdit->text().trimmed();
     order << m_ui->priorityEdit->text().trimmed() << m_ui->fleetEdit->text().trimmed();
 
-    qDebug() << order.print();
+    debug() << order.print();
 }
 
 void ShipDesigner::on_generateBI_clicked()
@@ -610,7 +610,7 @@ void ShipDesigner::on_desiredAPSpin_valueChanged(int ap)
     if( denominator != 0 )
         num_engines = (numerator / denominator)+1;
 
-//    qDebug() << "num" << numerator << "dem" << denominator;
+//    debug() << "num" << numerator << "dem" << denominator;
 
     if( num_engines != -1)
         m_ui->reqEnginesEdit->setText( QString::number(num_engines) );

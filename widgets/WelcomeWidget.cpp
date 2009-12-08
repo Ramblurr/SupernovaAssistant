@@ -6,7 +6,8 @@
 #include "ItemBrowser.h"
 #include "data/Empire.h"
 #include "TurnParser.h"
-#include <QDebug>
+#include "Debug.h"
+
 #include <QDesktopServices>
 #include <QDir>
 #include <QtSql>
