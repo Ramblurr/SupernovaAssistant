@@ -17,8 +17,8 @@ public:
     Planet( const QString &name, const QString &sysname, const QString &orbit, const QString &suborbit,
             const QString &type, float distance, int diameter, const QString &atmosphere, const QString &special);
 
-    Planet( const QString &temperature, const QString &axialtilt, const QString &gravity,
-            const QString &ocean, const QString &microorganisms, const QString &pollution,
+    Planet( const QString &name, const QString &temperature, const QString &axialtilt, const QString &gravity,
+            const QString &ocean, const QString &atmosphere, const QString &microorganisms, const QString &pollution,
             const QString &radiation);
 
     QString name() const { return m_name; }

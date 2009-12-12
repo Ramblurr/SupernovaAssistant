@@ -17,11 +17,11 @@ Planet::Planet( const QString &name, const QString &sysname, const QString &orbi
 {
 }
 
-Planet::Planet( const QString &temperature, const QString &axialtilt, const QString &gravity,
-        const QString &ocean, const QString &microorganisms, const QString &pollution,
+Planet::Planet( const QString &name, const QString &temperature, const QString &axialtilt, const QString &gravity,
+        const QString &ocean,  const QString &atmosphere, const QString &microorganisms, const QString &pollution,
         const QString &radiation)
-            : m_temperature( temperature ), m_axialtilt( axialtilt ), m_gravity( gravity ),
-              m_ocean( ocean ), m_microorganisms( microorganisms ), m_pollution( pollution ),
+            : m_name( name ), m_temperature( temperature ), m_axialtilt( axialtilt ), m_gravity( gravity ),
+              m_ocean( ocean ), m_atmosphere(atmosphere), m_microorganisms( microorganisms ), m_pollution( pollution ),
               m_radiation( radiation )
 {
 }
