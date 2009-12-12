@@ -289,12 +289,14 @@ const System TurnParser::parseSS( const QString &data )
         sysname = rx.cap(1).trimmed();
         type = rx.cap(2).trimmed();
         size = rx.cap(3).trimmed();
-    } else
+    } else {
         warning() << "Found SS, but no details found.";
+        return System();
+    }
 
     debug() << "System Scan: " << sysname << type << size;
 
-    sysname = TurnParser::toProper(sysname);
+//    sysname = TurnParser::toProper(sysname);
 
     System system( sysname, type, size );
 
@@ -439,6 +441,127 @@ const QList<System> TurnParser::parseSS()
 
     emit( ssParsingComplete( systems ) );
     return systems;
+}
+
+const QList<Planet> TurnParser::parsePMAP()
+{
+    QStringList pmaps = m_data.values("PMAP");
+
+    QList<Planet> planets;
+    foreach( QString pmap, pmaps)
+    {
+        planets << parsePMAP(pmap);
+    }
+
+    emit( pmapParsingComplete( planets ) );
+    return planets;
+}
+
+const Planet TurnParser::parsePMAP( const QString &data )
+{
+    DEBUG_BLOCK
+    QRegExp rx;
+    rx.setPatternSyntax(QRegExp::RegExp);
+    rx.setPattern("PMAP:\\s+\\d+,\\s+(\\w)");
+    QString suborbit;
+
+    if( rx.indexIn( data ) > -1 )
+    {
+        suborbit = rx.cap(1).trimmed();
+        QChar firstchar = suborbit.at(0);
+        if( firstchar < 'a' || firstchar > 'z')
+            suborbit = "";
+    }
+
+    bool found_pmap = false;
+    rx.setPattern("(detailed) Planet Map of (\\w+)-(\\d+)(\\w?)");
+    if( rx.indexIn( data ) > -1 )
+        found_pmap = true;
+    else
+    {
+        rx.setPattern("(located) at (\\w+)-(\\d+)\\w?, conducts a detailed Planet Map of moon (\\w)");
+        if( rx.indexIn( data ) > -1 )
+            found_pmap = true;
+        else
+        {
+        rx.setPattern("located (at) (\\w+)-(\\d+)\\w?, conducts a detailed Planet Map of the main planet");
+        if( rx.indexIn( data ) > -1 )
+            found_pmap = true;
+        }
+    }
+
+    if(!found_pmap)
+    {
+        warning() << "Found PMAP, but no details found.";
+        return Planet();
+    }
+
+    QString sysname = rx.cap(2).toUpper();
+    QString orbit = rx.cap(3);
+    QString suborbitwrong = rx.cap(4);
+    if( rx.cap(1) == "located")
+    {
+        suborbit = suborbitwrong;
+    }
+    else if( rx.cap(1) == "at")
+    {
+        suborbit = "";
+    }
+
+    QString pname = (sysname+"-"+orbit).toUpper() + suborbit;
+    pname = pname.replace(QRegExp("\\s-"), "-");
+
+    debug() << "PMAP for " << pname;
+
+    rx.setPattern("Pop Group \\#\\s*\\n?\\s*(\\d+):\\s+[^p]+\\spopulation units, governed by([^\\(]*)");
+    int pos = 0;
+    while ((pos = rx.indexIn(data, pos)) != -1)
+    {
+        pos += rx.matchedLength();
+        QString popgroup = rx.cap(1);
+        QString empireid = rx.cap(2);
+        debug() << "Pop group" << popgroup << "found for" << pname << "belonging to empire #" << empireid;
+    }
+
+    rx.setPattern("Pop Group \\#\\s*(\\d+):\\s+[^c]+\\scivilians, governed by([^\\(]*)");
+    pos = 0;
+    while ((pos = rx.indexIn(data, pos)) != -1)
+    {
+        pos += rx.matchedLength();
+        QString popgroup = rx.cap(1);
+        QString empireid = rx.cap(2);
+        debug() << "Pop group civilians" << popgroup << "found for" << pname << "belonging to empire #" << empireid;
+    }
+
+    rx.setPattern("Ocean\\s+-{121}\\s+(\\d+)\\s+(\\d+|-+)\\s+(\\d+\\.+\\d+)\\s+((?:[^\\d\\s]+\\s)+)\\s+([^\\d]+)+\\n");
+    rx.indexIn(data);
+    QString temp = rx.cap(1);
+    QString tilt = rx.cap(2);
+    QString grav = rx.cap(3);
+    QString atmo = rx.cap(4).trimmed();
+    QString ocean = rx.cap(5).trimmed();
+
+    Planet p(pname, temp,tilt, grav, ocean, atmo, "", "", "");
+
+    debug() << pname << temp << tilt << grav << atmo << ocean;
+
+    // Parse the terrain
+    rx.setPattern("Ocean\\s+-{121}\\s+.*\\n");
+    rx.setMinimal(true);
+    pos = rx.indexIn(data);
+    pos += rx.matchedLength();
+    rx.setPattern("((?:[^\\d\\s]+\\s)+)(\\d+)%");
+    rx.setMinimal(false);
+    while ((pos = rx.indexIn(data, pos)) != -1)
+    {
+        pos += rx.matchedLength();
+        QString terrain = rx.cap(1).replace(",", "").trimmed();
+        QString percent = rx.cap(2);
+        debug() << pname << terrain << percent << "%";
+        p.addTerrain(terrain, percent);
+    }
+
+    return p;
 }
 
 const QList<SNItem> TurnParser::parseANZs()

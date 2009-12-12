@@ -28,6 +28,7 @@ signals:
 
     void anzParsingComplete( const QList<SNItem> & );
     void ssParsingComplete( const QList<System> & );
+    void pmapParsingComplete( const QList<Planet> & );
 
 protected:
     void go();
@@ -42,6 +43,10 @@ private:
     // SS (System Scan)
     const QList<System> parseSS();
     const System parseSS( const QString &data );
+
+    // PMAP (Planet Map)
+    const QList<Planet> parsePMAP();
+    const Planet parsePMAP( const QString &data );
 
     // ANZ
     const QList<SNItem> parseANZs();
