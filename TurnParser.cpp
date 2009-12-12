@@ -276,34 +276,167 @@ void TurnParser::debugData( const QString &directory )
     }
 }
 
-const QList<System> TurnParser::parseSS()
+const System TurnParser::parseSS( const QString &data )
 {
-    DEBUG_BLOCK
-    QStringList sss = m_data.values("SS");
     QRegExp rx;
     rx.setPatternSyntax(QRegExp::RegExp);
+    rx.setPattern("-----(\\w+)\\s\\[([^\\]]+)\\]\\s\\[([^\\]]+)\\]-----");
+    QString sysname;
+    QString type;
+    QString size;
+    if( rx.indexIn( data ) > -1 )
+    {
+        sysname = rx.cap(1).trimmed();
+        type = rx.cap(2).trimmed();
+        size = rx.cap(3).trimmed();
+    } else
+        warning() << "Found SS, but no details found.";
+
+    debug() << "System Scan: " << sysname << type << size;
+
+    sysname = TurnParser::toProper(sysname);
+
+    System system( sysname, type, size );
+
+
+    //Parse orbits
+    rx.setPattern("(\\d+)(\\w)\\s+(\\w+)\\s+(\\d+)\\s+(([^\\d]+|---)+)|(\\d+)\\s+(([^\\d\\s]+\\s)+)\\s*(\\d+\\.\\d+|\\d+)\\s+(\\d+|---)\\s+(([^\\d]+|---)+)");
+    int pos = 0;
+    while ((pos = rx.indexIn(data, pos)) != -1)
+    {
+        pos += rx.matchedLength();
+        QString orbit;
+        QString moon;
+        QString type;
+        QString orbdist;
+        QString diam;
+        QString atmo;
+        if( !rx.cap(7).isEmpty() ) // parsed a planet
+        {
+            orbit = rx.cap(7);
+            type = rx.cap(8);
+            orbdist = rx.cap(10);
+            diam = rx.cap(11);
+            atmo = rx.cap(13);
+        } else { // parsed a moon
+            orbit = rx.cap(1);
+            moon = rx.cap(2);
+            type  = rx.cap(3);
+            diam = rx.cap(4);
+            atmo = rx.cap(6);
+        }
+        QRegExp rx2;
+        rx2.setPattern("(.+)\\s+$");
+        if(type.contains(rx2))
+        {
+            rx2.indexIn(type);
+            type = rx2.cap(1).trimmed();
+        }
+
+        // The last system will have the Wap Point ID line
+        // it needs to be filtered out
+        rx2.setPattern("(.+)\\sWarp Point ID\\s.*");
+        rx2.setMinimal(true);
+        if(atmo.contains(rx2))
+        {
+            rx2.indexIn(atmo.trimmed());
+            atmo = rx2.cap(1).trimmed();
+        } else
+            atmo = atmo.trimmed();
+
+        QString special = atmo;
+        rx2.setPattern(".+\\s+(.*)");
+        rx2.setMinimal(false);
+        if( special.contains(rx2))
+        {
+            rx2.indexIn(special);
+            special = rx2.cap(1).trimmed();
+        }
+        else
+            special = "";
+
+        rx2.setPattern("(.+)\\s+$");
+        rx2.setMinimal(true);
+        if(special.contains(rx2))
+        {
+            rx2.indexIn(special);
+            special = rx2.cap(1);
+        }
+
+        rx2.setPattern("(.+)\\s+.*");
+        if(atmo.contains(rx2))
+        {
+            rx2.indexIn(atmo);
+            atmo = rx2.cap(1).trimmed();
+        }
+
+        rx2.setPattern("(.+)\\s+$");
+        if(atmo.contains(rx2))
+        {
+            rx2.indexIn(atmo);
+            atmo = rx2.cap(1);
+        }
+
+        if( special.contains(QRegExp("^\\w+$")) )
+        {
+            atmo += " " + special;
+            special = "";
+        }
+
+        debug() << sysname << ":" << orbit+""+moon << type << orbdist << diam << atmo << special;
+        QString name = sysname + "-" +orbit+moon;
+
+        bool ok = false;
+        float orb_distance = orbdist.toFloat(&ok);
+        if(type != "Moon" && !ok)
+            warning() << "Error converting orbital distance for planet" << name;
+
+        int diameter = diam.toInt(&ok);
+        if(!ok)
+            warning() << "Error converting diameter for planet" << name;
+
+        Planet planet(name, sysname, orbit, moon, type, orb_distance, diameter, atmo, special);
+        system.addOrbit( planet );
+    }
+
+    //Parse Warppoints
+    rx.setPattern("(\\d+)\\s+(\\d+\\.\\d+)\\s+(\\w)");
+    pos = 0;
+    while ((pos = rx.indexIn(data, pos)) != -1)
+    {
+        pos += rx.matchedLength();
+        QString warpid = rx.cap(1);
+        QString orbdist = rx.cap(2);
+        QString warpclass = rx.cap(3);
+
+        bool ok = false;
+        float orbital_distance = orbdist.toFloat(&ok);
+        if(!ok)
+            warning() << "Error converting orbital distance for warppoint " << warpid << "in system" << sysname;
+
+        int idnum = warpid.toInt(&ok);
+        if(!ok)
+            warning() << "Error converting id for warppoint " << warpid << "in system" << sysname;
+
+
+        WarpPoint wp( idnum, sysname, warpclass, orbital_distance );
+        debug() << sysname << ":" << warpid << warpclass << orbital_distance;
+        system.addWP( wp );
+    }
+    return system;
+}
+
+const QList<System> TurnParser::parseSS()
+{
+//    DEBUG_BLOCK
+    QStringList sss = m_data.values("SS");
 
     QList<System> systems;
     foreach( QString ss, sss)
     {
-        rx.setPattern("-----(\\w+)\\s\\[([^\\]]+)\\]\\s\\[([^\\]]+)\\]-----");
-
-        QString sysname;
-        QString type;
-        QString size;
-        if( rx.indexIn( ss ) > -1 )
-        {
-            sysname = rx.cap(1).trimmed();
-            type = rx.cap(2).trimmed();
-            size = rx.cap(3).trimmed();
-        } else
-            warning() << "Found SS, but no details found.";
-
-        debug() << "System Scan: " << sysname << type << size;
-
-        System sys( sysname, type, size );
-        systems << sys;
+        systems << parseSS(ss);
     }
+
     emit( ssParsingComplete( systems ) );
     return systems;
 }
@@ -572,4 +705,30 @@ CategoryPair TurnParser::mapClassificationToCategory(  const QString &name, cons
 
     debug() << "WARNING: Found uncatagorizable item; '"  << name << "' '"  << classification <<"'";
     return CategoryPair( SN::Category::Unknown , "" );
+}
+
+QString TurnParser::toProper( const QString &string )
+{
+    QString str = string.toLower();
+    int idx = str.length() - 1;
+    while( true )
+    {
+        QChar c = str.at(idx);
+        if(idx == 0)
+        {
+            if( c.isLower() )
+                str.replace(0, 1, c.toUpper());
+
+            break;
+        } else {
+            if( c.isSpace() )
+            {
+                int dst = idx + 1;
+                if( str.at(dst).isLower() )
+                    str.replace(dst, 1, str.at(dst).toUpper() );
+            }
+            idx--;
+        }
+    }
+    return str;
 }

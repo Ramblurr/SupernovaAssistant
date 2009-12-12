@@ -41,6 +41,7 @@ private:
 
     // SS (System Scan)
     const QList<System> parseSS();
+    const System parseSS( const QString &data );
 
     // ANZ
     const QList<SNItem> parseANZs();
@@ -54,6 +55,13 @@ private:
     QList<SNItem> m_anzs;
     QMultiHash<QString, QString> m_data;
     friend class TurnParserTest;
+
+
+    //utility functions
+
+    static QString toProper( const QString &str );
+
+
 };
 
 #endif // TURNPARSER_H
