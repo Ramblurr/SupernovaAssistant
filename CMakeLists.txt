@@ -48,6 +48,7 @@ set( snass_SRCS
     data/Empire.cpp
     data/System.cpp
     data/Planet.cpp
+    data/WarpPoint.cpp
     models/ShipDesignsModel.cpp
     models/ItemModel.cpp
     models/MaterialsModel.cpp
