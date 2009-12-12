@@ -46,6 +46,37 @@ void Planet::addResource(const QString &resource, int yield)
     m_resources.append(y);
 }
 
+bool Planet::operator==( const Planet &other ) const
+{
+    bool result = m_name == other.name() &&
+                  m_sysname == other.sysname() &&
+                  m_orbit == other.orbit() &&
+                  m_suborbit == other.suborbit() &&
+                  m_type == other.type() &&
+                  m_distance == other.distance() &&
+                  m_diameter == other.diameter() &&
+                  m_atmosphere == other.atmosphere() &&
+                  m_special == other.special() &&
+                  m_temperature == other.temp() &&
+                  m_axialtilt == other.axialTilt() &&
+                  m_gravity == other.gravity() &&
+                  m_ocean == other.ocean() &&
+                  m_microorganisms == other.microorganisms() &&
+                  m_pollution == other.pollution() &&
+                  m_radiation == other.radiation();
+
+    QList<TerrainPair> terrains = other.terrain();
+    foreach( TerrainPair pair, terrains )
+        if( !m_terrain.contains( pair ) )
+            return false;
+
+    QList<ResourceYield> resources = other.resources();
+    foreach( ResourceYield pair, resources )
+        if( !m_resources.contains (pair ) )
+            return false;
+    return result;
+}
+
 QList<Planet> Planet::getPlanets( const QString & systemname )
 {
     QList<Planet> planets;

@@ -39,12 +39,14 @@ public:
     QString pollution() const { return m_pollution; }
     QString radiation() const { return m_radiation; }
 
-    QList<TerrainPair> terrain() { return m_terrain; }
+    QList<TerrainPair> terrain() const { return m_terrain; }
 
-    QList<ResourceYield> resources() { return m_resources; }
+    QList<ResourceYield> resources() const { return m_resources; }
 
     void addTerrain(const QString &terrain, const QString &percentage);
     void addResource(const QString &resource, int yield);
+
+    bool operator==( const Planet &other ) const;
 
     /**
       @brief Gets planetary bodies from the database
