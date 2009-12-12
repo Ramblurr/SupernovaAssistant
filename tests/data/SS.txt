@@ -1,0 +1,22 @@
+                                               -----SS (System Scan)-----
+SS: 101
+101st Recon Group #101 [at Test1 - 5] conducts a detailed System Scan of the Test1 star system
+-------------------------------------------------------------------------------------------------------------------------
+                                 -----TEST1 [ S (Dim Red) 1 IV ] [Single Star]-----
+Orbit       Type         Orb Distance (AU's)   Diameter (km)      Atmosphere
+-------------------------------------------------------------------------------------------------------------------------
+  1     Hot Terrestrial          0.4               44733           Chlorine
+  2     Hot Terrestrial          0.75              34089           Chlorine
+  3      Asteroid Field          1.1                 1              Vacuum
+  4       Terrestrial            1.8               18468        Carbon Dioxide
+  4a        Moon                                    3233           Nitrogen
+  4b        Moon                                    2166            Vacuum
+  4c        Moon                                    3119           Chlorine
+  5    Frozen Terrestrial        3.2               33430            Vacuum
+Warp Point ID        Orbital Distance (AU's)        Warp Point Class
+    1234                    1594.1                         C
+    12345                   2143.9                         A
+    4321                  679.8                          C
+Imperial Astronomers note that the Test1 star system has already been surveyed and added to the Imperial Astronomical
+database, so they do not bother adding it again
+=========================================================================================================================

@@ -1,6 +1,7 @@
 <RCC>
-    <qresource prefix="/tests" >
-        <file>anz_test.txt</file>
-        <file>296_2.pdf</file>
+    <qresource prefix="/tests">
+        <file>data/SS2.txt</file>
+        <file>data/SS.txt</file>
+        <file>data/anz_test.txt</file>
     </qresource>
 </RCC>

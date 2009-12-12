@@ -1,0 +1,23 @@
+                                               -----SS (System Scan)-----
+SS: 234
+234th Explorer #234 [at Warp Point 234567] conducts a detailed System Scan of the Test star system
+-------------------------------------------------------------------------------------------------------------------------
+                                 -----TEST [ M (Red) 1 V ] [Single Star]-----
+Orbit Type Orb Distance (AU's) Diameter (km) Atmosphere
+-------------------------------------------------------------------------------------------------------------------------
+1 Terrestrial 0.6 87840 Ammonia
+2 Frozen Terrestrial 1 140120 Oxygen
+3 Gas Giant 1.4 --- --- Ion Storm
+3a Moon 9315 Vacuum
+3b Moon 4911 Vacuum
+4 Frozen Rockball 2.2 85440 Chlorine Ion Storm
+Warp Point ID Orbital Distance (AU's) Warp Point Class
+12345 1.9 D
+234567 596.7 E
+345678 0.2 D
+The Test star system lies in a massive Dust Cloud
+An Ion Storm extends from 1.2 to 3.2 astronomical units (AU's) distance from the M (Red) primary
+Ionized particles moving in a deadly cloud can severely disrupt the electronic equipment of any starship unfortunate enough
+to be caught unprotected in its midst. Combat in such an area is highly unpredictable.
+Imperial Astronomers catalog the Arius system and add its details to the official Imperial records
+=========================================================================================================================
