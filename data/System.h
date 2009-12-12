@@ -19,6 +19,8 @@ public:
     QList<Planet> orbits() const{ return m_orbits; }
     int orbitsCount() const{ return m_orbits.size(); }
 
+    void addOrbit( const Planet &planet );
+
     static QList<System> getSystems();
     static System find( const QString &name );
 

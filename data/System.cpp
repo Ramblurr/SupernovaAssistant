@@ -16,6 +16,11 @@ System::System( const QString &name, const QString &type, const QString & size)
 
 }
 
+void System::addOrbit( const Planet &planet )
+{
+    m_orbits.append( planet );
+}
+
 QList<System> System::getSystems()
 {
     return QList<System>();
