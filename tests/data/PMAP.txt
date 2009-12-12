@@ -1,0 +1,13 @@
+                                            -----PMAP (Planet Map)-----
+PMAP: 102, 2
+102nd Recon Group #102 located at Test1-2, conducts a detailed Planet Map of the main planet
+-------------------------------------------------------------------------------------------------------------------------
+            Temperature(Kelvin)     Axial Tilt     Gravity          Atmosphere              Ocean
+-------------------------------------------------------------------------------------------------------------------------
+                     311                30           1.1            Chlorine                    Water
+Desert 23%, Forested Mountains 19%, Rain Forest 16%, Craters 13%, Deciduous Forest 10%, Marsh 10%, Salt Flats 9%
+Microorganisms on this world are virtually nonexistent. Pollution is nowhere to be seen, while Radiation levels are
+undetectable.
+-------------------------------------------------------------------------------------------------------------------------
+Pop Group # 12345: 543,326 population units, governed by TestEmpire #1 (A Giant Under Construction Sign)
+=========================================================================================================================

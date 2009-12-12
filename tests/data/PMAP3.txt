@@ -1,0 +1,12 @@
+                                            -----PMAP (Planet Map)-----
+PMAP: 103, 0
+103rd Recon Group #103 located at Test-3, conducts a detailed Planet Map of the main planet
+-------------------------------------------------------------------------------------------------------------------------
+            Temperature(Kelvin)     Axial Tilt     Gravity          Atmosphere              Ocean
+-------------------------------------------------------------------------------------------------------------------------
+                      51               ----          0.1             Vacuum                 -None-
+Asteroids 100% (this orbital location is filled with a dense asteroid field)
+Microorganisms on this world are virtually nonexistent. Pollution is nowhere to be seen, while Radiation levels are
+undetectable.
+-------------------------------------------------------------------------------------------------------------------------
+=========================================================================================================================

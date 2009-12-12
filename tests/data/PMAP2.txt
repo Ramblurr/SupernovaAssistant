@@ -1,0 +1,12 @@
+                                            -----PMAP (Planet Map)-----
+PMAP: 104, 0
+104th Recon Group #104 located at Test2-4, conducts a detailed Planet Map of the main planet
+-------------------------------------------------------------------------------------------------------------------------
+            Temperature(Kelvin)     Axial Tilt     Gravity          Atmosphere              Ocean
+-------------------------------------------------------------------------------------------------------------------------
+                     251                24           1.2         Carbon Dioxide            Liquid Ammonia
+Liquid Ammonia 65%, Swamp 15%, Glacier 12%, Permafrost 3%, Forested Mountains 2%, Bog 1%, Craters 1%, Snow Drifts 1%
+Microorganisms on this world are virtually nonexistent. Pollution is nowhere to be seen, while Radiation levels are
+undetectable.
+-------------------------------------------------------------------------------------------------------------------------
+=========================================================================================================================

@@ -17,6 +17,7 @@ public:
 private slots:
     void anzs();
     void sss();
+    void pmaps();
 
 private:
     TurnParser* parser;

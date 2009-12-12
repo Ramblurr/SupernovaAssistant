@@ -3,5 +3,8 @@
         <file>data/SS2.txt</file>
         <file>data/SS.txt</file>
         <file>data/anz_test.txt</file>
+        <file>data/PMAP.txt</file>
+        <file>data/PMAP2.txt</file>
+        <file>data/PMAP3.txt</file>
     </qresource>
 </RCC>
