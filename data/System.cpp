@@ -1,6 +1,7 @@
 #include "System.h"
 
 #include "Planet.h"
+#include "WarpPoint.h"
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -19,6 +20,11 @@ System::System( const QString &name, const QString &type, const QString & size)
 void System::addOrbit( const Planet &planet )
 {
     m_orbits.append( planet );
+}
+
+void System::addWP( const WarpPoint &wp )
+{
+    m_warppoints.append( wp );
 }
 
 QList<System> System::getSystems()
@@ -65,6 +71,7 @@ System System::find( const QString &name )
     // Get Orbits
 
     sys.m_orbits = Planet::getPlanets( name );
+    sys.m_warppoints = WarpPoint::getWPs( name );
 
     return sys;
 }
