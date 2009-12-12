@@ -30,6 +30,7 @@ void TurnParserTest::sss()
         return;
 
     QByteArray array = f.readAll();
+    f.close();
     QString data(array);
 
     System sys = parser->parseSS(data);
@@ -68,6 +69,47 @@ void TurnParserTest::sss()
     QVERIFY(sys.orbits().contains(p6));
     QVERIFY(sys.orbits().contains(p7));
     QVERIFY(sys.orbits().contains(p8));
+
+    QFile f2(":/tests/data/SS2.txt");
+    if (!f2.open(QIODevice::ReadOnly))
+        return;
+
+    QByteArray array1 = f2.readAll();
+    f2.close();
+    QString data1(array1);
+
+    sys = parser->parseSS(data1);
+
+    QVERIFY( sys.name() == "Test2" );
+    QVERIFY( sys.starType() == "M (Red) 1 V" );
+    QVERIFY( sys.starSize() == "Single Star" );
+
+
+    QVERIFY( sys.warpPointsCount() == 3);
+
+    WarpPoint test2wp1(12345, "Test2", "D", 1.9);
+    WarpPoint test2wp2(234567, "Test2", "E", 596.7);
+    WarpPoint test2wp3(345678, "Test2", "D", 0.2);
+
+    QVERIFY( sys.warpPoints().contains(test2wp1) );
+    QVERIFY( sys.warpPoints().contains(test2wp2) );
+    QVERIFY( sys.warpPoints().contains(test2wp3) );
+
+    QVERIFY( sys.orbitsCount() == 6 );
+
+    Planet test2p1("Test2-1","Test2", "1", "", "Terrestrial", 0.6, 87840, "Ammonia", "");
+    Planet test2p2("Test2-2","Test2", "2", "", "Frozen Terrestrial", 1, 140120, "Oxygen", "");
+    Planet test2p3("Test2-3","Test2", "3", "", "Gas Giant", 1.4, 0.0, "---", "Ion Storm");
+    Planet test2p4("Test2-3a","Test2", "3", "a", "Moon", 0.0, 9315, "Vacuum", "");
+    Planet test2p5("Test2-3b","Test2", "3", "b", "Moon", 0.0, 4911, "Vacuum", "");
+    Planet test2p6("Test2-4","Test2", "4", "", "Frozen Rockball", 2.2, 85440, "Chlorine", "Ion Storm");
+
+    QVERIFY(sys.orbits().contains(test2p1));
+    QVERIFY(sys.orbits().contains(test2p2));
+    QVERIFY(sys.orbits().contains(test2p3));
+    QVERIFY(sys.orbits().contains(test2p4));
+    QVERIFY(sys.orbits().contains(test2p5));
+    QVERIFY(sys.orbits().contains(test2p6));
 
 }
 
