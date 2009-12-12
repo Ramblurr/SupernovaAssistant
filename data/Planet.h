@@ -15,7 +15,7 @@ class Planet
 public:
     Planet();
     Planet( const QString &name, const QString &sysname, const QString &orbit, const QString &suborbit,
-            const QString &type, float distance, int diameter, const QString &atmosphere);
+            const QString &type, float distance, int diameter, const QString &atmosphere, const QString &special);
 
     Planet( const QString &temperature, const QString &axialtilt, const QString &gravity,
             const QString &ocean, const QString &microorganisms, const QString &pollution,
@@ -29,6 +29,7 @@ public:
     float distance() const { return m_distance; }
     int diameter() const { return m_diameter; }
     QString atmosphere() const { return m_atmosphere; }
+    QString special() const { return m_special; }
 
     QString temp() const { return m_temperature; }
     QString axialTilt() const { return m_axialtilt; }
@@ -69,6 +70,7 @@ private:
     float m_distance;
     int m_diameter;
     QString m_atmosphere;
+    QString m_special;
 
     //From PMAP
     QString m_temperature;

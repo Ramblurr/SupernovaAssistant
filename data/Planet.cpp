@@ -10,9 +10,10 @@ Planet::Planet()
 }
 
 Planet::Planet( const QString &name, const QString &sysname, const QString &orbit, const QString &suborbit,
-                const QString &type, float distance, int diameter, const QString &atmosphere)
+                const QString &type, float distance, int diameter, const QString &atmosphere, const QString &special)
                     : m_name(name), m_sysname(sysname), m_orbit( orbit ), m_suborbit( suborbit ),
-                      m_type( type ), m_distance( distance ), m_diameter( diameter ), m_atmosphere( atmosphere )
+                      m_type( type ), m_distance( distance ), m_diameter( diameter ), m_atmosphere( atmosphere ),
+                      m_special( special )
 {
 }
 
@@ -208,6 +209,7 @@ void Planet::loadSS( const QSqlQuery &query, Planet &planet )
     int idxOrbDist = query.record().indexOf( "orbdist" );
     int idxDiameter = query.record().indexOf( "diameter" );
     int idxAtmo = query.record().indexOf( "atmosphere" );
+    int idxSpecial = query.record().indexOf( "special" );
 
     QString name =  query.value( idxName ).toString();
     QString sys = query.value( idxSys ).toString();
@@ -217,6 +219,7 @@ void Planet::loadSS( const QSqlQuery &query, Planet &planet )
     float orbdist = query.value( idxOrbDist ).toDouble();
     int diameter = query.value( idxDiameter ).toInt();
     QString atmosphere = query.value( idxAtmo ).toString();
+    QString special = query.value( idxSpecial ).toString();
 
     planet.m_name = name;
     planet.m_sysname = sys;
@@ -226,4 +229,5 @@ void Planet::loadSS( const QSqlQuery &query, Planet &planet )
     planet.m_distance = orbdist;
     planet.m_diameter = diameter;
     planet.m_atmosphere = atmosphere;
+    planet.m_special = special;
 }
