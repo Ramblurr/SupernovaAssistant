@@ -1,3 +1,9 @@
++--------------------WARNING--------------------------+
+|This project is not supported. It never got very far,|
+|as it became to expensive for me to continue with.   |
+|Gosh, I liked this game though.                      |
++-----------------------------------------------------+
+
 
 SuperNova Assistant
 -------------------------------------------------------------------------------
